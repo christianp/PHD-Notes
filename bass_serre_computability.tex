@@ -1,0 +1,747 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+
+\usepackage{setspace}
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+%\setstretch{1.1}
+
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}	%grzegorczyk level
+
+\newcommand{\NN}{\mathbb{N}}	%blackboard bold
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}	% least #1 such that #2 holds
+
+\newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
+\newcommand{\ith}{$i^{\textrm{th}}$~}
+
+\newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
+
+\newcommand{\xvec}{\mathbf{x}}	% vector x
+\newcommand{\yvec}{\mathbf{y}}	% vector y
+\newcommand{\wvec}{\mathbf{w}}	% vector w
+\newcommand{\tvec}{\mathbf{t}}	% vector t
+\newcommand{\psub}{\dot -}	% proper subtraction
+\newcommand{\rsg}{\overline{sg}} % reverse signature
+\newcommand{\recur}[1]{\begin{equation} \begin{split} #1 \end{split} \end{equation}}	%definition of recursive function
+\newcommand{\recurN}[1]{\begin{equation*} \begin{split} #1 \end{split} \end{equation*}}	%ditto, no equation number
+
+\newcommand{\classC}{$\mathcal{C}$}
+
+\newcommand{\concat}{\ensuremath{+\!\!\!\!+\,}}	% list concatenation
+
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}	%group presentation
+\newcommand{\fgoagog}{\pi_1(\mathbf{G},\Gamma,T,v_0)}					%fundamental group of a graph of groups
+\newcommand{\ugroup}{\mathbf{U}(P)}														%universal group of a pregroup
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\begin{document}
+\title{Computability of Bass-Serre structures}
+\author{Christian Perfect}
+\maketitle
+
+\section{Building blocks}
+
+\subsection{Notation}
+When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
+
+\subsection{Constructing functions}
+Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f(x_1, \dots, x_n)$ is a map,
+\[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0},\]
+taking $n \geq 0$ parameters and resulting in a single value.
+
+Functions in general can take any number of parameters, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of parameters $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
+
+We will begin by defining the {\it primitive functions}:
+
+\begin{itemize}
+	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write $0$ to mean the zero function.
+	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
+	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith parameter.
+\end{itemize}
+
+There are two operations we shall use to create new functions from these primitives.
+
+\subsubsection{Composition} 
+\[f \circ g(x) \equiv f(g(\xvec)) := C(f,g)(\xvec)\] 
+or just 
+\[f \circ g := C(f,g).\]
+
+\subsubsection{Recursion}
+Definitions of recursive functions $R(h,f,g)$ will follow this format:
+\begin{eqnarray*}
+	h(\xvec,0) & := & f(\xvec), \\
+	h(\xvec,n+1) & := & g(n,h(\xvec,n),\xvec).
+\end{eqnarray*} 
+
+Note that the parameter of recursion $n$ can be made to be in any position by composition with the projection functions:
+\begin{eqnarray*}
+ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) &:=& f(x_1, \dots, x_m, n) \\
+ &=& C(f, P_{m+1}^1, \dots, P_{m+1}^k, P_{m+1}^{k+2},\dots, P_{m+1}^m, P_{m+1}^{k+1}).
+ \end{eqnarray*}
+
+\subsubsection{Arity}
+A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
+
+Mixing functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$ such that:
+\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n) = f(x_1, \dots, x_n).\]
+
+Variable substitution can also be dealt with systematically:
+\[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
+
+\subsection{Further notation}
+
+\subsubsection{Iteration}
+A function which evaluates $n$ iterations of a function $f$, where $n$ is a bound variable, can be performed by composing $f$ with itself $n-1$ times.
+\[f^{(n)}(x) := \underbrace{C(f,C(f,C(f, \dots C(f,f}_{n-1 \textrm{ compositions}}) )(x).\]
+
+\subsubsection{Infix operators}
+An infix operator is simply a function of two variables, so for any operator $\ast$ some suitable function $f_{\ast}$ could be defined:
+\[x \ast y := f_{\ast}(x,y.) \]
+
+\subsubsection{Sets}
+A set $S \subseteq \NN^d$ is defined by its characteristic function $\chi_S$.
+\[\chi_S(\xvec) := \begin{cases}
+ 1 & \xvec \in S, \\
+ 0 & \xvec \notin S.
+ \end{cases}
+\]
+
+\subsubsection{Relations}
+A relation is defined by the set of things which satisfy it. In addition, for binary relations I will write
+\[ x R y := \chi_R(x,y). \]
+
+\subsubsection{Logic}
+The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
+
+\section{The Grzegorczyk hierarchy}
+A class \classC is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC, then $C(f,g_1, \dots, g_m)$ also belongs to \classC. A function defined by finitely many compositions of elements of \classC is also an element of \classC.
+
+A class \classC is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC and $\forall \xvec$, $R(f,g)(\xvec) \leq h(\xvec)$, then $R(f,g)$ also belongs to \classC. In other words, if a function defined by recursion on two functions of \classC is bounded everywhere by a third function of \classC, then the recursively-defined function is also in \classC.
+
+The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{n} of functions which are each closed under finite composition and bounded recursion. 
+
+\grz{0} consists of just the primitive functions, and whatever else can be obtained by finitely many applications of the composition operator and bounded recursion.
+
+\grz{n+1}, for $n \geq 0$, is the smallest class containing all of \grz{n} and anything obtained by a single unbounded recursion on \grz{n} functions, again closed under finite composition and bounded recursion.
+
+The levels of the Grzegorczyk hierarchy can also be defined in terms of a stem of functions, one for each level, but we won't be going high enough for that to be useful.
+
+\subsection{The stockpile of functions}
+Below I will give explicit definitions for the operations of elementary arithmetic, plus some more useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
+
+\subsection{\grz{0} functions}
+Add a constant $n$ to $x$ by iterating the successor function $n$ times on $x$:
+\begin{equation} +_n(x) \equiv x + n := s^{(n)}(x). \end{equation}
+
+Note that $n$ is a bound variable, that is, there is a different function $+_n$ for each $n$.
+
+A nullary function returning any single constant can be constructed by composing $+_n$ with $z$
+\begin{equation} c_n := +_n(0). \end{equation}
+
+From now on I will just write the number $n$ to mean the function $c_n$, when appropriate.
+
+Decrement by 1:
+\recur{
+	dec(0) &:= 0, \\
+	dec(n+1) &:= n.
+}
+
+Proper subtraction:
+\recur{
+	x \psub 0 &:= x, \\
+	x \psub (y+1) &:= dec(x \psub y).
+}
+
+$x \psub y$ is bounded by $P_2^1 \equiv x$, so belongs to \grz{0}.
+
+Signature:
+\recur{
+	sg(0) &:= 0, 	\\
+	sg(x+1) &:= 1.
+}
+
+And reverse signature:
+\recur{
+	\rsg(0) &:= 1, \\
+	\rsg(x+1) &:= 0.
+}
+
+Equality:
+\begin{equation}	x = y := eq'(x,y,sg(x \psub y)). \end{equation}
+\recurN{
+	eq'(x,y,0) &:= \bar{sg}(x,y), \\
+	eq'(x,y,1) &:= 1.
+}
+
+$eq'$ is bounded by $c_1$, so belongs to \grz{0}.
+
+Logical AND:
+\recur{
+	x \wedge 0 &:= 0,	 \\
+	x \wedge (n+1) &:= x.
+}
+
+$\wedge$ is bounded by $P_2^1 \equiv x$, so is in \grz{0}.
+
+Logical OR:
+\recur{
+	x \vee 0 &:= x, 		\\
+	x \vee (n+1) &:= 1.
+}
+
+$\vee$ is bounded by $s \circ P_2^1 \equiv x+1$, so is in \grz{0}.
+
+Logical NOT:
+\begin{equation} \neg x := \rsg(x). \end{equation}
+
+Ordering:
+\begin{equation} \begin{split} 
+	x>y &:= sg(x \psub y), 	\\
+	x \geq y &:= (x > y) \vee (x=y),	\\
+	x \leq y &:= \neg (x>y),	\\
+	x < y &:= (x \leq y) \wedge \neg (x=y).
+\end{split}\end{equation} 
+
+
+The smallest of two numbers:
+\begin{equation} \min(x,y) := x \psub ( x \psub y). \end{equation}
+
+Remainder when dividing $x$ by $y$:
+\recur{
+	0 \bmod{y} &:= 0,	\\
+	(x+1) \bmod{y} &:= rm' \left( y \psub \left( (x \bmod{y}) + 1 \right), x \bmod{y} \right).
+	}
+\recurN{
+	rm'(0,y) &:= 0, 	\\
+	rm'(x+1,y) &:= y+1.
+}
+$rm'$ is bounded by $y+1$ so belongs to \grz{0}. $x \bmod{y}$ is defined by recursion on \grz{0} functions and is bounded by $y-1$, so belongs to \grz{0}.
+
+\subsection{\grz{1} functions}
+Adding two numbers together is achieved by an unbounded recursion on the successor function.
+\recur{
+	x + 0 &:= x,			\\
+	x + (y+1) &:= (x+y) + 1.
+}
+Hence addition must belong to \grz{1} and not \grz{0}.
+
+We can define another version of $+_n$ where $n$ is :
+\begin{equation} +_n(y) := n + y. \end{equation}
+This version is in \grz{1}. This is really an abuse of notation, but it will be useful in a little while.
+
+The biggest of two numbers:
+\begin{equation} \max(x,y) := x + (y \psub x). \end{equation}
+
+Note that $max(x,y)$ is bounded by one of $P_2^1$ or $P_2^2$, but I don't think there's a way of defining it without using addition, so it has to be in \grz{1}.
+
+Absolute difference:
+\begin{equation} |x - y| := (x \psub y) + (y \psub x). \end{equation}
+
+Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
+\begin{equation} n \cdot x := +_x^{(n)}(0). \end{equation}
+
+So we can also get any positive- and constant-coefficient linear polynomial $a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. For polynomials with negative coefficients, computing all the positive terms then subtracting the negative terms will give the closest match, because we can't use negative numbers.
+
+Quotient:
+\recur{
+	\left \lfloor \frac{0}{y} \right \rfloor &:= 0, \\
+	\left \lfloor \frac{x+1}{y} \right \rfloor &:= \left \lfloor \frac{x}{y} \right \rfloor + \rsg\left( (x+1) \bmod{y} \right).
+}
+
+Does $x$ divide $y$:
+\begin{equation} x \mid y := \rsg( x \bmod{y} ). \end{equation}
+
+Bounded minimisation returns the least $i$ less than some bound that satisfies the given predicate:
+\recur{
+	\min_{i < 0} P(\xvec,i) &:= 0,	\\
+	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,y)=y) \wedge (P(\xvec,y) = 0) \right).
+}
+
+Because we always have to return a value, if there is no value under the bound such that the predicate holds, then we return the bound.
+
+Bounded maximisation:
+\begin{equation} \max_{i < y} P(\xvec,i) := y \psub \min_{i < y} P(\xvec, y \psub i). \end{equation}
+
+If $P$ is a \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
+
+\subsection{\grz{2} functions}
+Multiplication is an unbounded recursion on the addition operation:
+\recur{
+	x \cdot 0 &:= 0,				\\
+	x \cdot (y+1) &:= (x \cdot y) + x.
+}
+
+We can get $x^n$, when $n$ is constant, by $n$ compositions of multiplication by $x$, and hence any (positive-coefficient) polynomial by finite compositions of addition and multiplication. So polynomials belong to \grz{2}.
+
+Series sum:
+\recur{
+	\sum_{i < 0} f(\xvec, i) &:= 0,		\\
+	\sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) + \sum_{i < y} f(\xvec,i).
+}
+
+Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $\sum_{i < y} f(\xvec,i)$ is also in \grz{2} because it entails $y$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by defining the sum as $y$ compositions of addition.
+
+Bounded existential quantifier:
+\begin{equation} \exists_{i < y} P(\xvec,i) := \sum_{i < y} P(\xvec,i). \end{equation}
+
+
+Definition by cases: if  $P_i(\xvec)$, $1 \leq i \leq k$ is a finite collection of mutually exclusive, exhaustive predicates, then we can define
+\[ f(x) := \begin{cases}
+	g_1(\xvec) & \textrm{if }P_1(\xvec),	\\
+	\vdots & \vdots	\\
+	g_k(\xvec) & \textrm{if } P_k(\xvec).
+\end{cases} \]
+
+In our language, this is:
+\begin{equation} f(x) := \sum_{i < k+1} g_i(x) \cdot sg(P_i(x)), \end{equation}
+where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k$ multiplications and additions.
+
+\subsection{\grz{3} functions}
+\grz{3} is where just about all the really useful operations are.
+
+First of all, we can perform exponentiation by unbounded recursion on the multiplication operation:
+\recur{
+	x^0 &:= 1,				\\
+	x^{y+1} &:= x \cdot x^y.
+}
+
+Factorial:
+\recur{
+	0! &:= 1,	\\
+	(x+1)! &:= (x+1) \cdot x!.
+}
+
+Series product:
+\recur{
+	\prod_{i < 0} f(\xvec,i) &:= 1,	\\
+	\prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) \cdot \prod_{i < y} f(\xvec, i).
+}
+If $f$ is in \grz{3} then so is the product $\prod_{i < y} f(\xvec,i)$, as it consists of $y$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
+
+Bounded universal quantifier:
+\begin{equation} \forall_{i < y} P(\xvec,i) := \prod_{i < y} P(\xvec,i). \end{equation}
+
+Primality:
+\begin{equation} x \textrm{ prime} :=  (x > 1) \wedge \forall_{z < x} \left( (z < 2) \vee \neg (z \mid x) \right). \end{equation}
+
+The first prime after $x$:
+\begin{equation} \operatorname{nextprime}(x) := \min_{i \leq x!+1} (i \textrm{ prime}) \wedge (i > x). \end{equation}
+The bound on this function comes from Euclid or some such bearded Greek. Note that this is an exceptionally inefficient way of finding primes.
+
+The \nth prime:
+\recur{
+	p_0 \equiv p(0) &:= 2,		\\
+	p_{n+1} \equiv p(n+1) &:= \operatorname{nextprime} (p_n).
+}
+
+Exponent of $x$ in the decomposition of $y$:
+\begin{equation} [y]_x := \max_{i < y} \left( x^i \mid y \right). \end{equation}
+
+\subsection{Lists}\label{lists}
+
+We will be working with $n$-tuples, or lists, extensively. All of the list operations can be defined as \grz{3} functions on numbers by way of the G\"odel encoding.
+
+G\"odel encoding of an $n$-tuple:
+\begin{equation} \xvec \equiv [x_0, \dots, x_n] := \prod_{0 \leq i \leq n} p_i^{x_i+1}. \end{equation}
+The $+1$ in the exponent is so we can reliably determine the length of a list. The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
+
+Value of \nth position in an encoded list:
+\begin{equation} (\xvec)_i := [\xvec]_{p_i} - 1. \end{equation}
+
+Length of an encoded list:
+\begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
+
+The index of the first occurrence of a given value in an encoded list:
+\begin{equation} \operatorname{find}(\xvec,n) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
+
+Whether an encoded list contains a given value:
+\begin{equation} y \in \xvec := \operatorname{find}(\xvec,y) < |\xvec|. \end{equation}
+
+The largest element of an encoded list:
+\begin{equation} \operatorname{biggest}(\xvec) := \operatorname{biggest}'(\xvec,|\xvec|-1), \end{equation}
+\recurN{
+	\operatorname{biggest}'(\xvec,0) &:= (\xvec)_0, \\ 
+	\operatorname{biggest}'(\xvec,n+1) &:= \max \left ( (\xvec)_{n+1},\operatorname{biggest}'(\xvec,n). \right )
+}
+
+To obtain the sub-list of $\xvec$ starting at position $s$ and ending at position $e$.:
+\begin{equation} \xvec[s \dots e] \equiv \operatorname{slice}(\xvec,s,e) := \prod_{i=s'}^{e'}(p_{i-s'})^{(\xvec)_i+1}, \end{equation}
+\begin{equation*} 
+\begin{split}
+	e' &:= \max(0,\min(e,|\xvec|-1)), \\ 
+	s' &:= \max(0,\min(s,e')). 
+\end{split}
+\end{equation*}
+
+To append a single value to the end of an encoded list:
+\begin{equation} \operatorname{splice}(\xvec,n) := \xvec \cdot p_{|\xvec|}^{n+1}. \end{equation}
+
+To concatenate two encoded lists:
+\begin{equation} \xvec \concat \yvec := \operatorname{splice}(\xvec,(\yvec)_0) \concat \yvec[1 \dots |\yvec|-1] \end{equation}
+
+$x \concat y$ is bounded by $p_{|\xvec|+|\yvec|}^{(|\xvec|+|\yvec|) (\operatorname{biggest}(\xvec)+\operatorname{biggest}(\yvec))}$, so is \grz{3}-computable.
+
+\section{Graphs}
+
+\begin{definition}
+A graph is a set of vertices $V$ and a set of directed edges $E = E^+ \cup E^-$, with two associated maps. The first,
+\[ e \rightarrow (\iota(e), \tau(e)), \]
+associates each edge with its initial and terminal vertices. The second,
+\[ e \rightarrow \bar{e}, \]
+is an involution on the edges, which must satisfy the conditions that $\bar{\bar{e}} = e$ and $\iota(\bar{e}) = \tau(e)$, $\forall e \in E$. We will write $e_{ij}$ to mean the edge with $\iota(e_{ij}) = i$ and $\tau(e_{ij})=j$. For any pair of edges $e$ and $\bar{e}$, one is `positive' and belonging to $E^+$, and one `negative' and belonging to $E^-$.
+\end{definition}
+
+\begin{definition}
+A {\it path} in a graph is a sequence of edges $(e_1, e_2, \dots, e_n)$ such that $\tau(e_i) = \iota(e_{i+1})$, $1 \leq i < n$. A path is {\it reduced} if it does not contain an edge followed by its inverse, that is, if $e_{i+1} \neq \bar{e_i}$, $1 \leq i < n$. 
+\end{definition}
+
+\begin{definition}
+A {\it circuit} is a path $(e_1, \dots, e_n)$ with $\iota(e_1) = \tau(e_n)$. 
+\end{definition}
+
+\begin{definition}
+A graph is {\it connected} if there exists a path between each pair of its vertices.
+\end{definition}
+
+\section{Computable Trees}
+
+\begin{definition}
+A tree is a connected, non-empty graph with no reduced circuits.
+
+A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a leftmost child, and so on. 
+\end{definition}
+
+\begin{definition}
+A {\it plane recursive tree} is a rooted, ordered tree obtained by a process which begins with the root node and recursively adds vertices below existing ones.
+\end{definition}
+
+We can assign a labelling to a plane recursive tree by giving vertices labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
+
+If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. For the purposes of the computation, negative edges will have the same label as their positive counterpart.
+
+\begin{definition}
+Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is \grz{n}-computable if there is an \grz{n}-decidable labelling 
+\[i: V \rightarrow \NN,\]
+(we can assume $i(v_0) = 0$) and an \grz{n}-computable `parent function'
+\[\phi_T:i(V) \rightarrow i(V),\]
+which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0)$.
+\end{definition}
+
+\begin{definition}
+A finite plane recursive tree can be entirely described in a canonical way by a {\it depth-first walk}. Note that every node has a single parent and a finite ordered set of children. The process on `visiting' a vertex $v_i$ goes as follows: for each child node $v_j$, travel along $e_{ij}$ and `visit' $v_j$, then travel backwards along $\overline{e_{ij}}$. The sequence of labelled edges travelled along by beginning this process at $v_0$ is the depth-first walk of the tree.
+\end{definition}
+
+Note that the root vertex's label will not appear in this sequence because it has no positive edge leading into it. 
+
+Because an edge and its inverse have the same label, the first occurrence of a label in the sequence represents the positive edge, and the second occurrence represents the trip back up the negative edge.
+
+The depth-first walk can be encoded as a G\"odel number by the method in Section \ref{lists}. We will define a function $\phi_{\tvec}(n)$ which takes an encoded depth-first walk $\tvec$ of a tree and gives the label of the parent of the 
+vertex with label $n$. 
+
+\subsection{Some functions to work with encoded trees}\label{encodetrees}
+
+Let $\tvec$ be an encoded depth-first walk of a tree.
+
+To find the first and second occurrences of the edge with label $n$ in the walk:
+\recur{
+\operatorname{fst}(\tvec,n) &:= \operatorname{find}(\tvec,n), \\
+\operatorname{snd}(\tvec,n) &:= \operatorname{find}\left( \tvec[\operatorname{fst}(\tvec,n)+1 \dots |\tvec|-1],n \right).
+}
+
+find is \grz{3}-computable, and snd is bounded by $|\tvec|$ so is also \grz{3}-computable.
+
+To get the label of the \nth child of the root:
+\recur{
+\operatorname{child}(\tvec,0) &:= (\tvec)_0, \\
+\operatorname{child}(\tvec,n+1) &:= (\tvec)_{\operatorname{snd}(\tvec,\operatorname{child}(\tvec,n))+1}.
+}
+
+child is constructed from \grz{3} functions and is bounded by the number of vertices in the tree. As the tree is finite, child is \grz{3}-computable.
+
+The depth-first walk of the subtree descended from a vertex $v_n$ is the subsequence found between the two occurrences of $n$ in $\tvec$. 
+
+To find the subtree descended from the \nth child node of the root:
+\begin{equation} \operatorname{subtree}(\tvec,n) := \tvec[\operatorname{fst}(\operatorname{child}(\tvec,n))+1 \dots \operatorname{snd}(\operatorname{child}(\tvec,n))-1]. \end{equation}
+
+subtree is constructed from \grz{3} operations so is \grz{3}-computable.
+
+The number of children of the root node:
+\begin{equation} \operatorname{kids}(\tvec) := \min_{i < \tvec} (\operatorname{child}(\tvec,i)=0). \end{equation}
+
+kids is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
+
+Whether the root has a child with label $n$:
+\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \least{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
+
+Finally, the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
+
+\recur{
+\phi_{\tvec}(0) &:= 0, \\
+\phi_{\tvec}(n) &:= \operatorname{p}'(x,n,0).
+}
+\recurN{
+\operatorname{p}'(x,n,p) &:= \begin{cases}
+						0 & n \not \in \tvec, \\
+						p & \operatorname{haschild}(\tvec,n), \\
+						\operatorname{p}'(\operatorname{subtree}(\tvec,z),n,\operatorname{child}(\tvec,z)) & \textrm{otherwise.}
+					\end{cases}
+}
+
+\begin{equation*} z := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
+
+We will also need to know if the tree contains an edge $e_{ij}$:
+\begin{equation} e_{ij} \in \tvec \Leftrightarrow \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \end{equation}
+
+
+\begin{lemma}
+A finite ordered tree is \grz{3} computable.
+\end{lemma}
+
+\begin{proof}
+As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\NN$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
+\end{proof}
+
+\section{Computability of Bass-Serre groups}
+
+Let $\Gamma = (V,E)$ be a connected graph. 
+
+\begin{definition}
+Associate with each vertex $v$ a vertex group $G_v = \present{X_v}{R_v}$, with the $X_v$ all pairwise disjoint. Call the set of all vertex groups $\mathbf{G}$. 
+
+For each edge $e \in E$ associate two isomorphic groups $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$.
+
+$(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
+\end{definition}
+
+\begin{definition}
+Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then $G = \fgoagog$ is called the {\it fundamental group} of $(\mathbf{G},\Gamma)$, defined by
+
+\begin{equation}
+G = \fgoagog = \left( \ast_{v \in V} G_v \right) \underset{\phi_e}{\ast} F(E)
+\end{equation}
+
+The generators of $G$ are
+\[ X = \left( \bigcup_{v \in V}X_v \right) \cup \left( \bigcup_{e \in E}\{e\} \right),\]
+and the relations are 
+\[ R = \left( \bigcup_{v \in V}R_v \right) \cup \{e^{-1}A_ee = B_e,  \forall e \in E\} \cup \{ e^{-1} = \bar{e}, \forall e \in E\} \cup \{ e = 1, \forall e \in T \}.\]
+(this looks horrible, please help!)
+\end{definition}
+
+\begin{definition}
+A word $w \in X^{\ast}$ is {\it admissible} if it is in the form
+\[ w = a_0 e_1 a_1 e_2 \dots a_{n-1} e_n a_n \]
+where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dots,v_n)$, such that $v_0 = v_n$, $v_i = \iota(e_{i+1})=\tau(e_i)$, $0 < i < n$, and $a_i \in G_{v_i}$, $i=0,\dots,n$.
+\end{definition}
+
+It will be more convenient from now on to refer to $G_{v_i}$ by $G_i$.
+
+\begin{lemma}
+\label{trivialnormalform}
+(Higgins?)
+Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
+\begin{itemize}
+	\item $n=0$ and $a_0=1$ in $G_{v_0}$, or
+	\item $n > 0$ and there exists $0<i<n$ such that $e_{i+1}=\bar{e_i}$ and $a_i \in B_{e_i}$.
+\end{itemize}
+\end{lemma}
+
+\begin{definition}
+Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v_j$ can be found by freely reducing the path $\psi(i,j)$, defined by:
+\begin{equation}\begin{split}
+\psi(0,0) &:= \epsilon, \\
+\psi(i,0) &:= (e_{i,p_T(i)}) \cdot \psi(p_T(i)), \\
+\psi(0,i) &:= \psi(i,0)^{-1}, \\
+\psi(i,j) &:= \psi(i,0) \psi(0,j).
+\end{split}\end{equation}
+
+The free reduction of $\psi(i,j)$ will be implicit from now on.
+
+What we really want is a function $\pi(g):G \rightarrow X^{\ast}$ that gives an admissible word beginning and ending at $v_0$ and containing a representation of $g$ as a contiguous subword. 
+
+If $g$ belongs to some $G_{v_i}$, then $\pi(g) = \psi(0,i) \cdot g \cdot \psi(i,0)$. Otherwise, if $g = e_{ij}$, some edge letter, then $\pi(e_{ij}) = \psi(0,i) \cdot e_{ij} \cdot \psi(j,0)$.
+\end{definition}
+
+\begin{lemma}
+Let $w$ be a word on $G$. Then by replacing each generator $g$ by $\pi(g)$ and freely reducing the resulting word, we obtain an admissible word starting at $v_0$ which is equivalent to $w$. Call this word $\pi(w)$, abusing notation a bit.
+\end{lemma}
+
+\begin{proof}
+The new word is equivalent to $w$ because the only letters we are adding are edge letters from the spanning tree, which are all trivial in the presentation of $G$.
+\end{proof}
+
+\begin{theorem} \label{fgoagogcomp}
+Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose all the $G_i$ are f.g. \grz{n}-computable groups for $n \geq 3$. Assume all the identified subgroups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
+\end{theorem}
+
+\begin{proof}
+We will show that the word problem of $G$ is \grz{n+1}-decidable. We can assume that the generating sets of all the $G_v$ are disjoint.
+
+Encode the depth-first walk of the spanning tree $T$ as a G\"odel number $\tvec$ per Section \ref{encodetrees}. Then the parent function $\phi_{\tvec}$ is \grz{3}-computable. 
+
+To define $i(G)$, we will begin by using the first $\nu^2$ numbers to represent potential edges. For any $i=a*\nu+b$ and $i \leq \nu^2$, $i \in i(G) \Leftrightarrow e_{ab} \in T$.
+
+We can assume the generators of the vertex groups have indices greater than $\nu^2$. The rest of $i(G)$ works the same way as the standard free group index in Cannonito-Gatterdam.	((Not explained well: C-G assign a number to each generator, and then words are encoded as sequences of those numbers paired with a power, and the index of an element is the least index of an equivalent word. I want the numbers assigned to the group generators to be greater than $\nu^2$.))
+
+Given a word $w$, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$. 
+
+We must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define a \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. For completeness, say that $g \not \approx n$ whenever $n \notin i(G)$.
+
+As there are finitely many equivalence classes of $\approx$, and they are all \grz{n}-decidable, $\approx$ is \grz{n}-decidable.
+
+The next task is to split $w'$ into `syllables', or contiguous subwords. A syllable is either a single edge letter or a word from one of the vertex groups.
+
+From now on, let $\wvec$ be an encoded admissible word.
+
+Define a function which gives the position of the start of the syllable to which $(\wvec)_i$ belongs:
+\recur{
+	\operatorname{backtrack}(\wvec,0) &:= 0, \\
+	\operatorname{backtrack}(\wvec,i+1) &:= \begin{cases}
+																					i+1	&	(\wvec)_{i+1} \leq \nu^2, \\
+																					i+1	&	(\wvec)_i \not \approx (\wvec)_{i+1}, \\
+																					\operatorname{backtrack}(\wvec,i)	&	(\wvec)_i \approx (\wvec)_{i+1}.
+																				\end{cases}
+}
+
+backtrack is constructed from \grz{n} operations and is bounded by $|\wvec|$, so is \grz{n}-computable.
+
+Now, the start of the \nth syllable is given by:
+\recur{
+\operatorname{start}(\wvec,0) &:= 0, \\
+\operatorname{start}(\wvec,n+1) &:= \min_{\operatorname{start}(\wvec,n)+1 \leq i < |\wvec|} (\operatorname{backtrack}(\wvec,i) \neq \operatorname{start}(\wvec,n)).
+}
+
+The number of syllables can be computed like so:
+\begin{equation} \operatorname{numsyllables}(\wvec) = \min_{i < |\wvec|} ( \operatorname{start}(\wvec,i) = |\wvec|. \end{equation}
+
+And now the \nth syllable itself can be found:
+\begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
+
+syllable is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
+
+We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
+
+If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable question.
+
+If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1}$. The first of these is given by
+\begin{equation}
+\begin{split}
+	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
+	& ( \operatorname{syllable}(\wvec',i+1) \in B_e ) \wedge \\ 
+	& ( \operatorname{syllable}(\wvec',i+2) = \operatorname{syllable}(\wvec',i)^{-1} ) )
+\end{split} 
+\end{equation}
+(and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse. We don't need to know how to compute the whole multiplication table to do this.
+
+If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion raises us up a level on the Grzegorczyk hierarchy.
+
+So the word problem of $G$ is \grz{n+1}(A) decidable, and hence $G$ is \grz{n+1}-computable.
+\end{proof}
+
+\begin{lemma}\label{primedist}
+The $n$th prime $p_n \approx n \log n$.
+\end{lemma}
+\begin{lemma}\label{expine3}
+$\exp(x,y) := x^y \in $ \grz{3}.
+\end{lemma}
+\begin{lemma}\label{godelbound}
+The G\"odel encoding of any word of length $n$ on a finite alphabet is bounded above by $p_n^{J(n,n)}$, an \grz{3} function.
+\end{lemma}
+
+\begin{corollary}
+
+Same assumptions as Theorem \ref{fgoagogcomp}, but also assume that the edge groups are finitely generated. So each edge homomorphism $\phi_{e_{ij}}$ sends a finitely generated subgroup $E_{ij} \leq G_i$ to another finitely generated subgroup $E_{ji} \leq G_j$.
+
+Then $G = \pi_1(\mathbf{G}, \Gamma, T, v_0)$ is \grz{n}-computable.
+
+\end{corollary}
+
+\begin{proof}
+
+In the algorithm from Theorem \ref{fgoagogcomp}, the potential for unbounded recursion comes from applying the edge homomorphisms repeatedly. We will show that in this case the result of applying the edge homomorphisms repeatedly is bounded by an \grz{3}-computable function.
+
+Let $w$ be a word on $G$ of length $n$. An upper bound on the number of syllables in $w$ is $n$, so let's say there are $n$ applications of edge homomorphisms.
+
+A homomorphism $\phi_{e_{ij}}$ rewrites generators $x \in X_i$ as words $\phi_{e_{ij}}(x) \in X_j^{\ast}$. As $G-i$ is finitely generated, there is a word $\phi_{e_{ij}}(x)$ of maximum, finite, length $k_{ij}$. So a word $w_i \in E_{ij}$ of length $m$ is rewritten to a word $w_j \in E_j$ of length at most $k_{ij}m$.
+
+Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$ has length at most $k^n n = L$.
+
+Hence the index of the resulting word is bounded by
+
+\[ p_{k^nn}^{J(k^nn,k^nn)},\]
+
+an \grz{3} function, by Lemma \ref{godelbound}. So recursion on the edge homomorphisms is bounded by an \grz{n} function, and so $G$ is \grz{n}-computable.
+
+\end{proof}
+
+\begin{corollary}
+There exists a graph of \grz{3}-computable groups whose fundamental group is \grz{4}-computable.
+\end{corollary}
+
+\begin{proof}
+Let $\mathbf{G} = \{G_0,G_1\}$ be two copies of the free group on two generators, so $G_0 = \langle x,y \rangle$ and $G_1 = \langle a,b \rangle$. The graph has a single edge $e$ from $v_0$ to $v_1$, so $\Gamma = T = (\{v_0,v_1\},\{e,\bar{e}\})$.
+
+Let $E_{01} = \left \langle \{x^{-n}yx^n, n \in \mathbb{N} \} \right \rangle$, $E_{10} = \left\langle \{ a^{-n}ba^n, n \in \mathbb{N} \} \right\rangle$ be the (infinitely generated) identified subgroups of $G_0$ and $G_1$, respectively..
+
+Define
+
+\begin{align*} 
+	\phi_{e}(x^{-2n}yx^{2n}) &:= a^{(-2n)!}ba^{(2n)!}, \\
+	\phi_{\bar{e}}(a^{-2n-1}ba^{2n+1}) &:= x^{-(2n)!-1}yx^{(2n)!+1}. 
+\end{align*} 
+
+First of all, the homomorphisms are \grz{3}-computable because words of the form $a^{-n}ba^n$ can be recognised by an \grz{3}-computable function. Hence all the ingredients of the graph of groups are \grz{3}-computable.
+
+A word of the form
+
+\[ ea^{-1}e^{-1} \dots x^{-1}ea^{-1}e^{-1}x^{-n}yx^neae^{-1}x \dots eae^{-1} \]
+
+will be reduced to a word on $G_0$ whose length is proportional to $\operatorname{factorial}^{(m)}(n)$, where $m$ is the number of syllables. As $m$ depends on the input, the length of the reduced word can only be computed by unbounded recursion on an \grz{3} function, so is only \grz{4}-computable.
+
+Therefore, $G$ is \grz{4}-computable. 
+\end{proof}
+
+\section{Pregroups}
+
+A pregroup $(P,D)$ is {\it \grz{n}-computable} if: 
+\begin{itemize}
+	\item there is an \grz{n}-computable indexing $i: P \rightarrow \NN$,
+	\item  $D$ is \grz{n}-decidable as a subset of $i(P) \times i(P)$ (from now on we will consider $D$ as consisting of pairs of indices instead of pairs of elements),
+	\item $m: D \rightarrow i(P)$ is \grz{n}-computable.
+\end{itemize}
+
+\begin{lemma} Let $(P,D)$ be a countable, \grz{n}-computable pregroup. The universal group $\ugroup$ is \grz{n+1}-computable.
+\end{lemma}
+
+\begin{proof}
+The index $(i',m')$ of of $\ugroup$ will be on reduced $P$-words, encoded as G\"odel numbers. So it is only necessary to define the multiplication function.
+
+Because of Theorem 4 in Rimlinger, any $P$-words $X$ and $Y$ represent the same element of $\ugroup$ if and only if $X \sim Y$, that is, they are the same length and there is an interleaving of $X$ equal to $Y$. The upshot is, when we have a reduced $P$-word $X$, we can find the $Y \sim X$ of minimal index by enumerating all the $P$-words of length $l_P(x)$. This step needs to be performed after any multiplication, so take that as read from here on.
+
+Say we have two reduced $P$-words, $x = x_1 \dots x_m$ and $y = y_1 \dots y_n$. If $(x_m,y_1) \notin D$, then the product $m'({\bf x},{\bf y})$ is the concatenation $\xvec \concat \yvec$. (There can't be any other $P$-word of the same length equivalent to $xy$ and with lower index, can there?)
+
+If $x_m = y_1^{-1}$, then $m'({\bf x},{\bf y}) = m'([x_1 \dots x_{m-1}],[y_2 \dots y_n])$.
+
+If $xy = z \in P$, then $m'({\bf x},{\bf y}) = m'( m'([x_1 \dots x_{n-1}], [z]), [y_2 \dots y_n])$. As $z$ may have an index as big as any \grz{n} function, the recursion becomes unbounded at this point, so $m'$ is \grz{n+1} computable.
+\end{proof}
+
+\end{document}

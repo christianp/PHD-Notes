@@ -1,0 +1,96 @@
+\documentclass[a4paper]{article}
+
+%\usepackage[charter]{mathdesign}
+%\renewcommand*\familydefault{\sfdefault}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+
+\usepackage{listings}
+
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+%\setstretch{1.1}
+
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}
+\newcommand{\nth}{$n^{\textrm{th}}$~}
+\newcommand{\shortlex}{{\sf ShortLex}\;}
+\newcommand{\psub}{\dot -}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{ajd}{\noindent\color{blue} AJD }{}
+\newcommand{\ad}[1]{ \begin{ajd} #1 \end{ajd}}
+
+\newenvironment{cpe}{\noindent\color{red} CP }{}
+\newcommand{\cp}[1]{ \begin{cpe} #1 \end{cpe}}
+
+
+\begin{document}
+\title{Computable Categories}
+\author{Christian Perfect}
+\maketitle
+
+\section{Categories}
+
+A category $C$ is a collection of objects $obj(C)$ (or just Obj), a collection of arrows (or morphisms) $hom(C)$ (or just Hom), and an arrow composition operation $\circ$ such that there is an identity arrow for each object.
+
+An arrow has a single source object and a single target object, and is written $A \overset{f}{\rightarrow} B$.
+
+The composition operation joins up pairs of arrows when possible and a category is closed under arrow composition, so if $A \overset{f}{\rightarrow} B$, $B \overset{g}{\rightarrow} C$, then there is an arrow $A \overset{g \circ f}{\rightarrow} C$.
+
+Arrow composition is associative, so $(f \circ g) \circ h = f \circ (g \circ h)$.
+
+A functor $F$ is a structure-preserving map between categories. So $F: C \rightarrow D$ maps $X \in obj(C)$ to $F(X) \in obj(Y)$, and $f \in hom(X)$ to $F(f) \in hom(Y)$. Structure-preserving means we require that $F(f \circ g) = F(f) \circ F(g)$.
+
+\section{Groups and categories}
+
+Any group can be thought of as a category - there is one object, and the arrows are the group elements. You could associate to each element $g$ an automorphism of the group $\phi_g : G \rightarrow G$, $\phi_g(x) = gx$. There is an identity arrow (the identity element), and the composition operation is the group multiplication, which is associative.
+
+Suppose you have two groups. You can make a category with them both in, just by taking the disjoint union of the respective individual categories. If you have a homorphism between the two groups, you can add that in as an arrow and everything still works - if you have $g \in G, h \in H, \phi: G \rightarrow H$ then $h \circ \phi \circ g$ is equal to the arrow associated with the element $h\phi(g)$.
+
+If you have another arrow going the other way from $H$ to $G$, that looks just like a free product with amalgamation, right? And why not have loads of groups with all sorts of homomorphisms going between them? Fgoagog!
+
+One of the things I was going to look at next was other kinds of group extensions apart from Bass-Serre graphs of groups. If I phrase the computability stuff in terms of categories, then all you have to do is say what the homomorphisms are and I can construct a computable function representing the group.
+
+\section{Computable categories}
+
+So I need to define a computable category.
+
+A category $C = (Obj, Hom, \circ)$ is $E_n$-computable if:
+\begin{itemize}
+	\item There is an $E_n$-decidable indexing $o: Obj \rightarrow \mathbb{N}$ of the objects.
+	\item There is an $E_n$-decidable indexing $i: Hom \rightarrow \mathbb{N}$ of the arrows.
+	\item There are $E_n$-computable functions $\iota : i(Hom) \rightarrow o(Obj)$ and $\tau : i(Hom) \rightarrow o(Obj)$ associating with each arrow its source and terminal objects.
+	\item There is an $E_n$-computable composition function $c: i(Hom) \times i(Hom) \rightarrow i(Hom)$ satisfying $c( i(f), i(g) ) = i(f \circ g)$.
+\end{itemize}
+
+All of $o, i, \iota, \tau$ and $c$ together is called an $E_n$-computable index of $C$.
+
+Given two $E_n$ computable categories $C$ and $D$, a functor $F: C \rightarrow D$ is $E_m$-computable if there exist $E_m$-computable functions $o_F : o_C(obj(C)) \rightarrow o_D(obj(D))$ and $i_F : i_C(hom(C)) \rightarrow i_D(hom(D))$.
+
+So, my first task will be to rewrite the index for the free group in this category language, which should carry across directly. Then, for any finitely-presented group $G$, I can write down the functor mapping the appropriate free group to $G$. To get the fundamental group of a graph of groups, I just need to extend the index a bit and define how the composition function acts on the edge homomorphisms. After that, we'll see about pregroups!
+
+\end{document}

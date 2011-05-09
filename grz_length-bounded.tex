@@ -1,0 +1,155 @@
+\documentclass[a4paper]{article}
+
+%\usepackage[charter]{mathdesign}
+%\renewcommand*\familydefault{\sfdefault}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+
+\usepackage{listings}
+
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+%\setstretch{1.1}
+
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}
+\newcommand{\nth}{$n^{\textrm{th}}$~}
+\newcommand{\shortlex}{{\sf ShortLex}\;}
+\newcommand{\psub}{\dot -}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{ajd}{\noindent\color{blue} AJD }{}
+\newcommand{\ad}[1]{ \begin{ajd} #1 \end{ajd}}
+
+\newenvironment{cpe}{\noindent\color{red} CP }{}
+\newcommand{\cp}[1]{ \begin{cpe} #1 \end{cpe}}
+
+
+\begin{document}
+\title{Length-Bounded Indices of Computable Groups}
+\author{Christian Perfect}
+\maketitle
+
+\section{Preliminaries}
+We will need a set of pairing functions to combine two numbers into one. Here's one:
+\begin{eqnarray*}
+	J(x,y) &=& \frac{1}{2}\left( (x^2+y^2)+y \right)+x \\
+	K(z) &=& z \psub \lfloor z^{\frac{1}{2}} \rfloor \\
+	L(z) &=& \lfloor z^{\frac{1}{2}} \rfloor \psub \left \lfloor \lfloor z^{\frac{1}{2}} \rfloor^{\frac{1}{2}} \right \rfloor
+\end{eqnarray*}
+
+$J(x,y) = z$ produces a number $z$ representing the pair $(x,y)$. $K(J(x,y)) = x$, and $L(J(x,y))=y$.
+
+I will also use all the list-manipulation stuff I defined in the Bass-Serre thing.
+
+We will denote the \nth prime by $p_n$.
+
+\section{Length-bounded indices of groups}
+
+Often, indices of group extensions will be defined by way of an algorithm which recognises the word problem of the extended group by splitting the input word into syllables each coming from alphabets whose word problem we can already recognise. If the indices of the syllables are less than the index of the whole word, then the operation stays at the same level of the Grzegorczyk hierarchy.
+
+\begin{definition}
+	Let $G$ be a group with countable generating set $S$ and an injection $\pi: S \rightarrow G$. An index $i$ of $G$ is {\em length-bounded} with respect to $S$ if, for any fully reduced word $w \in G$, all subwords of $w$ have index strictly less than $i(w)$. A word is {\it fully reduced} if it is the \shortlex-least word among all words in the preimage of $\bar\pi(w)$, the natural extension of $\pi$ to $(S\cup S^{-1})^*$. That is, a fully reduced word is a geodesic in the Cayley graph of $G$. 
+\end{definition}
+
+	The property is only concerned with fully reduced words and not all freely reduced words because, for example, in $\ZZ/\langle z^6 \rangle$, the word $z^6$, being equal to the identity, will most likely have a smaller index than $z^5$ and it would be quite awkward to define the index otherwise. In addition, if a countably-generated group is \grz{n}-computable then you can always find the fully-reduced equivalent of any word $w$ in an \grz{n} process.
+
+\begin{lemma}\label{e3free}
+	Let $F$ be the free group on countably many generators $S$. There is an \grz{3}-computable length-bounded index of $F$.
+\end{lemma}
+\begin{proof}
+	Let $\{g_1,g_2,\dots\}$ be an enumeration of $S \cup S^{-1}$. Define the index of the word $w = g_{\alpha_1}^{\beta_1} g_{\alpha_2}^{\beta_2} \dots g_{\alpha_n}^{\beta_n}$ to be
+	\[ f(w) = \prod_{i=1}^n p_i^{J(\alpha_i,\beta_i)} \]
+
+	Multiplication can be defined a single generator at a time:
+	\begin{doublespace}
+	\[ m \left ( f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_n}^{\beta_n}), f(g_{\alpha_{n+1}}^{\beta_{n+1}}) \right ) = \left \{
+	\begin{array}{lr}
+		f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_n}^{\beta_n} g_{\alpha_{n+1}}^{\beta_{n+1}}),& \alpha_n \neq \alpha_{n+1}, \\
+		f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_n}^{\beta_n + \beta_{n+1}}),									& \alpha_n = \alpha_{n+1}, \\
+		f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_n}^{\beta_n \psub \beta_{n+1}}),									& g_{\alpha_n} = g_{\alpha_{n+1}}^{-1} \wedge \beta_n > \beta_{n+1}, \\
+		f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_{n+1}}^{\beta_{n+1} \psub \beta_{n}}),						& g_{\alpha_n} = g_{\alpha_{n+1}}^{-1} \wedge \beta_n < \beta_{n+1}, \\
+		f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_{n-1}}^{\beta_{n-1}}),												& g_{\alpha_n} = g_{\alpha_{n+1}}^{-1} \wedge \beta_n = \beta_{n+1}.
+	\end{array} \right . \]
+	\end{doublespace}
+
+	And it's the same idea for multiplication on the left.
+
+	The inverse is easy (when you can match up generators with their inverses):
+	\[ j(f(g_{\alpha_1}^{\beta_1} \dots g_{\alpha_n}^{\beta_n})) = f((g_{\alpha_n}^{-1})^{\beta_n} \dots (g_{\alpha_1}^{-1})^{\beta_1}) \]
+
+	This index is clearly length-bounded.
+\end{proof}
+
+\begin{lemma}
+	The \shortlex ordering $<_{SL}$ on words encoded this way can be decided by an \grz{3} process.
+\end{lemma}
+
+\begin{proof}
+Let $w_1 = g_{a_1}^{b_1} \dots g_{a_n}^{b_n}$, and $w_2 = g_{\alpha_1}^{\beta_1} \dots g_{\alpha_m}^{\beta_m}$.
+
+\[w_1<_{SL}w_2 \Leftrightarrow n<m \vee \left ( n=m \wedge sl(w_1,w_2,n) \right ) ,\]
+where
+\begin{eqnarray*}
+	sl(w_1,w_2,0) &=& a_0<\alpha_0 \vee (a_0 = \alpha_0 \wedge b_0 < \beta_0) \\
+	sl(w_1,w_2,{j+1}) &=& a_{j+1}<\alpha_{j+1} \vee \left ( a_{j+1} = \alpha_{j+1} \wedge (b_{j+1} < \beta_{j+1} \vee (b_{j+1}=\beta_{j+1} \wedge sl(w_1,w_2,j))) \right )
+\end{eqnarray*}
+\end{proof}
+
+\begin{corollary}
+	All the \shortlex-lesser words than a given word can be enumerated by an \grz{3} process on the above index.
+\end{corollary}
+
+
+\begin{theorem}
+	Let $G$ be a countably-generated \grz{n}-computable group. Then there exists an \grz{n+1}-computable length-bounded index of $G$.
+\end{theorem}
+
+\begin{proof}
+	Let $G$ be an \grz{n}-computable group with generating set $S$ and an injective map $\pi: S \rightarrow G$.
+	
+	Words will be encoded using the free group index $f$ of Lemma \ref{e3free}.
+
+	Let $(i,m,j)$ be the given \grz{n} index of $G$. 
+
+	The predicate $E(x,y)$ is true iff $x$ and $y$ are $f$-indices of words which are equivalent in $G$.
+	\[ E(x,y) \Leftrightarrow x \in i(G) \wedge y \in i(G) \wedge m(j(x),y) = i(1). \]
+
+	The index of a reduced word $w_1 \dots w_n$ is the $f$ index of the \shortlex-least word $w'$ such that $E(w,w')$. Note that $i(w')$ may be bigger than $i(w)$, so the operation becomes unbounded at this point, adn the resulting index is an \grz{n+1} function.
+
+	This index is length-bounded because the index of any word is the same as the index of its fully-reduced equivalent, and every subword has smaller index.
+\end{proof}
+
+\begin{lemma}
+	If $G$ is finitely generated and has a \grz{n} index which is length-bounded with respect to some generating set $S$, then $i$ is also length-bounded with respect to any other finite generating set of $G$.
+\end{lemma}
+\begin{proof}
+	Let $X \subseteq i(G)$ be the set of indices of a generating set of $G$. We need to show that for any word $w \in X^{\ast}$, all subwords have smaller index than $i(w)$. 
+	
+	For each $g \in X$, $g$ is the index of a freely-reduced word on $S^{\ast}$.
+\end{proof}
+
+\end{document}

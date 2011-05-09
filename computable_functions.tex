@@ -1,0 +1,408 @@
+\documentclass[a4paper]{article}
+
+%\usepackage[charter]{mathdesign}
+%\renewcommand*\familydefault{\sfdefault}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+
+\usepackage{listings}
+
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+%\setstretch{1.1}
+
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle} % group presentation
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}	%grzegorczyk level
+
+\newcommand{\NN}{\mathbb{N}}	%blackboard bold
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}	% least #1 such that #2 holds
+
+\newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
+\newcommand{\ith}{$i^{\textrm{th}}$~}
+
+\newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
+
+\newcommand{\xvec}{\mathbf{x}}	% vector x
+\newcommand{\psub}{\dot -}	% proper subtraction
+\newcommand{\rsg}{\overline{sg}} % reverse signature
+\newcommand{\recur}[1]{\begin{equation} \begin{split} #1 \end{split} \end{equation}}	%definition of recursive function
+\newcommand{\recurN}[1]{\begin{equation*} \begin{split} #1 \end{split} \end{equation*}}	%ditto, no equation number
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{ajd}{\noindent\color{blue} AJD }{}
+\newcommand{\ad}[1]{ \begin{ajd} #1 \end{ajd}}
+
+\newenvironment{cpe}{\noindent\color{red} CP }{}
+\newcommand{\cp}[1]{ \begin{cpe} #1 \end{cpe}}
+
+
+\begin{document}
+\title{A stockpile of \grz{3}-computable functions}
+\author{Christian Perfect}
+\maketitle
+
+\begin{abstract}
+	We define the Grzegorczyk hierarchy and give explicit definitions of lots of useful functions and operations, all contained in the third level of the hierarchy.
+\end{abstract}
+
+\section{Building blocks}
+
+\subsection{Constructing functions}
+Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f(x_1, \dots, x_n)$ is a map,
+\[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0},\]
+taking $n$ parameters and resulting in a single value.
+
+We will begin by defining the {\it primitive functions}:
+
+\begin{itemize}
+	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write $0$ to mean the zero function.
+	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
+	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith parameter.
+\end{itemize}
+
+There are two operations we shall use to create new functions from these primitives.
+
+\begin{itemize}
+	\item {\em Composition}: $h := C(f,g_1,\dots,g_m)$ means that $h(\xvec) := f(g_1(\xvec),\dots,g_m(\xvec))$
+	\item {\em Recursion}: $h := R(f,g)$ means that $h(\xvec,0) := f(\xvec)$, and $h(\xvec,n+1) := g(n,h(\xvec,n),\xvec)$
+\end{itemize}
+
+A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in $P_n^i$, $n$ and $i$ are bound variables.
+
+Mixing functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$ such that:
+\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n) = f(x_1, \dots, x_n).\]
+
+Variable substitution can also be dealt with systematically:
+\[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
+
+\subsection{Notation}
+Now I will describe the notation and constructions I will use to define functions. $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
+
+\subsubsection*{Arity}
+Functions in general can take any number of parameters, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of parameters $y_1, \dots, y_n$, and potentially more, I will write $f(\xvec, y_1, \dots, y_n)$
+
+\subsubsection*{Composition} 
+\[f \circ g(x) \equiv f(g(\xvec)) := C(f,g)(\xvec)\] 
+or just 
+\[f \circ g := C(f,g).\]
+
+\subsubsection*{Recursion}
+Definitions of recursive functions $R(f,g,h)$ will follow this format:
+\begin{eqnarray*}
+	f(\xvec,0) & := & g(\xvec), \\
+	f(\xvec,n+1) & := & h(n,f(\xvec,n),\xvec).
+\end{eqnarray*} 
+
+Note that the parameter of recursion $n$ can be made to be in any position by composition with the projection functions:
+\begin{eqnarray*}
+ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) &:=& f(x_1, \dots, x_m, n) \\
+ &=& C(f, P_{m+1}^1, \dots, P_{m+1}^k, P_{m+1}^{m+1}, P_{m+1}^{k+1},\dots, P_{m+1}^m).
+ \end{eqnarray*}
+
+\subsubsection*{Iteration}
+\[f^{(n)}(x) := \underbrace{C(f,C(f,C(f, \dots C(f,f}_{n-1 \textrm{ compositions}}) )(x).\]
+
+\subsubsection*{Infix operators}
+An infix operator is simply a function of two variables, so for any operator $\ast$ some suitable function $f_{\ast}$ could be defined:
+\[x \ast y := f_{\ast}(x,y.) \]
+
+\subsubsection*{Sets}
+A set $S$ is defined by its characteristic function $\chi_S$.
+\[\chi_S := \begin{cases}
+ 1 & x \in S, \\
+ 0 & x \notin S.
+ \end{cases}
+\]
+
+\subsubsection*{Relations}
+A relation is defined by the set of things which satisfy it. In addition, for binary relations I will write
+\[ x R y := \chi_R(x,y). \]
+
+\subsubsection*{Logic}
+The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
+
+\section{The Grzegorczyk hierarchy}
+The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{n} of functions which are closed under {\it finite composition} and {\it bounded recursion}. 
+
+{\it Closed under finite composition}: If $f, g_1, \dots, g_m$ all belong to \grz{n}, then $C(f,g_1, \dots, g_m)$ belongs to \grz{n}. A function defined by finitely many compositions of \grz{n} functions is also an \grz{n} function.
+
+{\it Closed under bounded recursion}: If $f,g,h$ belong to \grz{n} and $\forall \xvec$, $R(f,g)(\xvec) \leq h(\xvec)$, then $R(f,g)$ belongs to \grz{n}. In other words, if a recursion on two \grz{n} functions is bounded everywhere by another \grz{n} function, then that recursion is also in \grz{n}.
+
+\grz{0} consists of just the primitive functions, and whatever else we can get by finitely many applications of the composition operator and bounded recursion.
+
+\grz{n+1}, for $n \geq 0$, contains all of \grz{n} and anything obtained by a single unbounded recursion on \grz{n} functions, again closed under finite composition and bounded recursion.
+
+The levels of the Grzegorczyk hierarchy can also be defined in terms of a stem of functions, one for each level, but we won't be going high enough for that to be useful.
+
+\section{The stockpile of functions}
+Below I will give explicit definitions for the operations of elementary arithmetic, plus some more useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
+
+\section{\grz{0} functions}
+Add a constant $n$ to $x$ by composing the successor function $n$ times on $x$:
+\begin{equation} +_n(x) \equiv x + n := s^{(n)}(x). \end{equation}
+
+Note that $n$ is a bound variable, that is, there is a different function $+_n$ for each $n$.
+
+Get any constant by composing $+_n$ with $z$
+\begin{equation} c_n := +_n(0). \end{equation}
+
+From now on I will just write the number $n$ to mean the function $c_n$, when appropriate.
+
+Decrement by 1:
+\recur{
+	dec(0) &:= 0, \\
+	dec(n+1) &:= 1.
+}
+
+Proper subtraction:
+\recur{
+	x \psub 0 &:= x, \\
+	x \psub (y+1) &:= dec(x \psub y).
+}
+
+$x \psub y$ is bounded by $P_2^1 \equiv x$, so belongs to \grz{0}.
+
+Signature:
+\recur{
+	sg(0) &:= 0, 	\\
+	sg(x+1) &:= 1.
+}
+
+And reverse signature:
+\recur{
+	\rsg(0) &:= 1, \\
+	\rsg(x) &:= 0.
+}
+
+Equality:
+\begin{equation}	x = y := eq'(x,y,sg(x \psub y)). \end{equation}
+\recurN{
+	eq'(x,y,0) &:= \bar{sg}(x,y), \\
+	eq'(x,y,1) &:= 1.
+}
+
+$eq'$ is bounded by $c_1$, so belongs to \grz{0}.
+
+Logical AND:
+\recur{
+	x \wedge 0 &:= 0,	 \\
+	x \wedge (n+1) &:= x.
+}
+
+$\wedge$ is bounded by $P_2^1 \equiv x$, so is in \grz{0}.
+
+Logical OR:
+\recur{
+	x \vee 0 &:= x, 		\\
+	x \vee (n+1) &:= 1.
+}
+
+$\vee$ is bounded by $s \circ P_2^1 \equiv x+1$, so is in \grz{0}.
+
+Logical NOT:
+\begin{equation} \neg x := \rsg(x). \end{equation}
+
+Ordering:
+\begin{equation} \begin{split} 
+	x>y &:= sg(x \psub y), 	\\
+	x \geq y &:= (x > y) \vee (x=y),	\\
+	x \leq y &:= \neg (x>y),	\\
+	x < y &:= (x \leq y) \wedge \neg (x=y).
+\end{split}\end{equation} 
+
+
+The smallest of two numbers:
+\begin{equation} \min(x,y) := x \psub ( x \psub y). \end{equation}
+
+Remainder when dividing $x$ by $y$:
+\recur{
+	0 \bmod{y} &:= 0,	\\
+	(x+1) \bmod{y} &:= rm' \left( y \psub \left( (x \bmod{y}) + 1 \right), x \bmod{y} \right).
+	}
+\recurN{
+	rm'(0,y) &:= 0, 	\\
+	rm'(x+1,y) &:= y+1.
+}
+$rm'$ is bounded by $y+1$ so belongs to \grz{0}. $x \bmod{y}$ is defined by recursion on \grz{0} functions and is bounded by $y-1$, so belongs to \grz{0}.
+
+\section{\grz{1} functions}
+Adding two numbers together is achieved by an unbounded recursion on the successor function.
+\recur{
+	x + 0 &:= x,			\\
+	x + (y+1) &:= (x+y) + 1.
+}
+Hence addition must belong to \grz{1} and not \grz{1}.
+
+We can define another version of $+_x$ where $x$ is unbound:
+\begin{equation} +_x(y) := x + y. \end{equation}.
+This version is in \grz{1}. This is really an abuse of notation, but it will be useful in a little while.
+
+The biggest of two numbers:
+\begin{equation} \max(x,y) := x + (y \psub x). \end{equation}
+
+Note that $max(x,y)$ is bounded by one of $P_2^1$ or $P_2^2$, but I don't think there's a way of defining it without using addition, so it has to be in \grz{1}.
+
+Absolute difference:
+\begin{equation} |x - y| := (x \psub y) + (y \psub x). \end{equation}
+
+Any constant multiple $n \cdot x$ is produced by $n$ compositions of addition:
+\begin{equation} n \cdot x := +_x^{(n)}(0). \end{equation}
+
+So we can also get any positive- and constant-coefficient linear polynomial $a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. For polynomials with negative coefficients, computing all the positive terms then subtracting the negative terms will give the closest match, because we can't use negative numbers.
+
+Quotient:
+\recur{
+	\left \lfloor \frac{0}{y} \right \rfloor &:= 0, \\
+	\left \lfloor \frac{x+1}{y} \right \rfloor &:= \left \lfloor \frac{x}{y} \right \rfloor + \rsg\left( (x+1) \bmod{y} \right).
+}
+
+Does $x$ divide $y$:
+\begin{equation} x \mid y := \rsg( x \bmod{y} ). \end{equation}
+
+Bounded minimisation:
+\recur{
+	\min_{i < 0} P(\xvec,i) &:= 0,	\\
+	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left(\min_{i < y} P(\xvec,i) = y\right).
+}
+
+Because we always have to return a value, if there is no value under the bound such that the predicate holds, then we return the bound.
+
+Bounded maximisation:
+\begin{equation} \max_{i < y} P(\xvec,i) := y \psub \min_{i < y} P(\xvec, y \psub i). \end{equation}
+
+If $P$ is a \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
+
+\section{\grz{2} functions}
+Multiplication is an unbounded recursion on the addition operation:
+\recur{
+	x \cdot 0 &:= 0,				\\
+	x \cdot (y+1) &:= (x \cdot y) + x.
+}
+
+We can get $x^n$, when $n$ is constant, by $n$ compositions of multiplication by $x$, and hence any (positive-coefficient) polynomial by finite compositions of addition and multiplication. So polynomials belong to \grz{2}.
+
+Series sum:
+\recur{
+	\sum_{i < 0} f(\xvec, i) &:= 0,		\\
+	\sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) + \sum_{i < y} f(\xvec,i).
+}
+
+Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $\sum_{i < y} f(\xvec,i)$ is also in \grz{2} because it entails $y$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by defining the sum as $y$ compositions of addition.
+
+Existential quantifier:
+\begin{equation} \exists_{i < y} P(\xvec,i) := \sum_{i < y} P(\xvec,i). \end{equation}
+
+
+Definition by cases: if  $P_i(\xvec)$, $1 \leq i \leq k$ is a finite collection of mutually exclusive, exhaustive predicates, then we can define
+\[ f(x) := \begin{cases}
+	g_1(\xvec) & \textrm{if }P_1(\xvec),	\\
+	\vdots & \vdots	\\
+	g_k(\xvec) & \textrm{if } P_k(\xvec).
+\end{cases} \]
+
+In our language, this is:
+\begin{equation} f(x) := \sum_{i < k+1} g_i(x) \cdot sg(P_i(x)), \end{equation}
+where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k$ multiplications and additions.
+
+\section{\grz{3} functions}
+\grz{3} is where just about all the really useful operations are.
+
+First of all, we can get exponentiation by unbounded recursion on the multiplication operation:
+\recur{
+	x^0 &:= 1,				\\
+	x^{y+1} &:= x \cdot x^y.
+}
+
+Factorial:
+\recur{
+	0! &:= 1,	\\
+	(x+1)! &:= (x+1) \cdot x!.
+}
+
+Series product:
+\recur{
+	\prod_{i < 0} f(\xvec,i) &:= 1,	\\
+	\prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) \cdot \prod_{i < y} f(\xvec, i).
+}
+If $f$ is in \grz{3} then so is the product $\prod_{i < y} f(\xvec,i)$, as it consists of $y$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
+
+Universal quantifier:
+\begin{equation} \forall_{i < y} P(\xvec,i) := \prod_{i < y} P(\xvec,i). \end{equation}
+
+Primality:
+\begin{equation} x \textrm{ prime} :=  (x > 1) \wedge \forall_{z < x} \left( (z < 2) \vee \neg (z \mid x) \right). \end{equation}
+
+The first prime after $x$:
+\begin{equation} \operatorname{nextprime}(x) := \min_{i \leq x!+1} (i \textrm{ prime}) \wedge (i > x). \end{equation}
+The bound on this function comes from Euclid or some such bearded Greek. Note that this is an exceptionally inefficient way of finding primes.
+
+The \nth prime:
+\recur{
+	p_0 \equiv p(0) &:= 2,		\\
+	p_{n+1} \equiv p(n+1) &:= \operatorname{nextprime} (p_n).
+}
+
+Exponent of $x$ in the decomposition of $y$:
+\begin{equation} [y]_x := \max_{i < y} \left( x^i \mid y \right). \end{equation}
+
+\subsection{Lists}
+
+G\"odel encoding of an $n$-tuple:
+\begin{equation} \xvec \equiv [x_1, \dots, x_n] := \prod_{1 \leq i \leq n} p_i^{x_i+1}. \end{equation}
+The $+1$ in the exponent is so we can reliably determine the length of a list. The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters. An encoded list $\xvec$ is just a single number.
+
+Value of \nth position in an encoded list:
+\begin{equation} (\xvec)_i := [\xvec]_{p_i} - 1. \end{equation}
+
+Length of an encoded list:
+\begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
+
+The index of the first occurrence of a given value in an encoded list:
+\begin{equation} \operatorname{find}(\xvec,n) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
+
+Whether an encoded list contains a given value:
+\begin{equation} y \in \xvec := \operatorname{find}(\xvec,y) < |\xvec|. \end{equation}
+
+The largest element of an encoded list:
+\begin{equation} \operatorname{biggest}(\xvec) := \operatorname{biggest}'(\xvec,|\xvec|) \end{equation}
+\recurN{
+	\operatorname{biggest}'(\xvec,0) &:= (\xvec)_0 \\ 
+	\operatorname{biggest}'(\xvec,n+1) &:= \max \left ( (\xvec)_{n+1},\operatorname{biggest}'(\xvec,n) \right )
+}
+
+To obtain the sub-list of $\xvec$ starting at position $s$ and ending at position $e$.:
+\begin{equation} \xvec[s \dots e] \equiv \operatorname{slice}(\xvec,s,e) := \prod_{i=s'}^{e'}(p_{i+1-s'})^{(\xvec)_i+1} \end{equation}
+\begin{equation*} 
+\begin{split}
+	e' &:= \max(1,\min(e,|\xvec|)) \\ 
+	s' &:= \max(1,\min(s,e')) 
+\end{split}
+\end{equation*}
+
+To append a single value to the end of an encoded list:
+\begin{equation} \operatorname{splice}(\xvec,n) := \xvec \cdot p_{|\xvec|}^{n+1}. \end{equation}
+
+\end{document}

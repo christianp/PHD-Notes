@@ -1,0 +1,308 @@
+\documentclass[12pt,a4paper,draft]{article}
+\usepackage{times,amsmath,amsthm,amssymb,tabularx,hhline,rotating,enumerate,comment}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[usenames]{color}
+\pagestyle{myheadings} \markright{{\sl  Pregroups on the Grzegorczyk hierarchy}}
+
+
+\newcommand{\SIG}{\Sigma}
+\newcommand{\GG}{\Gamma}
+\newcommand{\gp}{geodesically perfect}
+
+\newcommand{\IFF}{if and only if } % \iff is already defined
+\newcommand{\set}[2]{\left\{\, \mathinner{#1}\vphantom{#2}\; \left|\; \vphantom{#1}\mathinner{#2} \right.\,\right\}}
+\newcommand{\oneset}[1]{\left\{\, \mathinner{#1} \,\right\}}
+\newcommand{\smallset}[1]{\left\{\mathinner{#1}\right\}}
+\newcommand{\abs}[1]{\left|\mathinner{#1}\right|}
+\newcommand{\floor}[1]{\left\lfloor\mathinner{#1} \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil\mathinner{#1} \right\rceil}
+\newcommand{\bracket}[1]{\left[\mathinner{#1} \right]}
+\newcommand{\parenth}[1]{\left(\mathinner{#1} \right)}
+\newcommand{\gen}[1]{\left< \mathinner{#1} \right>}
+
+\newcommand{\rdeg}[1]{\mbox{red-deg}\left(\mathinner{#1}\right)}
+\newcommand\IRR{\mathop\mathrm{IRR}}
+\newcommand\eps{\varepsilon}
+
+\newcommand\ov[1]{\overline{#1}}
+\newcommand\ovv[2]{\overline{#1}\,\overline{#2}}
+
+\newcommand{\links}{[\![}
+\newcommand{\rechts}{]\!]}
+
+\newcommand\cE{\mathcal{E}}
+\newcommand\cG{\mathcal{G}}
+\newcommand\cB{\mathcal{B}}
+\newcommand\cH{\mathcal{H}}
+\newcommand\cM{\mathcal{M}}
+\newcommand\cU{\mathcal{U}}
+\newcommand{\D}{\Delta}
+\newcommand{\e}{\epsilon}
+\renewcommand{\l}{\lambda}
+\newcommand{\Oh}{\mathcal{O}}
+\newcommand{\oh}{o} % {\mathcal{o}}
+\newcommand\ZZ{\mathbb{Z}}
+\newcommand\NN{\mathbb{N}}
+\newcommand\RR{\mathbb{R}}
+
+\newcommand{\aside}[1]{\marginpar{\footnotesize #1}}
+
+\newcommand\HNN{\mathrm{HNN}}
+
+\newcommand{\maps}{\longrightarrow}
+\newcommand\RAS[2]{\overset{#1}{\underset{#2}{\Longrightarrow}}}
+\newcommand\ras[2]{\overset{#1}{\underset{#2}{\longrightarrow}}}
+\newcommand\LAS[2]{\overset{#1}{\underset{#2}{\Longleftarrow}}}
+\newcommand\las[2]{\overset{#1}{\underset{#2}{\longleftarrow}}}
+\newcommand\DAS[2]{\overset{#1}{\underset{#2}{\Longleftrightarrow}}}
+\newcommand\das[2]{\overset{#1}{\underset{#2}{\longleftrightarrow}}}
+\newcommand\OUTS[5]{#1
+\overset{#2}{\underset{#3}{\Longleftarrow}} #4
+\overset{#2}{\underset{#3}{\Longrightarrow}} #5}
+\newcommand\INS[5]{#1
+\overset{#2}{\underset{#3}{\Longrightarrow}} #4
+\overset{#2}{\underset{#3}{\Longleftarrow}} #5}
+\newcommand\RA[1]{{\underset{#1}{\Longrightarrow}}}
+\newcommand\LA[1]{{\underset{#1}{\Longleftarrow}}}
+\newcommand\DA[1]{{\underset{#1}{\Longleftrightarrow}}}
+\newcommand\OUT[4]{#1
+{\underset{#2}{\Longleftarrow}} #3
+{\underset{#2}{\Longrightarrow}} #4}
+\newcommand\IN[4]{#1
+{\underset{#2}{\Longrightarrow}} #3
+{\underset{#2}{\Longleftarrow}} #4}
+
+
+\newtheorem{theorem}{{\bf Theorem}}[section]
+\newtheorem{corollary}[theorem]{{\bf Corollary}}
+\newtheorem{definition}[theorem]{{\bf Definition}}
+\newtheorem{example}[theorem]{{\bf Example}}
+\newtheorem{lemma}[theorem]{{\bf Lemma}}
+\newtheorem{proposition}[theorem]{{\bf Proposition}}
+\newtheorem{remark}[theorem]{{\bf Remark}}
+\newtheorem{problem}[theorem]{{\bf Problem}}
+\newtheorem{conjecture}[theorem]{{\bf Conjecture}}
+
+
+\newenvironment{am}{\noindent\color{blue} AM: }{}
+\newenvironment{ajd}{\noindent\color{red} AJD }{}
+\newenvironment{vd}{\noindent\color{green} VD }{}
+\newcommand{\vvd}[1]{
+\begin{vd} #1 \end{vd}}
+
+\newcommand{\aam}[1]{ \begin{am} #1 \end{am}}
+\newcommand{\ad}[1]{ \begin{ajd} #1 \end{ajd}}
+
+
+
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\begin{document}
+
+\title{The Grzegorczyk hierarchy and pregroups}
+\author{}
+
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+The level of the universal group of a pregroup is at most one
+more than the level of the pregroup; under suitable conditions. 
+\end{abstract}
+
+\section{Rabin}\label{sec:rabin}
+For $\cE_n$ read $\cE_n(A)$.\\[1em]
+
+It may be best to define an index as a triple $(i,j,k)$ as in Cannonito \& Gatterdam.\\[1em] 
+
+\begin{definition}[Rabin, Definition 7]
+Let $G$ and $F$ be $\cE_n$-computable groups with $\cE_n$-admissible indices
+$i_1$ and $i_2$, respectively. A homomorphism $\phi:G\maps F$ is
+called $\cE_n${\em -computable} with respect to $i_1$ and $i_2$ if ....
+(replace ``computable'' with ``$\cE_n$-computable'' and ``recursive'' by
+``$\cE_n$-recursive'' throughout).
+\end{definition}
+\begin{theorem}[Rabin, Theorem 1]
+Replace ``computable'' with ``$\cE_n$-computable'' and ``recursive'' by
+``$\cE_n$-recursive'' throughout.
+\end{theorem}
+\begin{proof}
+The proof goes through with the obvious modifications: one of which is
+that the inverse function has to be explicitly defined. 
+\end{proof}
+\begin{proposition}[Rabin, Remark, Converse of Thm 1]
+Same amendments: proof goes through.
+\end{proposition}
+
+
+Call the index defined in Theorem 1.2, by minimalisation, the {\em induced}
+index on $G/H$. Then Theorem 1.2 says that the induced index is $\cE_n$-admissible if and only if $i(H)$ is $\cE_n$-decidable (recursive). This might
+ be a good way to put things. 
+
+
+\begin{definition}
+Let $G$ be a group, $S$ a set disjoint from $G$ and $\pi:S\maps G$ a map. 
+The ordered pair $(S,\pi)$ is called a {\em generating system} for
+$G$ if the extension of $\pi$ to the free group $F(S)$ is surjective. 
+We often abuse notation by refering to $S$ as a generating set and assuming
+that $S$ is a subset of $G$. (See Cohen's book on combinatorial group theory,
+for example.) 
+\end{definition}
+
+\begin{definition}[Standard Index]
+Let $G$ be an $\cE_n$-computable group with generating set $(S,\pi)$ and 
+let $F=F(S)$. Let $i_F$ be an $\cE_n$-index (or does it need to be $\cE_3$?)
+and $i_G$ an 
+ $\cE_n$-index for $G$. Then $G$ is  
+said to be $\cE_n${\em -standard} with respect to $(S,\pi)$, 
+$i_F$ and $i_G$ if 
+the induced map $\bar\pi$ (as in defn 1.1 above)  is $\cE_n$-computable.
+\end{definition}
+
+It should be proved that this is equivalent to the C \& G definition, at 
+least when the index for $F$ is $\cE_3$. This is in effect what Rabin 
+does in his proof of his Theorem 1. He notes that, in the terminology
+of his theorem, $\bar\phi=f$. 
+
+\begin{theorem}[Rabin, Theorem 2]
+Let $G$ be a finitely generated $\cE_n$-computable group .... Let $H$ be
+a normal subgroup of $G$ such that $G/H$ is $\cE_n$-computabe with respect
+to the induced index. Then $i(H)$ is $\cE_n$-decidable.  
+\end{theorem}
+\begin{proof}
+\noindent{\bf Claim.} Let $G_1$ be an $\cE_n$-computable group with 
+$\cE_n$-admissible index $i_1$ and let $\phi:G\maps G_1$ be a homomorphism
+such that $\bar\phi$ is bounded by an $\cE_n$ function. Then 
+$\bar\phi$ is $\cE_n$-computable. (I think this is the correct condition
+on $\phi$ and is necessary.)
+
+Once the above claim has been proved the theorem is proved by noting
+that the induced index on $G/H$ is $\cE_n$-admissible and satisfies  
+ $\bar\phi(j)\le j$, for all $j\in i(G)$.
+\end{proof}
+
+\begin{theorem}[Rabin, Theorem 3]
+If $G$ is computable with $\cE_n$-index $i$ and $S$ is a subset 
+of $G$ such that $i(S)$ is $\cE_n$-recursively enumerable then 
+$G(S)$ is $\cE_n$-computable. If $i(S)$ is $cE_n$-recursive then
+$G(S)$ is $\cE_n$-standard. 
+\end{theorem}
+\begin{proof}
+My initial reading suggests the proof goes through, but there are 
+a couple of things I'd need to check to be certain.
+\end{proof}
+
+\begin{corollary}[Rabin, Corollary]
+Every finitely generated subgroup of an $\cE_n$-standard group
+is $\cE_n$-standard. 
+\end{corollary}
+(Perhaps the condition f.g. is too strong here.)
+
+
+\begin{lemma}[Rabin, Lemma 2 $+$ C \& G]
+A finite or countably generated free group is $\cE_3$-computable.
+\end{lemma}
+
+An $\cE_n$-computable  group 
+has $\cE_n${\em -solvable} word problem with respect to a generating system
+$(S,\pi)$ if the set $i_F(\ker(\pi))$ is an $\cE_n$-decidable subset of $i_F(F(S))$, where $i_F$ is an $\cE_n$ index for $F=F(S)$. 
+
+\begin{theorem}[Rabin Theorem 4, version 1]
+Let $G$ be a group with generating system $(S,\pi)$. Then $G$ is 
+$\cE_n$-standard with respect to $(S,\pi)$ if and only if 
+$G$ has $\cE_n$-solvable word problem with respect to $(S,\pi)$. 
+\end{theorem}
+\begin{proof}
+$>$: The map $\bar\pi$ is by definition $\cE_n$-computable, so from 
+Proposition 1.3, $i_F(K)$ is $\cE_n$-decidable ($K=\ker(\pi)$). 
+
+$<$: If $G$ has $\cE_n$-solvable word problem then from Theorem 1.2 and 
+its proof  the induced index on $G$ is $\cE_n$-admissible: so $G$ 
+is $\cE_n$-standard with respect to $(S,\pi)$.
+\end{proof}
+\begin{theorem}[Rabin 4, version 2]
+If $G$ has $\cE_n$-solvable word problem with respect to finite system
+of generators and $T$ is any finite generating system for $G$ then
+$G$ has $\cE_n$-solvable word problem with respect to $T$ (and is
+$\cE_n$ standard w.r.t. $T$).
+\end{theorem}
+Proved using Theorem above and the Corollary above and some arguement
+showing that a $\cE_n$ index for $T$ can be built from the given 
+$\cE_n$ index. 
+\section{Pregroups}\label{sec:pregroups}
+
+Let $(P,D)$ be a pregroup with partial binary operation 
+$m:D\maps P$. Suppose that 
+\begin{itemize}
+\item 
+$i:P\maps \NN$ is an injective function and 
+\item setting $D^\prime=
+\{(x,y)\in \NN\times \NN\,:\, x=i(p), y=i(q), (p,q)\in D\}$  
+a function 
+$m^\prime:D^\prime \maps \NN$ is defined  by $m^\prime(i(p),i(q))=i(m(p,q))$, 
+for 
+all $(p,q)\in D$ 
+and 
+\item $j$ is the function given
+by $j(i(p))=i(p^{-1})$, for all $p\in P$.
+\end{itemize}
+Then $(P,D)$ is said to have 
+{\em index} $(i,m^\prime,j)$. 
+\begin{definition}
+A pregroup $(P,D)$ is $\cE_n(A)$-{\em computable} with respect to
+index $(i,m^\prime,j)$ if 
+\be
+\item $i(P)$ is $\cE_n(A)$-decidable;
+\item $D^\prime$ is $\cE_n(A)$-decidable;
+\item $m^\prime$ is $\cE_n(A)$-computable and 
+\item $j$ is $\cE_n(A)$-computable.
+\ee
+\end{definition}
+\begin{comment}
+Write $(p_1,\ldots ,p_n)\in P$ if, with some bracketing, $p_1\cdots p_n\in P$.
+Let $K=\{(p_1,\ldots ,p_n)\in P\,:\, n\ge 1, p_1\cdots p_n=1\}$ and 
+let $K^\prime=\{(i(p_1),\ldots ,i(p_n))\,:\,   (p_1,\ldots ,p_n)\in K\}$. 
+\begin{definition}
+A pregroup $(P,D)$ is $\cE_n(A)$-{\em standard} with respect to
+index $(i,m^\prime,j)$ if $K^\prime$ is $\cE_n(A)$-decidable. 
+\end{definition}
+
+A subset $X$ of $P$ is a {\em generating set} for $P$ if, for all $p\in P$, 
+there exists a sequence $(p_1,\ldots p_n)\in P$ such that 
+$p_i\in X\cup X^{-1}$  and, with some choice of bracketing, 
+$p_1\cdots p_n=p$.
+\end{comment}
+ 
+\begin{theorem}
+Let $G=\cU(P)$, the universal group of the pregroup $(P,D)$. 
+If $(P,D)$ %has finite generating set $X$ and is standard with respect
+is $\cE_n(A)$-computable with respect 
+to the index $(i,m^\prime,j)$ then $G$ is $\cE_{n}(A)$-standard.
+\end{theorem}
+\begin{proof}
+Let $F$ be the free group on $P$ and let $(i_F, m_F, j_F)$ be 
+a $\cE_3$ index for $F$. The index $i$ extends to an $\cE_n$-index
+$i_1$ on reduced words $(p_1,\ldots, p_k)$ in $P^*$ (that is $(p_i,p_{i+1})\notin
+D$) in the usual way. 
+Now we use minimisation to determine representatives of 
+equivalence classes of reduced words over $P^*$. 
+Define 
+\[E(x,y)\iff x\in i_1(P^*)\wedge y\in i_1(P^*)\wedge m^\prime(j(x),y)=i(1_P).\]
+Next 
+\[r(j)=\min\{k\le j\wedge k\in i_1(P^*) \wedge E(k,j)\}.\]
+Then $(ri_1,rm^\prime,rj)$ is an $\cE_n$-index for $G$. Furthermore 
+the induced map from $F(P)$ to $G$ is $i_1i^{-1}$ so is $\cE_n$-computable.
+\end{proof}
+
+Next discuss applications to the word problem and the level of rewriting
+systems on the hierarchy. There is some literature on rewriting systems
+and the Grzgorczyk hierarchy that needs checking. 
+\section{Pregroups the conjugacy problem and the G hierarchy}
+We shall take the lead from a short paper that has not yet been quite completed: but should be done in a couple of weeks. 
+%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrv}
+\bibliography{traces}
+\end{document}
