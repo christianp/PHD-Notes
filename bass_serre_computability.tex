@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 \usepackage{upgreek}
 \usepackage{amsthm}
+\usepackage{verbatim}
 
 \usepackage{setspace}
 \singlespacing
@@ -65,9 +66,16 @@ Grzegorczyk \cite{Grzegorczyk_1953} introduced a hierarchy of classes of recursi
 
 We describe the Grzegorczyk hierarchy and present a clear notation for defining functions within it, along with constructions of many useful elementary functions. 
 
-The main result of this paper is that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. We also define computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy.
+Section \ref{buildingblocks} defines the notation used in this paper. Section \ref{grzegorczyk} defines the Grzegorczyk hierarchy of computable functions and gives definitions and positions on the hierarchy for many useful functions. Section \ref{graphs} repeats Serre's formulation of graphs, and Section \ref{trees} gives conditions for a tree to be computable at a certain level of the Grzegorczyk hierarchy.
 
-\section{Building blocks}
+In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of a \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. We also discuss a flaw in \cite{Cannonito_1973}'s concept of a ``standard'' group.
+
+Section \ref{bass-serre} consists of a statement and proof of the main result of this paper -- that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. Additionally, we show that graphs of finitely-generated \grz{n}-computable groups are also \grz{n}-computable, and give an example of a graph of \grz{3}-computable groups which is at least \grz{4}-computable.
+
+Finally, Section \ref{pregroups} defines computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy.
+
+
+\section{Building blocks \label{buildingblocks}}
 
 \subsection{Notation}
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
@@ -80,6 +88,8 @@ taking $n \geq 0$ parameters and resulting in a single value.
 Functions in general can take any number of parameters, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of parameters $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
 
 We will begin by defining the {\it primitive functions}:
+
+\subsubsection{The primitive functions}
 
 \begin{itemize}
 	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write $0$ to mean the zero function.
@@ -141,7 +151,7 @@ A relation is defined by the set of things which satisfy it. In addition, for bi
 \subsubsection{Logic}
 The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
 
-\section{The Grzegorczyk hierarchy}
+\section{The Grzegorczyk hierarchy \label{grzegorczyk}}
 A class \classC is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC, then $C(f,g_1, \dots, g_m)$ also belongs to \classC. A function defined by finitely many compositions of elements of \classC is also an element of \classC.
 
 A class \classC is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC and $\forall \xvec$, $R(f,g)(\xvec) \leq h(\xvec)$, then $R(f,g)$ also belongs to \classC. In other words, if a function defined by recursion on two functions of \classC is bounded everywhere by a third function of \classC, then the recursively-defined function is also in \classC.
@@ -409,7 +419,7 @@ To concatenate two encoded lists:
 
 $x \concat y$ is bounded by $p_{|\xvec|+|\yvec|}^{(|\xvec|+|\yvec|) (\operatorname{biggest}(\xvec)+\operatorname{biggest}(\yvec))}$, so is \grz{3}-computable.
 
-\section{Graphs}
+\section{Graphs \label{graphs}}
 
 \begin{definition}
 A graph is a set of vertices $V$ and a set of directed edges $E = E^+ \cup E^-$, with two associated maps. The first,
@@ -431,7 +441,7 @@ A {\it circuit} is a path $(e_1, \dots, e_n)$ with $\iota(e_1) = \tau(e_n)$.
 A graph is {\it connected} if there exists a path between each pair of its vertices.
 \end{definition}
 
-\section{Computable Trees}
+\section{Computable Trees \label{trees}}
 
 \begin{definition}
 A tree is a connected, non-empty graph with no reduced circuits.
@@ -529,7 +539,36 @@ A finite ordered tree is \grz{3} computable.
 As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\NN$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
 \end{proof}
 
-\section{Computability of Bass-Serre groups}
+\section{Computable Groups \label{groups}}
+
+Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
+
+\begin{itemize}
+	\item $i: G \rightarrow \NN$ is an injection of $G$ onto a \grz{n}-decidable subset of $\NN$;
+	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
+	\item $j: i(G) \rightarrow i(G)$ computes the inverse of any element of $G$.
+\end{itemize}
+
+\begin{lemma}\cite[3.1]{Cannonito_1973}
+	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably or many generators is \grz{3}-computable.
+\end{lemma}
+
+The proof of the above lemma is not important, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
+\[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
+
+$J(x,y)$ is an \grz{3}-computable integer pairing function defined in \cite{Cannonito_1973}.
+
+\begin{comment}
+\begin{definition} \cite[3.3]{Cannonito_1973}
+	A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalization from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \NN$.
+\end{definition}
+
+\begin{theorem} \cite[3.4]{Cannonito_1973}
+	If $G$ is finitely generated and \grz{n}$(A)$ for $n \geq 3$ then any standard index of $G$ is \grz{n}$(A)$.
+\end{theorem}
+\end{comment}
+
+\section{Computability of Bass-Serre groups \label{bass-serre}}
 
 Let $\Gamma = (V,E)$ be a connected graph. 
 
@@ -552,7 +591,6 @@ The generators of $G$ are
 \[ X = \left( \bigcup_{v \in V}X_v \right) \cup \left( \bigcup_{e \in E}\{e\} \right),\]
 and the relations are 
 \[ R = \left( \bigcup_{v \in V}R_v \right) \cup \{e^{-1}A_ee = B_e,  \forall e \in E\} \cup \{ e^{-1} = \bar{e}, \forall e \in E\} \cup \{ e = 1, \forall e \in T \}.\]
-(this looks horrible, please help!)
 \end{definition}
 
 \begin{definition}
@@ -665,6 +703,8 @@ If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ the
 So the word problem of $G$ is \grz{n+1}(A) decidable, and hence $G$ is \grz{n+1}-computable.
 \end{proof}
 
+Theorems \cite[4.6]{Cannonito_1973} and \cite[5.3]{Cannonito_1973} follow as corollaries of the above result, as free products with amalgamation and HNN extensions can be considered as the fundamental groups of graphs with one edge connecting two vertices and one vertex, respectively.
+
 \begin{lemma}\label{primedist}
 The $n$th prime $p_n \approx n \log n$.
 \end{lemma}
@@ -728,7 +768,7 @@ will be reduced to a word on $G_0$ whose length is proportional to $\operatornam
 Therefore, $G$ is \grz{4}-computable. 
 \end{proof}
 
-\section{Pregroups}
+\section{Pregroups \label{pregroups}}
 
 A pregroup $(P,D)$ is {\it \grz{n}-computable} if: 
 \begin{itemize}
