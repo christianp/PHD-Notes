@@ -61,6 +61,20 @@ class Vertex:
 		infolds = [(label.upper(),vs) for label,vs in self.inedges.items() if len(vs)>1]	#ditto for inward edges
 		return outfolds+infolds
 
+	#get the neighbouring vertex connected to this one by an edge with the given label
+	#returns None if no such edge exists
+	def neighbour(self,label):
+		if label==label.lower():	#lower case means x, upper case means x^{-1}
+			es = self.outedges		#if x, we want an outward edge
+		else:
+			es = self.inedges		#if x^{-1}, we want an inward edge
+
+		label=label.lower()
+		if label in es:				#if there is an edge with the right label in the right direction
+			return es[label][0]			#move to the vertex it is pointing to
+		else:
+			return None				#otherwise, we can't go anywhere, so the word is not in the subgroup
+		
 
 #A general graph object
 #not necessarily connected

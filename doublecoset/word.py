@@ -7,3 +7,6 @@ def freelyReduce(word):
 		else:
 			i+=1
 	return word
+
+def inverse(word):
+	return ''.join([c.upper() if c==c.lower() else c.lower() for c in word[::-1]])
