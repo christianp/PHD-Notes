@@ -1,0 +1,131 @@
+\documentclass[a4paper]{article} 
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{upgreek} 
+\usepackage{amsthm} 
+\usepackage{verbatim} 
+\usepackage{hyperref} 
+\parskip 1ex 
+\parindent 0pt
+
+\begin{document}
+(copied from Andrew's handwritten notes)
+
+\section{Computing with infinite rewriting systems}
+
+Let $\Gamma$ be a (finite or infinite) alphabet.
+
+Let $S \subseteq \Gamma^\ast \times \Gamma^\ast$.
+
+In order to work with $S$ we require that:
+
+- $S$ is a recursive subset of $\Gamma^\ast \times \Gamma^\ast$,
+
+- $L = \{ l \in \Gamma^\ast : (l,r) \in S \}$ is a recursive subset of $\Gamma^\ast$
+
+Then $S$ is a \href{http://en.wikipedia.org/wiki/Term_rewriting_system}{rewriting system} on $\Gamma$
+
+
+
+In \href{http://www-history.mcs.st-and.ac.uk/~alanc/pub/articles.html,}{Cain's papers} $S$ may be infinite but is always length-reducing; so if $L$ is recursive so is $S$.
+
+
+
+When working with a pregroup (if no finite generating set is chosen) the set $\Gamma$ is infinite, usually.
+
+
+
+\section{Knuth-Bendix procedures}
+
+In \href{http://www.fmi.uni-stuttgart.de/ti/veroeffentlichungen/pdffiles/DiekertDuncanMiasnikov2010.pdf}{Diekert-Duncan-Myasnikov} a \href{http://en.wikipedia.org/wiki/Knuth%E2%80%93Bendix_completion_algorithm}{Knuth-Bendix procedure} for geodesically perfect systems is described; where $S$ is finite.
+
+Can such a process be devised in cases where say $S$ and $L$ are \href{http://en.wikipedia.org/wiki/Regular_language}{regular sets} ?
+
+
+
+Starting with a rewriting system with $S$ and $L$ regular, but $s$ not confluent, does a Knuth-Bendix process preserve regularity?
+
+
+
+What about other properties (instead of regular)?
+
+
+
+\section{Rewriting systems and pregroups}
+
+As in DDM triangular geodesically perfect rewriting systems correspond to pregroups.
+
+
+
+Does there exist a KB-type procedure that constructs a triangular geodesic system from an arbitrary triangular system?
+
+
+
+In any case what happens to these pregroup rewriting systems when specific generating sets are used for the pregroups?
+
+For instance what happens to the system for a free product with amalgamation if a finite generating set is chosen for the factors and for the amalgamated subgroups?
+
+Ditto HHN extensions.
+
+Ditto general fundamental group of graph of groups.
+
+
+
+There are known finite convergent rewriting systems for several classes of groups. These are not usuall triangular.
+
+What happens if the corresponding presentations are triangulated  --  can this be done so that a triangular geodesic system is produced?
+
+e.g. Coxeter groups,
+
+partially commutative groups,
+
+polycyclic groups.
+
+If so describe the corresponding pregroups (it may be that only the length-reducing part of the system need be triangular; but this would require some additional condition on the length-preserving part.)
+
+
+
+\section{Geodesic, preperfect and geodesically perfect systems}
+
+Find geodesically perfect systems for:
+
+- hyperbolic groups
+
+- 1 relator groups
+
+- fully residually free groups
+
+- polycyclic groups
+
+- surface groups (hyperbolic)
+
+
+
+(This is really part of the question about KB procedures for group systems)
+
+
+
+What can be said about geodesically perfect (geodesic, or preperfect) systems where $L$ is regular or context-free etc?
+
+(In the spirit of Cain's result that if $S$ is convergent and $L$ regular monadic then the group or monoid is hyperbolic)
+
+
+
+\section{Cain's results}
+
+The `Gilman conjecture' is that if a group can be presented by a finite convergent weight-reducing system then it is ``plain". A {\it plain} group is a free product of finite and free groups.
+
+Are the hyperbolic groups appearing in Cain's papers all plain? If so this is probably what is really happening. If not  -  fame beckons (at least for Cain)
+
+
+
+Do the results of Cain shed any light at all on this conjecture?
+
+
+
+Cain told Andrew that he thinks that his results show that there exists a hyperbolic monoid which has no finite convergent rewriting system.
+
+Confirm this.
+
+Any possibility of extending to groups?
+\end{document}
