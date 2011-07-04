@@ -15,7 +15,7 @@ if len(sys.argv)>1:
 else:
 	gens = raw_input('Generators: ').split(' ')
 
-makeSubgroup(gens)
+g=makeSubgroup(gens)
 
 print("Write a command and then a word\nCommands are:\n subgroup (sg)\n contains (has)\n leftcoset (lc)\n rightcoset (rc)\n doublecoset (dc)\n exit")
 
