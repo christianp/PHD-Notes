@@ -4,7 +4,7 @@
 \usepackage{upgreek}
 \usepackage{amsthm}
 \usepackage{verbatim}
-
+\usepackage[usenames]{color}
 \usepackage{setspace}
 \singlespacing
 %\onehalfspacing
@@ -54,7 +54,11 @@
 \newtheorem{definition}[theorem]{Definition}
 
 \newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
-
+%%
+\newenvironment{ad}{\noindent\color{green} AJD }{}
+\newcommand{\ajd}[1]{
+\begin{ad} #1 \end{ad}}
+%%
 \begin{document}
 \title{Computability of Bass-Serre structures}
 \author{Christian Perfect \and Andrew Duncan}
@@ -452,6 +456,8 @@ A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. In an
 \begin{definition}
 A {\it plane recursive tree} is a rooted, ordered tree obtained by a process which begins with the root node and recursively adds vertices below existing ones.
 \end{definition}
+\ajd{Why ``plane''? Every tree is planar. Where is the particular planar
+embedding used?}
 
 We can assign a labelling to a plane recursive tree by giving vertices labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
 
@@ -543,6 +549,7 @@ As the tree is finite, of course its labelling is an \grz{3}-decidable subset of
 
 Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
 
+\ajd{$i$ is not computable: its image has computable characteristic function.}
 \begin{itemize}
 	\item $i: G \rightarrow \NN$ is an injection of $G$ onto a \grz{n}-decidable subset of $\NN$;
 	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
@@ -569,15 +576,21 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function defined in \cite{Cann
 							\end{cases}
 	\end{align}
 \end{definition}
+\ajd{$E(x)=\min_{i<x}(i^2\le x)$, so is in \grz{2}.}
  
 \begin{lemma} \label{relativetonormalcomputable}
 	Let $A \subset \NN$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
-
+\ajd{In this lemma and the next theorem, $n\ge 2$.}
 \begin{theorem} \cite[3.2]{Cannonito_1973} \label{wp-computable-implies-group}
 	For every countable group $G$ there exists $a \subset \NN$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
+\ajd{What does it mean for a group to be \grz{n}$A$-computable?
+Define the word problem of a group $G$ and explain the notation WP$(G)$.
 
+I think that a corollary should be given here, as an analogue to
+Rabin's result, to which it should be compared. Namely, WP$(G)$ is 
+\grz{n}-decidable if and only if $G$ is \grz{n}-computable.}
 
 \begin{comment}
 		\begin{definition} \cite[3.3]{Cannonito_1973}
@@ -600,7 +613,9 @@ For each edge $e \in E$ associate two isomorphic groups $A_e \leq G_{\iota(e)}$ 
 
 $(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
 \end{definition}
-
+\ajd{Also, it is required that  $\phi_e^{-1}=\phi_{\bar e}$. 
+It makes life easier if $A_e$ and $B_e$ are defined as the 
+{\em edge groups} of $e$ and $\bar e$, respectively.}
 \begin{definition}
 Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then $G = \fgoagog$ is called the {\it fundamental group} of $(\mathbf{G},\Gamma)$, defined by
 
@@ -613,12 +628,28 @@ The generators of $G$ are
 and the relations are 
 \[ R = \left( \bigcup_{v \in V}R_v \right) \cup \{e^{-1}A_ee = B_e,  \forall e \in E\} \cup \{ e^{-1} = \bar{e}, \forall e \in E\} \cup \{ e = 1, \forall e \in T \}.\]
 \end{definition}
+\ajd{``Then the {\it fundamental group} of $(\mathbf{G},\Gamma)$, with
+respect to $T$ and $v_0$,  is the
+group  $G = \fgoagog$ defined by ...''. 
 
+The free part of the amalgam above
+should be $F(E(\Gamma \backslash T))$. 
+
+I think (53) should be given as
+a consequence of the definition of $G$ by generators and relations. 
+
+The
+definition of the relation involving edge groups needs to be made
+more explicit: $e^{-1}ae=\phi_e^{-1}(b)$ ...}
 \begin{definition}
 A word $w \in X^{\ast}$ is {\it admissible} if it is in the form
 \[ w = a_0 e_1 a_1 e_2 \dots a_{n-1} e_n a_n \]
 where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dots,v_n)$, such that $v_0 = v_n$, $v_i = \iota(e_{i+1})=\tau(e_i)$, $0 < i < n$, and $a_i \in G_{v_i}$, $i=0,\dots,n$.
 \end{definition}
+\ajd{I think what you mean is that a word is admissible if it {\em can}
+be factored in this way: that is there is a sequence 
+$ a_0, e_1, a_1, e_2 ,\dots ,a_{n-1}, e_n, a_n$, satisfying the conditions
+that you give, such that $w\equiv   a_0 e_1 a_1 e_2 \dots a_{n-1} e_n a_n $.}
 
 It will be more convenient from now on to refer to $G_{v_i}$ by $G_i$.
 
@@ -642,8 +673,18 @@ Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v
 \end{split}\end{equation}
 
 The free reduction of $\psi(i,j)$ will be implicit from now on.
+\ajd{Should there be a \grz{3} 
+function which takes an encoded tree and produces
+an encoding of  the freely reduced path from $v_i$ to $v_j$? If so perhaps
+this should all go in Section 4. 
+
+]On the other hand perhaps all of this
+can be done by using the free group on the edges and reducing words there:
+which is  known  to be \grz{3}.}
 
 What we really want is a function $\pi(g):G \rightarrow X^{\ast}$ that gives an admissible word beginning and ending at $v_0$ and containing a representation of $g$ as a contiguous subword. 
+\ajd{So is $\pi(g)$ ideally an admissible word $w$ which represents 
+$g\in G$?}
 
 If $g$ belongs to some $G_{v_i}$, then $\pi(g) = \psi(0,i) \cdot g \cdot \psi(i,0)$. Otherwise, if $g = e_{ij}$, some edge letter, then $\pi(e_{ij}) = \psi(0,i) \cdot e_{ij} \cdot \psi(j,0)$.
 \end{definition}
@@ -651,33 +692,82 @@ If $g$ belongs to some $G_{v_i}$, then $\pi(g) = \psi(0,i) \cdot g \cdot \psi(i,
 \begin{lemma}
 Let $w$ be a word on $G$. Then by replacing each generator $g$ by $\pi(g)$ and freely reducing the resulting word, we obtain an admissible word starting at $v_0$ which is equivalent to $w$. Call this word $\pi(w)$, abusing notation a bit.
 \end{lemma}
+\ajd{$w$ is a word on $X$ (or in $X^\ast$). $w$ should represent the
+element $g$ of $G$, to make the statement of the lemma coherent.
 
+Is $\pi$ working with generators or with their images under $i$? 
+
+At some point presumably it's necessary to show this whole process
+corresponds to a function on an encoded word.
+
+Do
+products of generators in $G_v$ get replaced by elements of $G_v$ they
+represent or are they left as words in the generators. 
+
+The index of a word
+in the generators will have to be computed using the multiplication function
+$m_v$ for $G_v$.}
 \begin{proof}
 The new word is equivalent to $w$ because the only letters we are adding are edge letters from the spanning tree, which are all trivial in the presentation of $G$.
+\ajd{Also, it is admissible. This follows since the unreduced word is
+admissible and free reduction preserves admissibility. (However, the 
+sequence of the definition may not be immediately apparent.)}
 \end{proof}
 
+
 \begin{theorem} \label{fgoagogcomp}
-Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose all the $G_i$ are f.g. \grz{n}-computable groups for $n \geq 3$. Assume all the identified subgroups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
+Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose all the $G_i$ are f.g. \grz{n}-computable groups for $n \geq 3$. Assume all the identified subgroups (\ajd{edge groups}) are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
 \end{theorem}
 
 \begin{proof}
 We will show that the word problem of $G$ is \grz{n+1}-decidable. We can assume that the generating sets of all the $G_v$ are disjoint.
 
+\ajd{Also there is an \grz{n}-computable structure $(i_v,m_v,j_v)$, for 
+$G_v$, for all vertices $v$. }
+
 Encode the depth-first walk of the spanning tree $T$ as a G\"odel number $\tvec$ per Section \ref{encodetrees}. Then the parent function $\phi_{\tvec}$ is \grz{3}-computable. 
 
 To define $i(G)$, we will begin by using the first $\nu^2$ numbers to represent potential edges. For any $i=a*\nu+b$ and $i \leq \nu^2$, $i \in i(G) \Leftrightarrow e_{ab} \in T$.
+\ajd{I think you mean 
+
+``For $0\le a,b\le \nu-1$ define $\iota(a,b)=a\cdot \nu +b$. Then 
+define $i(e_{a,b})=\iota(a,b)$, for all $e_{a,b}\in E$.''
+
+(This map $\iota$ is a pairing function $I\times I \rightarrow J$, where
+$I=\{0, \ldots, \nu-1\}$ and $J=\{0,\ldots, v^2-1\}$.) 
+}
 
 We can assume the generators of the vertex groups have indices greater than $\nu^2$. The rest of $i(G)$ works the same way as the standard free group index in Cannonito-Gatterdam.	((Not explained well: C-G assign a number to each generator, and then words are encoded as sequences of those numbers paired with a power, and the index of an element is the least index of an equivalent word. I want the numbers assigned to the group generators to be greater than $\nu^2$.))
+\ajd{You've described indices for elements of $E$. To give indices for 
+elements of $X_v$ you presumably use $i_v$ and then some pairing function,
+to make indices of elements of distinct $X_v$ and $X_u$ different. This
+needs to be done so that the images of $G_v$ and $G_u$ don't
+intersect, but using a pairing function this is no problem.}
 
 Given a word $w$, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$. 
+\ajd{So the definition of admissible should include the definition of
+``admissible sequence''.
+
+It's not clear whether you mean to do this for group elements or 
+their images under $i$. 
+
+Are the $a$'s going to be words in the generators or group elements?}
 
 We must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define a \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. For completeness, say that $g \not \approx n$ whenever $n \notin i(G)$.
+\ajd{Is this equivalence relation defined on $X$ or on $i(X)$? (It's easy
+to lift it from $X$ to $i(X)$.)}
 
 As there are finitely many equivalence classes of $\approx$, and they are all \grz{n}-decidable, $\approx$ is \grz{n}-decidable.
 
 The next task is to split $w'$ into `syllables', or contiguous subwords. A syllable is either a single edge letter or a word from one of the vertex groups.
 
 From now on, let $\wvec$ be an encoded admissible word.
+\ajd{So Lemma 6.6 needs to be strengthened to show this can be done at 
+an appropriate level of the hierarchy.
+
+I think at this point you are going to explain how to construct an
+admissible sequence from an admissible word. 
+}
 
 Define a function which gives the position of the start of the syllable to which $(\wvec)_i$ belongs:
 \recur{
@@ -689,6 +779,7 @@ Define a function which gives the position of the start of the syllable to which
 																				\end{cases}
 }
 
+\ajd{The function }
 backtrack is constructed from \grz{n} operations and is bounded by $|\wvec|$, so is \grz{n}-computable.
 
 Now, the start of the \nth syllable is given by:
@@ -703,7 +794,13 @@ The number of syllables can be computed like so:
 And now the \nth syllable itself can be found:
 \begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
 
+\ajd{The function} 
 syllable is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
+\ajd{For a non-edge syllable you obtain a syllable consisting of a 
+ sequence $i(x_1), \ldots ,i(x_n)$, 
+where the $x_i$ are in some fixed $X_v$. The exact procedure for testing to see if 
+this 
+belongs to an edge group needs more explanation.} 
 
 We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
 
@@ -767,9 +864,17 @@ There exists a graph of \grz{3}-computable groups whose fundamental group is \gr
 \end{corollary}
 
 \begin{proof}
-Let $\mathbf{G} = \{G_0,G_1\}$ be two copies of the free group on two generators, so $G_0 = \langle x,y \rangle$ and $G_1 = \langle a,b \rangle$. The graph has a single edge $e$ from $v_0$ to $v_1$, so $\Gamma = T = (\{v_0,v_1\},\{e,\bar{e}\})$.
+Let $\mathbf{G} = \{G_0,G_1\}$ be two copies of the free group on two generators, so $G_0 = \langle x,y \rangle$ and $G_1 = \langle a,b \rangle$. 
+\ajd{Let $G_0 = \langle x,y \rangle$ and $G_1 = \langle a,b \rangle$  
+be two copies of the free group on two generators. Let $(\mathbf{G},\Gamma)$
+ be the graph of groups with $\mathbf{G} = \{G_0,G_1\}$ and $\Gamma$ the 
+graph
+with a single edge $e$ from $v_0$ to $v_1$; so $\Gamma = T = (\{v_0,v_1\},\{e,\bar{e}\})$.}
 
 Let $E_{01} = \left \langle \{x^{-n}yx^n, n \in \mathbb{N} \} \right \rangle$, $E_{10} = \left\langle \{ a^{-n}ba^n, n \in \mathbb{N} \} \right\rangle$ be the (infinitely generated) identified subgroups of $G_0$ and $G_1$, respectively..
+\ajd{In fact the given generators of the edge subgroups freely generate
+these subgroups. This means that a homomorphism can be defined merely
+by defining the images of the generators.}
 
 Define
 
@@ -777,14 +882,21 @@ Define
 	\phi_{e}(x^{-2n}yx^{2n}) &:= a^{(-2n)!}ba^{(2n)!}, \\
 	\phi_{\bar{e}}(a^{-2n-1}ba^{2n+1}) &:= x^{-(2n)!-1}yx^{(2n)!+1}. 
 \end{align*} 
-
+\ajd{$\phi_e$ and $\phi_{\bar{e}}$ must be isomorphisms with 
+$\phi_e^{-1}=\phi_{\bar{e}}$. This can be arranged by mapping 
+$\{x^{-(2n+1)}y x^{2n+1}:n\in \mathbb{Z)}$ bijectively onto $\{a^{-m}ba^m:m\in \mathbb{Z}, 
+m\neq (2n)!, \forall n\in \mathbb{Z}\}$. I haven't checked if this
+is still \grz{3} but it does seem to give the right sort of growth. 
+} 
 First of all, the homomorphisms are \grz{3}-computable because words of the form $a^{-n}ba^n$ can be recognised by an \grz{3}-computable function. Hence all the ingredients of the graph of groups are \grz{3}-computable.
 
 A word of the form
 
 \[ ea^{-1}e^{-1} \dots x^{-1}ea^{-1}e^{-1}x^{-n}yx^neae^{-1}x \dots eae^{-1} \]
 
-will be reduced to a word on $G_0$ whose length is proportional to $\operatorname{factorial}^{(m)}(n)$, where $m$ is the number of syllables. As $m$ depends on the input, the length of the reduced word can only be computed by unbounded recursion on an \grz{3} function, so is only \grz{4}-computable.
+will be reduced to a word on $G_0$ whose length is proportional to $\operatorname{factorial}^{(m)}(n)$, where $m$ is the number of syllables. 
+\ajd{More detail is needed here.} 
+As $m$ depends on the input, the length of the reduced word can only be computed by unbounded recursion on an \grz{3} function, so is only \grz{4}-computable.
 
 Therefore, $G$ is \grz{4}-computable. 
 \end{proof}
