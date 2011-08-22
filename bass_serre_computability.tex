@@ -72,11 +72,11 @@ We describe the Grzegorczyk hierarchy and present a clear notation for defining 
 
 Section \ref{buildingblocks} defines the notation used in this paper. Section \ref{grzegorczyk} defines the Grzegorczyk hierarchy of computable functions and gives definitions and positions on the hierarchy for many useful functions. Section \ref{graphs} repeats Serre's formulation of graphs, and Section \ref{trees} gives conditions for a tree to be computable at a certain level of the Grzegorczyk hierarchy.
 
-In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of a \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. We also discuss a flaw in \cite{Cannonito_1973}'s concept of a ``standard'' group.
+In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of an \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. We also discuss a flaw in \cite{Cannonito_1973}'s concept of a ``standard'' group.
 
-Section \ref{bass-serre} consists of a statement and proof of the main result of this paper -- that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. Additionally, we show that graphs of finitely-generated \grz{n}-computable groups are also \grz{n}-computable, and give an example of a graph of \grz{3}-computable groups which is at least \grz{4}-computable.
+Section \ref{bass-serre} consists of a statement and proof of the main result of this paper -- that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. Additionally, we show that the fundamental group of a graph of finitely-generated \grz{n}-computable groups is also \grz{n}-computable, and give an example of a graph of \grz{3}-computable groups whose fundamental group is at least \grz{4}-computable.
 
-Finally, Section \ref{pregroups} defines computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy.
+Finally, Section \ref{pregroups} defines computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy, generalising the results above.
 
 
 \section{Building blocks \label{buildingblocks}}
@@ -91,9 +91,9 @@ taking $n \geq 0$ parameters and resulting in a single value.
 
 Functions in general can take any number of parameters, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of parameters $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
 
-We will begin by defining the {\it primitive functions}:
-
 \subsubsection{The primitive functions}
+
+We will begin by defining the {\it primitive functions}, which are functions of one of the following three types:
 
 \begin{itemize}
 	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write $0$ to mean the zero function.
@@ -104,41 +104,60 @@ We will begin by defining the {\it primitive functions}:
 There are two operations we shall use to create new functions from these primitives.
 
 \subsubsection{Composition} 
-\[f \circ g(x) \equiv f(g(\xvec)) := C(f,g)(\xvec)\] 
-or just 
-\[f \circ g := C(f,g).\]
 
-\subsubsection{Recursion}
-Definitions of recursive functions $R(h,f,g)$ will follow this format:
+A function $h$ is constructed by {\it composition} of functions $f$ and $g$ if $h = f \circ g$ where
+
+\[f \circ g(\xvec) \equiv f(g(\xvec)) := C(f,g)(\xvec).\] 
+
+In general, given an $n$-ary function $f$ and $m$-ary functions $g_1, \dots, g_n$, the composition operator $C$ constructs a new $m$-ary function
+
+\[f(g_1(\xvec),\dots, g_n(\xvec)) := C(f,g_1, \dots, g_n)(\xvec).\]
+
+We will omit the generalised parameters for most function definitions, like so:
+
 \begin{eqnarray*}
-	h(\xvec,0) & := & f(\xvec), \\
-	h(\xvec,n+1) & := & g(n,h(\xvec,n),\xvec).
-\end{eqnarray*} 
+	f \circ g &:=& C(f,g), \\
+	f(g_1, \dots, g_n) &:=& C(f,g_1, \dots, g_n).
+\end{eqnarray*}
 
-Note that the parameter of recursion $n$ can be made to be in any position by composition with the projection functions:
-\begin{eqnarray*}
- f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) &:=& f(x_1, \dots, x_m, n) \\
- &=& C(f, P_{m+1}^1, \dots, P_{m+1}^k, P_{m+1}^{k+2},\dots, P_{m+1}^m, P_{m+1}^{k+1}).
- \end{eqnarray*}
-
-\subsubsection{Arity}
-A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
-
-Mixing functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$ such that:
-\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n) = f(x_1, \dots, x_n).\]
+The mixing of functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$, 
+\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n,\]
+such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f(x_1, \dots, x_n)$.
 
 Variable substitution can also be dealt with systematically:
 \[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
 
+\subsubsection{Recursion}
+
+A function $h$ is constructed by {\it recursion} from functions $f$ and $g$ if
+
+\begin{eqnarray*}
+	h(\xvec,0) & := & f(\xvec), \\
+	h(\xvec,n+1) & := & g(n,h(\xvec,n),\xvec),
+\end{eqnarray*} 
+
+in which case we write $h = R(f,g)$.
+
+Note that the parameter of recursion $n$ can be made to be in any position by composition with the projection functions. If we have a function $h(x_1,\dots,x_m,n)$, we can define a new function,
+\[ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) := C(f, P_{m+1}^1, \dots, P_{m+1}^k, P_{m+1}^{k+2},\dots, P_{m+1}^m, P_{m+1}^{k+1}), \]
+so that 
+\[ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) := f(x_1, \dots, x_m, n). \\ \]
+
 \subsection{Further notation}
 
+\subsubsection{Bound variables}
+A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in the porjection function $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
+
 \subsubsection{Iteration}
-A function which evaluates $n$ iterations of a function $f$, where $n$ is a bound variable, can be performed by composing $f$ with itself $n-1$ times.
-\[f^{(n)}(x) := \underbrace{C(f,C(f,C(f, \dots C(f,f}_{n-1 \textrm{ compositions}}) )(x).\]
+A function which evaluates $n$ iterations of a function $f$, where $n$ is a bound variable, can be constructed by composing $f$ with itself $n-1$ times.
+\[f^{(n)}(\xvec) := \underbrace{C(f,C(f,C(f, \dots C(f,f}_{n-1 \textrm{ compositions}}) )(\xvec).\]
 
 \subsubsection{Infix operators}
-An infix operator is simply a function of two variables, so for any operator $\ast$ some suitable function $f_{\ast}$ could be defined:
-\[x \ast y := f_{\ast}(x,y.) \]
+When using infix notation, binary operators are written between their operands.
+
+For a binary function $f_{\ast}$, representing the operation $\ast$, we will use $x \ast y$ to denote $f_{\ast}(x,y)$, whenever the former notation is more conventional.
+
+\[x \ast y := f_{\ast}(x,y). \]
 
 \subsubsection{Sets}
 A set $S \subseteq \NN^d$ is defined by its characteristic function $\chi_S$.
@@ -149,27 +168,35 @@ A set $S \subseteq \NN^d$ is defined by its characteristic function $\chi_S$.
 \]
 
 \subsubsection{Relations}
-A relation is defined by the set of things which satisfy it. In addition, for binary relations I will write
+If $R \subseteq \NN^d$ is a relation, $R$ is defined by $\chi_R$. In addition, for binary relations I will write
 \[ x R y := \chi_R(x,y). \]
 
 \subsubsection{Logic}
 The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
 
 \section{The Grzegorczyk hierarchy \label{grzegorczyk}}
-A class \classC is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC, then $C(f,g_1, \dots, g_m)$ also belongs to \classC. A function defined by finitely many compositions of elements of \classC is also an element of \classC.
+A class \classC{}  is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC{}, then $C(f,g_1, \dots, g_m)$ also belongs to \classC{}. Therefore a function defined by finitely many compositions of elements of \classC{} is also an element of \classC{}.
 
-A class \classC is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC and $\forall \xvec$, $R(f,g)(\xvec) \leq h(\xvec)$, then $R(f,g)$ also belongs to \classC. In other words, if a function defined by recursion on two functions of \classC is bounded everywhere by a third function of \classC, then the recursively-defined function is also in \classC.
+A function $f$ is said to be {\it bounded} by another function $g$ if, for all $\xvec$, $f(\xvec) < g(\xvec)$.
+
+A class \classC{} is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC{} and $R(f,g)(\xvec)$ is bounded by $h(\xvec)$, then $R(f,g)$ also belongs to \classC{}. 
 
 The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{n} of functions which are each closed under finite composition and bounded recursion. 
 
 \grz{0} consists of just the primitive functions, and whatever else can be obtained by finitely many applications of the composition operator and bounded recursion.
 
-\grz{n+1}, for $n \geq 0$, is the smallest class containing all of \grz{n} and anything obtained by a single unbounded recursion on \grz{n} functions, again closed under finite composition and bounded recursion.
+\grz{n+1}, for $n \geq 0$, is the smallest class which
 
-The levels of the Grzegorczyk hierarchy can also be defined in terms of a stem of functions, one for each level, but we won't be going high enough for that to be useful.
+\begin{itemize}
+	\item contains all of \grz{n};
+	\item contains every function obtained by a single unbounded recursion on \grz{n} functions;
+	\item is closed under finite composition and bounded recursion.
+\end{itemize}
+
+%The levels of the Grzegorczyk hierarchy can also be defined in terms of a stem of functions, one for each level, but we won't be going high enough for that to be useful.
 
 \subsection{The stockpile of functions}
-Below I will give explicit definitions for the operations of elementary arithmetic, plus some more useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
+Below I will give explicit definitions for the operations of elementary arithmetic, plus some other useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
 
 \subsection{\grz{0} functions}
 Add a constant $n$ to $x$ by iterating the successor function $n$ times on $x$:
@@ -178,7 +205,7 @@ Add a constant $n$ to $x$ by iterating the successor function $n$ times on $x$:
 Note that $n$ is a bound variable, that is, there is a different function $+_n$ for each $n$.
 
 A nullary function returning any single constant can be constructed by composing $+_n$ with $z$
-\begin{equation} c_n := +_n(0). \end{equation}
+\begin{equation} c_n() := 0 + n. \end{equation}
 
 From now on I will just write the number $n$ to mean the function $c_n$, when appropriate.
 
@@ -208,15 +235,6 @@ And reverse signature:
 	\rsg(x+1) &:= 0.
 }
 
-Equality:
-\begin{equation}	x = y := eq'(x,y,sg(x \psub y)). \end{equation}
-\recurN{
-	eq'(x,y,0) &:= \bar{sg}(x,y), \\
-	eq'(x,y,1) &:= 1.
-}
-
-$eq'$ is bounded by $c_1$, so belongs to \grz{0}.
-
 Logical AND:
 \recur{
 	x \wedge 0 &:= 0,	 \\
@@ -238,12 +256,14 @@ Logical NOT:
 
 Ordering:
 \begin{equation} \begin{split} 
-	x>y &:= sg(x \psub y), 	\\
-	x \geq y &:= (x > y) \vee (x=y),	\\
-	x \leq y &:= \neg (x>y),	\\
-	x < y &:= (x \leq y) \wedge \neg (x=y).
-\end{split}\end{equation} 
+	x > y &:= x \psub y, 	\\
+	x < y &:= y \psub x, \\
+	x \geq y &:= \neg (y>x),	\\
+	x \leq y &:= \neg (x>y).
+\end{split} \end{equation}
 
+Equality:
+\begin{equation} x=y := (x \leq y) \wedge (y \leq x) \end{equation}
 
 The smallest of two numbers:
 \begin{equation} \min(x,y) := x \psub ( x \psub y). \end{equation}
@@ -260,15 +280,15 @@ Remainder when dividing $x$ by $y$:
 $rm'$ is bounded by $y+1$ so belongs to \grz{0}. $x \bmod{y}$ is defined by recursion on \grz{0} functions and is bounded by $y-1$, so belongs to \grz{0}.
 
 \subsection{\grz{1} functions}
-Adding two numbers together is achieved by an unbounded recursion on the successor function.
+Adding two numbers together is achieved by a recursion on the successor function.
 \recur{
 	x + 0 &:= x,			\\
 	x + (y+1) &:= (x+y) + 1.
 }
-Hence addition must belong to \grz{1} and not \grz{0}.
+Because every function in \grz{0} is bounded by a function of the form $x+n$, where $n$ is a bound variable, addition must belong to \grz{1} and not \grz{0}.
 
-We can define another version of $+_n$ where $n$ is :
-\begin{equation} +_n(y) := n + y. \end{equation}
+We can define another version of $+_n$ where $n$ is unbound:
+\begin{equation} +_n(y) \equiv f_{+}(n,y) := n + y. \end{equation}
 This version is in \grz{1}. This is really an abuse of notation, but it will be useful in a little while.
 
 The biggest of two numbers:
@@ -280,9 +300,11 @@ Absolute difference:
 \begin{equation} |x - y| := (x \psub y) + (y \psub x). \end{equation}
 
 Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
-\begin{equation} n \cdot x := +_x^{(n)}(0). \end{equation}
+\begin{equation} n \cdot x  \equiv 0 + n + \dots + n := +_x^{(n)}(0). \end{equation}
 
-So we can also get any positive- and constant-coefficient linear polynomial $a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. For polynomials with negative coefficients, computing all the positive terms then subtracting the negative terms will give the closest match, because we can't use negative numbers.
+So we can also get any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. 
+
+Remember that the functions we are considering have domain $\NN^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
 
 Quotient:
 \recur{
@@ -293,18 +315,20 @@ Quotient:
 Does $x$ divide $y$:
 \begin{equation} x \mid y := \rsg( x \bmod{y} ). \end{equation}
 
-Bounded minimisation returns the least $i$ less than some bound that satisfies the given predicate:
+Bounded minimisation: given a predicate $P(\xvec,i)$ and a bound $y$ this returns the least $i$ strictly less than $y$ such that $P(\xvec,i)$ is true. If there is no such $i$, $y$ is returned.
+
 \recur{
 	\min_{i < 0} P(\xvec,i) &:= 0,	\\
 	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,y)=y) \wedge (P(\xvec,y) = 0) \right).
 }
 
-Because we always have to return a value, if there is no value under the bound such that the predicate holds, then we return the bound.
-
 Bounded maximisation:
-\begin{equation} \max_{i < y} P(\xvec,i) := y \psub \min_{i < y} P(\xvec, y \psub i). \end{equation}
+\recur{
+	\max_{i < y} P(\xvec,i) &:= y \psub \min_{i < y} P'(\xvec, y, i), \\
+	P'(\xvec,y,i) &:= P(\xvec, y \psub i).
+}
 
-If $P$ is a \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
+If $P$ is an \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
 
 \subsection{\grz{2} functions}
 Multiplication is an unbounded recursion on the addition operation:
@@ -317,26 +341,26 @@ We can get $x^n$, when $n$ is constant, by $n$ compositions of multiplication by
 
 Series sum:
 \recur{
-	\sum_{i < 0} f(\xvec, i) &:= 0,		\\
-	\sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) + \sum_{i < y} f(\xvec,i).
+	S_f(\xvec,0) \equiv \sum_{i < 0} f(\xvec, i) &:= 0,		\\
+	S_f(\xvec,y+1) \equiv \sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y) + \sum_{i < y} f(\xvec,i).
 }
 
-Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $\sum_{i < y} f(\xvec,i)$ is also in \grz{2} because it entails $y$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by defining the sum as $y$ compositions of addition.
+Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $S_f(\xvec,y)$ is also in \grz{2} because it entails $y-1$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by constructing the sum through $y$ compositions of addition.
 
 Bounded existential quantifier:
 \begin{equation} \exists_{i < y} P(\xvec,i) := \sum_{i < y} P(\xvec,i). \end{equation}
 
 
-Definition by cases: if  $P_i(\xvec)$, $1 \leq i \leq k$ is a finite collection of mutually exclusive, exhaustive predicates, then we can define
-\[ f(x) := \begin{cases}
-	g_1(\xvec) & \textrm{if }P_1(\xvec),	\\
+Definition by cases: if  $P_i(\xvec)$, $0 \leq i \leq k$ is a finite collection of mutually exclusive, exhaustive predicates, then we can define
+\[ f(\xvec) := \begin{cases}
+	g_0(\xvec) & \textrm{if }P_0(\xvec),	\\
 	\vdots & \vdots	\\
 	g_k(\xvec) & \textrm{if } P_k(\xvec).
 \end{cases} \]
 
 In our language, this is:
-\begin{equation} f(x) := \sum_{i < k+1} g_i(x) \cdot sg(P_i(x)), \end{equation}
-where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k$ multiplications and additions.
+\begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
+where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
 
 \subsection{\grz{3} functions}
 \grz{3} is where just about all the really useful operations are.
@@ -355,10 +379,10 @@ Factorial:
 
 Series product:
 \recur{
-	\prod_{i < 0} f(\xvec,i) &:= 1,	\\
-	\prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) \cdot \prod_{i < y} f(\xvec, i).
+	P_f(\xvec,0) \equiv \prod_{i < 0} f(\xvec,i) &:= 1,	\\
+	P_f(\xvec,y+1) \equiv \prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) \cdot \prod_{i < y} f(\xvec, i).
 }
-If $f$ is in \grz{3} then so is the product $\prod_{i < y} f(\xvec,i)$, as it consists of $y$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
+If $f$ is in \grz{3} then so is the product $P_f(\xvec,y)$, as it consists of $y-1$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
 
 Bounded universal quantifier:
 \begin{equation} \forall_{i < y} P(\xvec,i) := \prod_{i < y} P(\xvec,i). \end{equation}
@@ -368,9 +392,9 @@ Primality:
 
 The first prime after $x$:
 \begin{equation} \operatorname{nextprime}(x) := \min_{i \leq x!+1} (i \textrm{ prime}) \wedge (i > x). \end{equation}
-The bound on this function comes from Euclid or some such bearded Greek. Note that this is an exceptionally inefficient way of finding primes.
+Note that this is an exceptionally inefficient way of finding primes, in terms of number of computations performed. 
 
-The \nth prime:
+The \nth prime, starting at $n=0$:
 \recur{
 	p_0 \equiv p(0) &:= 2,		\\
 	p_{n+1} \equiv p(n+1) &:= \operatorname{nextprime} (p_n).
@@ -384,7 +408,7 @@ Exponent of $x$ in the decomposition of $y$:
 We will be working with $n$-tuples, or lists, extensively. All of the list operations can be defined as \grz{3} functions on numbers by way of the G\"odel encoding.
 
 G\"odel encoding of an $n$-tuple:
-\begin{equation} \xvec \equiv [x_0, \dots, x_n] := \prod_{0 \leq i \leq n} p_i^{x_i+1}. \end{equation}
+\begin{equation} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
 The $+1$ in the exponent is so we can reliably determine the length of a list. The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
 
 Value of \nth position in an encoded list:
@@ -394,7 +418,8 @@ Length of an encoded list:
 \begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
 
 The index of the first occurrence of a given value in an encoded list:
-\begin{equation} \operatorname{find}(\xvec,n) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
+\begin{equation} \operatorname{find}(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
+Note that $\operatorname{find}(\xvec,y)$ returns $|\xvec|$ if $y$ does not occur in the list.
 
 Whether an encoded list contains a given value:
 \begin{equation} y \in \xvec := \operatorname{find}(\xvec,y) < |\xvec|. \end{equation}
@@ -403,10 +428,10 @@ The largest element of an encoded list:
 \begin{equation} \operatorname{biggest}(\xvec) := \operatorname{biggest}'(\xvec,|\xvec|-1), \end{equation}
 \recurN{
 	\operatorname{biggest}'(\xvec,0) &:= (\xvec)_0, \\ 
-	\operatorname{biggest}'(\xvec,n+1) &:= \max \left ( (\xvec)_{n+1},\operatorname{biggest}'(\xvec,n). \right )
+	\operatorname{biggest}'(\xvec,n+1) &:= \max \left ( (\xvec)_{n+1},\operatorname{biggest}'(\xvec,n) \right ).
 }
 
-To obtain the sub-list of $\xvec$ starting at position $s$ and ending at position $e$.:
+To obtain the sub-list of $\xvec$ starting at position $s$ and ending at position $e$:
 \begin{equation} \xvec[s \dots e] \equiv \operatorname{slice}(\xvec,s,e) := \prod_{i=s'}^{e'}(p_{i-s'})^{(\xvec)_i+1}, \end{equation}
 \begin{equation*} 
 \begin{split}
@@ -419,9 +444,9 @@ To append a single value to the end of an encoded list:
 \begin{equation} \operatorname{splice}(\xvec,n) := \xvec \cdot p_{|\xvec|}^{n+1}. \end{equation}
 
 To concatenate two encoded lists:
-\begin{equation} \xvec \concat \yvec := \operatorname{splice}(\xvec,(\yvec)_0) \concat \yvec[1 \dots |\yvec|-1] \end{equation}
+\begin{equation} \xvec \concat \yvec := \operatorname{splice}(\xvec,(\yvec)_0) \concat \yvec[1 \dots |\yvec|-1]. \end{equation}
 
-$x \concat y$ is bounded by $p_{|\xvec|+|\yvec|}^{(|\xvec|+|\yvec|) (\operatorname{biggest}(\xvec)+\operatorname{biggest}(\yvec))}$, so is \grz{3}-computable.
+$\xvec \concat \yvec$ is bounded by $p_{|\xvec|+|\yvec|}^{(|\xvec|+|\yvec|) (\operatorname{biggest}(\xvec)+\operatorname{biggest}(\yvec))}$, so is \grz{3}-computable.
 
 \section{Graphs \label{graphs}}
 
@@ -430,7 +455,7 @@ A graph is a set of vertices $V$ and a set of directed edges $E = E^+ \cup E^-$,
 \[ e \rightarrow (\iota(e), \tau(e)), \]
 associates each edge with its initial and terminal vertices. The second,
 \[ e \rightarrow \bar{e}, \]
-is an involution on the edges, which must satisfy the conditions that $\bar{\bar{e}} = e$ and $\iota(\bar{e}) = \tau(e)$, $\forall e \in E$. We will write $e_{ij}$ to mean the edge with $\iota(e_{ij}) = i$ and $\tau(e_{ij})=j$. For any pair of edges $e$ and $\bar{e}$, one is `positive' and belonging to $E^+$, and one `negative' and belonging to $E^-$.
+is an involution on the edges, which must satisfy the conditions that $\bar{\bar{e}} = e$ and $\iota(\bar{e}) = \tau(e)$, $\forall e \in E$. We will write $e_{ij}$ to mean the edge with $\iota(e_{ij}) = i$ and $\tau(e_{ij})=j$. For any pair of edges $e$ and $\bar{e}$, one is `positive' and belongs to $E^+$, and one is `negative' and belongs to $E^-$.
 \end{definition}
 
 \begin{definition}
@@ -450,16 +475,14 @@ A graph is {\it connected} if there exists a path between each pair of its verti
 \begin{definition}
 A tree is a connected, non-empty graph with no reduced circuits.
 
-A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a leftmost child, and so on. 
+A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or leftmost, child, and so on. 
 \end{definition}
 
 \begin{definition}
-A {\it plane recursive tree} is a rooted, ordered tree obtained by a process which begins with the root node and recursively adds vertices below existing ones.
+An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursive process which begins with the root node and adds vertices below existing ones, in effect enumerating the edges.
 \end{definition}
-\ajd{Why ``plane''? Every tree is planar. Where is the particular planar
-embedding used?}
 
-We can assign a labelling to a plane recursive tree by giving vertices labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
+We can assign a labelling to an ordered recursive tree by giving vertices labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
 
 If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. For the purposes of the computation, negative edges will have the same label as their positive counterpart.
 
@@ -472,7 +495,7 @@ which gives the label of the parent of a vertex. For completeness, we also requi
 \end{definition}
 
 \begin{definition}
-A finite plane recursive tree can be entirely described in a canonical way by a {\it depth-first walk}. Note that every node has a single parent and a finite ordered set of children. The process on `visiting' a vertex $v_i$ goes as follows: for each child node $v_j$, travel along $e_{ij}$ and `visit' $v_j$, then travel backwards along $\overline{e_{ij}}$. The sequence of labelled edges travelled along by beginning this process at $v_0$ is the depth-first walk of the tree.
+A finite ordered recursive tree can be entirely described in a canonical way by a {\it depth-first walk}. Note that every node has a single parent and a finite ordered set of children. The process on `visiting' a vertex $v_i$ goes as follows: for each child node $v_j$, travel along $e_{ij}$ and `visit' $v_j$, then travel backwards along $\overline{e_{ij}}$. The sequence of labelled edges travelled along by beginning this process at $v_0$ is the depth-first walk of the tree.
 \end{definition}
 
 Note that the root vertex's label will not appear in this sequence because it has no positive edge leading into it. 
@@ -551,7 +574,7 @@ Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it 
 
 \ajd{$i$ is not computable: its image has computable characteristic function.}
 \begin{itemize}
-	\item $i: G \rightarrow \NN$ is an injection of $G$ onto a \grz{n}-decidable subset of $\NN$;
+	\item $i: G \rightarrow \NN$ is an injection of $G$ onto an \grz{n}-decidable subset of $\NN$;
 	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
 	\item $j: i(G) \rightarrow i(G)$ computes the inverse of any element of $G$.
 \end{itemize}
@@ -560,7 +583,7 @@ Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it 
 	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably many generators is \grz{3}-computable.
 \end{lemma}
 
-The proof of the above lemma is not important, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
+The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
 \[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
 
 $J(x,y)$ is an \grz{3}-computable integer pairing function defined in \cite{Cannonito_1973}.
@@ -673,7 +696,7 @@ Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v
 \end{split}\end{equation}
 
 The free reduction of $\psi(i,j)$ will be implicit from now on.
-\ajd{Should there be a \grz{3} 
+\ajd{Should there be an \grz{3} 
 function which takes an encoded tree and produces
 an encoding of  the freely reduced path from $v_i$ to $v_j$? If so perhaps
 this should all go in Section 4. 
@@ -760,7 +783,7 @@ their images under $i$.
 
 Are the $a$'s going to be words in the generators or group elements?}
 
-We must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define a \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. For completeness, say that $g \not \approx n$ whenever $n \notin i(G)$.
+We must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. For completeness, say that $g \not \approx n$ whenever $n \notin i(G)$.
 \ajd{Is this equivalence relation defined on $X$ or on $i(X)$? (It's easy
 to lift it from $X$ to $i(X)$.)}
 
