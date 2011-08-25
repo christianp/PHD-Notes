@@ -4,6 +4,7 @@
 \usepackage{upgreek}
 \usepackage{amsthm}
 \usepackage{verbatim}
+\usepackage{enumerate}
 \usepackage[usenames]{color}
 \usepackage{setspace}
 \singlespacing
@@ -18,6 +19,10 @@
 
 \newcommand{\NN}{\mathbb{N}}	%blackboard bold
 \newcommand{\ZZ}{\mathbb{Z}}
+\newcommand\ov[1]{\overline{#1}} %overline
+\newcommand{\maps}{\longrightarrow}
+
+\newcommand\eps{\varepsilon}
 
 \newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}	% least #1 such that #2 holds
 
@@ -26,10 +31,15 @@
 
 \newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
 
+\newcommand{\avec}{\mathbf{a}}	% vector x
+\newcommand{\bvec}{\mathbf{b}}	% vector x
+\newcommand{\cvec}{\mathbf{c}}	% vector x
+\newcommand{\dvec}{\mathbf{d}}	% vector x
 \newcommand{\xvec}{\mathbf{x}}	% vector x
 \newcommand{\yvec}{\mathbf{y}}	% vector y
 \newcommand{\wvec}{\mathbf{w}}	% vector w
 \newcommand{\tvec}{\mathbf{t}}	% vector t
+\newcommand{\Uvec}{\mathbf{U}}	% vector U
 \newcommand{\psub}{\dot -}	% proper subtraction
 \newcommand{\rsg}{\overline{sg}} % reverse signature
 \newcommand{\recur}[1]{\begin{equation} \begin{split} #1 \end{split} \end{equation}}	%definition of recursive function
@@ -40,8 +50,26 @@
 \newcommand{\concat}{\ensuremath{+\!\!\!\!+\,}}	% list concatenation
 
 \newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}	%group presentation
-\newcommand{\fgoagog}{\pi_1(\mathbf{G},\Gamma,T,v_0)}					%fundamental group of a graph of groups
-\newcommand{\ugroup}{\mathbf{U}(P)}														%universal group of a pregroup
+\newcommand{\fgoagog}{\pi_1(\mathbf{G},\Gamma,T,v_0)}	%fundamental group of a graph of groups
+%universal group of a pregroup P
+\newcommand{\UP}{\Uvec(P)}
+
+%%% sets { ... | ... }
+\newcommand{\set}[2]{\left\{\, \mathinner{#1}\vphantom{#2}\; \left|\; \vphantom{#1}\mathinner{#2} \right.\,\right\}}
+\newcommand{\oneset}[1]{\left\{\, \mathinner{#1} \,\right\}}
+\newcommand{\smallset}[1]{\left\{\mathinner{#1}\right\}}
+%%%%%%%%%%%% brackets etc
+\newcommand{\abs}[1]{\left|\mathinner{#1}\right|}
+\newcommand{\floor}[1]{\left\lfloor\mathinner{#1} \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil\mathinner{#1} \right\rceil}
+\newcommand{\bracket}[1]{\left[\mathinner{#1} \right]}
+\newcommand{\parenth}[1]{\left(\mathinner{#1} \right)}
+\newcommand{\gen}[1]{\left< \mathinner{#1} \right>}
+
+\newcommand{\rdeg}[1]{\mbox{red-deg}\left(\mathinner{#1}\right)}
+
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -76,7 +104,7 @@ In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of an \grz
 
 Section \ref{bass-serre} consists of a statement and proof of the main result of this paper -- that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. Additionally, we show that the fundamental group of a graph of finitely-generated \grz{n}-computable groups is also \grz{n}-computable, and give an example of a graph of \grz{3}-computable groups whose fundamental group is at least \grz{4}-computable.
 
-Finally, Section \ref{pregroups} defines computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy, generalising the results above.
+Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregroups \cite{Stallings_1971} in the context of the Grzegorczyk hierarchy, generalising the results above.
 
 
 \section{Building blocks \label{buildingblocks}}
@@ -933,28 +961,175 @@ As $m$ depends on the input, the length of the reduced word can only be computed
 Therefore, $G$ is \grz{4}-computable. 
 \end{proof}
 
-\section{Pregroups \label{pregroups}}
+\section{Stallings' pregroups and their universal groups}
+\label{sec:pregroup}
 
-A pregroup $(P,D)$ is {\it \grz{n}-computable} if: 
-\begin{itemize}
-	\item there is an \grz{n}-computable indexing $i: P \rightarrow \NN$,
-	\item  $D$ is \grz{n}-decidable as a subset of $i(P) \times i(P)$ (from now on we will consider $D$ as consisting of pairs of indices instead of pairs of elements),
-	\item $m: D \rightarrow i(P)$ is \grz{n}-computable.
-\end{itemize}
+We now turn to the notion of pregroups in the sense of Stallings,
+\cite{Stallings_1971}, \cite{Stallings_1987}.
+A \emph{pregroup} $P=(P,D,m,\eps,~^{-1})$ consists of a set $P$,  a distinguished element
+$\eps$, a subset $D\subset P\times P$,  
+equipped with  a partial multiplication %, that is a function
+$m:D \to P$, $(a,b) \mapsto ab$, 
+and an involution (or \emph{inversion}) %, that is a function
+$P \to P$, $a \mapsto a^{-1}$, satisfying the following axioms
+for all $a,b,c,d \in P$. (By ``$ab$ is defined'' we mean to say that
+$(a,b)\in D$ and $m(a,b)=ab$.)
+\begin{enumerate}[(P1)]
+\item  %for all $a \in P$
+$a \eps$ and $\eps  a$ are defined and
+$a \eps = \eps a = a;$
+\item  %for all $a \in P,~$
+$a^{-1} a$ and $a a^{-1}$ are defined and $ \ \
+a^{-1} a = a a^{-1} = \eps;$
+\item  % for all $a, b \in P,$
+if $ a b$ is defined, then so is
+$b^{-1} a^{-1},$ and
+$(a  b)^{-1} = b^{-1} a^{-1};$
+\item  \label{it:P4}%for all  $a, b, c \in P,$
+if $a  b$ and $b
+c$ are defined, then $(a b) c$ is defined if and only if $a (b
+c)$ is defined, in which case
+$$ (a b) c =  a (b c);$$
+\item   \label{it:P5} %for all $a,b,c,d \in P$
+if $a  b, b  c,$ and $c  d$
+are all defined then either $a  b  c$ or $b
+c  d$ is defined.
+\end{enumerate}
+It is shown in \cite{Hoare_1988}
+that (P3) follows from (P1), (P2), and (P4), hence can be omitted.
+From now on, when we write $ab=c\in P$, we mean that $a,b$ and $c$ are in $P$, 
+$(a,b)\in D$ and $m(a,b)=c$. 
 
-\begin{lemma} Let $(P,D)$ be a countable, \grz{n}-computable pregroup. The universal group $\ugroup$ is \grz{n+1}-computable.
+The \emph{universal group}  $\UP$  of the pregroup $P$ can be defined as the quotient
+monoid
+\begin{align*}
+\UP = %P^*/\set{ab=c}{D(a,b)=c}.
+P^*/\set{ab=c}{m(a,b)=c},
+\end{align*}
+where $P^*$ denotes the free monoid on $P$. Note that in $\UP$ the identity element 
+$\eps \in P$ is identified
+ with the empty word $1 \in P^*$.
+The elements of $\UP$ may
+therefore represented by
+finite sequences $(a_1, \ldots, a_n)$ of elements
+of $P$ such that $a_ia_{i+1}$ is not defined in $P$, for $1\leq
+i<n$, and $a_i\neq \eps$, for all $i$. (The last condition
+is necessary only to exclude the sequence $(\eps)$.)  
+Such sequences are called {\em $P$-reduced} sequences.
+Since every element in $\UP$ has an inverse, it is clear that
+$\UP$ forms a group. 
+
+
+If ${\Sigma}$ is any set, then
+the disjoint union $P= \smallset{\eps} \cup \Sigma \cup \ov{\Sigma}$
+where $\ov{\Sigma}$ is a copy of ${\Sigma}$
+yields a pregroup with involution given by $\ov \eps=\eps$, $\ov{\ov{a}}=a$,
+for all $a\in \Sigma$,  such that $p \ov{p} = \eps$,
+for all $p\in P$.
+In this case the universal
+group $\UP$ is nothing but the free group $F(\Sigma)$.
+
+The universal property of $\UP$ holds trivially, namely
+the canonical morphism of pregroups $P \to \UP$ defines the
+left-adjoint functor to the {forgetful}
+functor from groups to pregroups.
+
+Stallings \cite{Stallings_1971} showed that composition of the
+inclusion map $P \rightarrow P^\ast$
+ with the standard quotient map $P^\ast \rightarrow \UP$ is injective,
+where $P^\ast$ is the free monoid on $P$. His construction involves defining
+an equivalence relation, which we shall now describe, on the set of 
+$P$-reduced words.
+First define the binary relation  $\sim$ on the set $P$-reduced sequences of elements
+of $P$ by
+$$(a_1,\ldots, a_i,a_{i+1},\ldots, a_n)\sim
+(a_1,\ldots ,a_ic,c^{-1}a_{i+1},\ldots, a_n),$$
+provided  $(a_i,c),(c^{-1},a_{i+1}) \in D.$
+Then Stallings' equivalence relation $\approx$ is the transitive closure of $\sim$.
+%%%%%%%%%%%%%%%%%%%%%%%%%% example
+
+Canonical examples of pregroups arise from free products of groups with
+almagamation and HNN-extensions (see \cite{DiekertDuncanMiasnikov_2010} for details).
+
+
+The following is the principal result on the universal groups of pregroups.
+
+\begin{theorem} [Stallings \cite{Stallings_1971}]\label{thm:sup}
+Let $P$ be a pregroup. Then:
+\begin{enumerate}[1)]
+\item Every element of $\UP$ can be  represented by
+a $P$-reduced sequence;
+\item  any two $P$-reduced sequences representing
+the same element are $\approx$ equivalent, in particular they have the same length;\label{it:sup2}
+\item $P$ embeds into  $\UP$.
+\end{enumerate}
+ \end{theorem}
+
+If $\avec=(a_1,\ldots, a_i,a_{i+1},\ldots, a_n)$ is a word in $P^*$ and $a_ia_{i+1}=b\in P$ then
+we say that the word  $(a_1,\ldots, b ,\ldots, a_n)$ is obtained from $\avec$ by
+\emph{elementary} $P$-\emph{reduction}. We also say that the empty word $1$ is obtained from the 
+word $(\eps)$, of length one, by elementary $P$-reduction. If $\bvec$ is obtained from a word $\avec$
+ by a finite sequence of elementary $P$-reductions then we say that $\bvec$ is obtained from $\avec$
+by $P$-\emph{reduction} and that $\bvec$ is a $P$-\emph{reduction} of $\avec$.  
+Note that, unless $\bvec=1$,  such a reduction can always be carried out without ever
+replacing and occurrence of $\eps$ with $1$. 
+In particular the following lemma follows from statement \ref{it:sup2} of Theorem \ref{thm:sup}.
+\begin{lemma}\label{lem:interleave}
+Let $\cvec=(c_1,\ldots , c_m)$ and $\dvec=(d_1,\ldots, d_n)$ be $P$-reduced words. Then 
+$\cvec=\dvec$ in $\UP$  if and only if $n=m$ and $1$ is a $P$-reduction of the word
+$(d_m^{-1},\ldots, d_1^{-1},c_1,\ldots , c_m)$. 
 \end{lemma}
 
+
+Rimilinger \cite{Rimlinger_1987a} (see also Rimilinger \cite{Rimlinger_1987b} and Hoare \cite{Hoare_1988}) 
+has shown that, 
+\begin{itemize}
+\item given any graph of groups with fundamental group $G$, a pregroup $P$ may
+be constructed such that $\UP = G$;  and conversely that
+\item  given a pregroup $P$ wich satisfies a condition called ``finite height'' then a graph
+of groups with fundamental group $\UP$ may be constructed.
+\end{itemize}
+
+\subsection{Pregroups and the Grzegorczyk hierarchy}
+
+
+Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \NN$.
+(In this case $P$ must be countable.)  
+Define 
+\begin{itemize}
+\item $D^\prime=
+\{(x,y)\in \NN\times \NN\,:\, x=i(p), y=i(q), (p,q)\in D\}$,
+\item 
+the function 
+$m^\prime:D^\prime \maps \NN$, such that $m^\prime(i(p),i(q))=i(m(p,q))$, 
+for 
+all $(p,q)\in D$,  
+and 
+\item the function $j$  given
+by $j(i(p))=i(p^{-1})$, for all $p\in P$.
+\end{itemize}
+Then $P$ is said to have 
+{\em index} $(i,m^\prime,j)$. 
+\begin{definition}
+A pregroup $(P,D)$ is \grz{n}$(A)$-\emph{computable}, with respect to
+index $(i,m^\prime,j)$, if 
+\be
+\item $i(P)$ is \grz{n}$(A)$-decidable;
+\item $D^\prime$ is \grz{n}$(A)$-decidable;
+\item $m^\prime$ is \grz{n}$(A)$-computable and 
+\item $j$ is \grz{n}$(A)$-computable.
+\ee
+\end{definition}
+\ajd{Should results be stated for \grz{n}$(A)$ or just \grz{n}? From now on I'll drop $A$.}
+
+%%%%%%%%%%%%%%%%%%%%%%% here
+
+\begin{theorem}\label{thm:UPgrz} Let $P$ be a \grz{n}-computable pregroup. Then the universal group $\UP$ of $P$  
+is \grz{n+1}-computable.
+\end{theorem}
+
 \begin{proof}
-The index $(i',m')$ of of $\ugroup$ will be on reduced $P$-words, encoded as G\"odel numbers. So it is only necessary to define the multiplication function.
 
-Because of Theorem 4 in Rimlinger, any $P$-words $X$ and $Y$ represent the same element of $\ugroup$ if and only if $X \sim Y$, that is, they are the same length and there is an interleaving of $X$ equal to $Y$. The upshot is, when we have a reduced $P$-word $X$, we can find the $Y \sim X$ of minimal index by enumerating all the $P$-words of length $l_P(x)$. This step needs to be performed after any multiplication, so take that as read from here on.
-
-Say we have two reduced $P$-words, $x = x_1 \dots x_m$ and $y = y_1 \dots y_n$. If $(x_m,y_1) \notin D$, then the product $m'({\bf x},{\bf y})$ is the concatenation $\xvec \concat \yvec$. (There can't be any other $P$-word of the same length equivalent to $xy$ and with lower index, can there?)
-
-If $x_m = y_1^{-1}$, then $m'({\bf x},{\bf y}) = m'([x_1 \dots x_{m-1}],[y_2 \dots y_n])$.
-
-If $xy = z \in P$, then $m'({\bf x},{\bf y}) = m'( m'([x_1 \dots x_{n-1}], [z]), [y_2 \dots y_n])$. As $z$ may have an index as big as any \grz{n} function, the recursion becomes unbounded at this point, so $m'$ is \grz{n+1} computable.
 \end{proof}
 
 \bibliographystyle{alpha}
