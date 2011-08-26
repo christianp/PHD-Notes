@@ -31,13 +31,16 @@
 
 \newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
 
-\newcommand{\avec}{\mathbf{a}}	% vector x
-\newcommand{\bvec}{\mathbf{b}}	% vector x
-\newcommand{\cvec}{\mathbf{c}}	% vector x
-\newcommand{\dvec}{\mathbf{d}}	% vector x
+\newcommand{\avec}{\mathbf{a}}	% vector
+\newcommand{\bvec}{\mathbf{b}}	% vector 
+\newcommand{\cvec}{\mathbf{c}}	% vector 
+\newcommand{\dvec}{\mathbf{d}}	% vector 
+\newcommand{\uvec}{\mathbf{u}}	% vector 
+\newcommand{\vvec}{\mathbf{v}}	% vector 
+\newcommand{\wvec}{\mathbf{w}}	% vector w
 \newcommand{\xvec}{\mathbf{x}}	% vector x
 \newcommand{\yvec}{\mathbf{y}}	% vector y
-\newcommand{\wvec}{\mathbf{w}}	% vector w
+\newcommand{\zvec}{\mathbf{z}}	% vector 
 \newcommand{\tvec}{\mathbf{t}}	% vector t
 \newcommand{\Uvec}{\mathbf{U}}	% vector U
 \newcommand{\psub}{\dot -}	% proper subtraction
@@ -67,6 +70,14 @@
 \newcommand{\gen}[1]{\left< \mathinner{#1} \right>}
 
 \newcommand{\rdeg}[1]{\mbox{red-deg}\left(\mathinner{#1}\right)}
+%%%%%%%%%%%%%functions
+\newcommand{\find}{\operatorname{find}}
+\newcommand{\Dfind}{\operatorname{Dfind}}
+\newcommand{\Preduced}{\operatorname{Preduced}}
+\newcommand{\leftm}{\operatorname{leftm}}
+\newcommand{\Predn}{\operatorname{Predn}}
+\newcommand{\Preduce}{\operatorname{Preduce}}
+\newcommand{\Interleaven}{\operatorname{Interleaven}}
 
 \newcommand{\be}{\begin{enumerate}}
 \newcommand{\ee}{\end{enumerate}}
@@ -431,7 +442,7 @@ The \nth prime, starting at $n=0$:
 Exponent of $x$ in the decomposition of $y$:
 \begin{equation} [y]_x := \max_{i < y} \left( x^i \mid y \right). \end{equation}
 
-\subsection{Lists}\label{lists}
+\subsection{Lists}\label{sec:lists}
 
 We will be working with $n$-tuples, or lists, extensively. All of the list operations can be defined as \grz{3} functions on numbers by way of the G\"odel encoding.
 
@@ -448,11 +459,11 @@ Length of an encoded list:
 \begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
 
 The index of the first occurrence of a given value in an encoded list:
-\begin{equation} \operatorname{find}(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
-Note that $\operatorname{find}(\xvec,y)$ returns $|\xvec|$ if $y$ does not occur in the list.
+\begin{equation} \find(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
+Note that $\find(\xvec,y)$ returns $|\xvec|$ if $y$ does not occur in the list.
 
 Whether an encoded list contains a given value:
-\begin{equation} y \in \xvec := \operatorname{find}(\xvec,y) < |\xvec|. \end{equation}
+\begin{equation} y \in \xvec := \find(\xvec,y) < |\xvec|. \end{equation}
 
 The largest element of an encoded list:
 \begin{equation} \operatorname{biggest}(\xvec) := \operatorname{biggest}'(\xvec,|\xvec|-1), \end{equation}
@@ -532,7 +543,7 @@ Note that the root vertex's label will not appear in this sequence because it ha
 
 Because an edge and its inverse have the same label, the first occurrence of a label in the sequence represents the positive edge, and the second occurrence represents the trip back up the negative edge.
 
-The depth-first walk can be encoded as a G\"odel number by the method in Section \ref{lists}. We will define a function $\phi_{\tvec}(n)$ which takes an encoded depth-first walk $\tvec$ of a tree and gives the label of the parent of the 
+The depth-first walk can be encoded as a G\"odel number by the method in Section \ref{sec:lists}. We will define a function $\phi_{\tvec}(n)$ which takes an encoded depth-first walk $\tvec$ of a tree and gives the label of the parent of the 
 vertex with label $n$. 
 
 \subsection{Some functions to work with encoded trees}\label{encodetrees}
@@ -541,8 +552,8 @@ Let $\tvec$ be an encoded depth-first walk of a tree.
 
 To find the first and second occurrences of the edge with label $n$ in the walk:
 \recur{
-\operatorname{fst}(\tvec,n) &:= \operatorname{find}(\tvec,n), \\
-\operatorname{snd}(\tvec,n) &:= \operatorname{find}\left( \tvec[\operatorname{fst}(\tvec,n)+1 \dots |\tvec|-1],n \right).
+\operatorname{fst}(\tvec,n) &:= \find(\tvec,n), \\
+\operatorname{snd}(\tvec,n) &:= \find\left( \tvec[\operatorname{fst}(\tvec,n)+1 \dots |\tvec|-1],n \right).
 }
 
 find is \grz{3}-computable, and snd is bounded by $|\tvec|$ so is also \grz{3}-computable.
@@ -1034,6 +1045,7 @@ the canonical morphism of pregroups $P \to \UP$ defines the
 left-adjoint functor to the {forgetful}
 functor from groups to pregroups.
 
+\subsection{Stallings' Theorem}\label{sec:stall}
 Stallings \cite{Stallings_1971} showed that composition of the
 inclusion map $P \rightarrow P^\ast$
  with the standard quotient map $P^\ast \rightarrow \UP$ is injective,
@@ -1071,8 +1083,8 @@ we say that the word  $(a_1,\ldots, b ,\ldots, a_n)$ is obtained from $\avec$ by
 word $(\eps)$, of length one, by elementary $P$-reduction. If $\bvec$ is obtained from a word $\avec$
  by a finite sequence of elementary $P$-reductions then we say that $\bvec$ is obtained from $\avec$
 by $P$-\emph{reduction} and that $\bvec$ is a $P$-\emph{reduction} of $\avec$.  
-Note that, unless $\bvec=1$,  such a reduction can always be carried out without ever
-replacing and occurrence of $\eps$ with $1$. 
+(Note that, unless $\bvec=1$,  such a reduction can always be carried out without ever
+replacing and occurrence of $\eps$ with $1$.) 
 In particular the following lemma follows from statement \ref{it:sup2} of Theorem \ref{thm:sup}.
 \begin{lemma}\label{lem:interleave}
 Let $\cvec=(c_1,\ldots , c_m)$ and $\dvec=(d_1,\ldots, d_n)$ be $P$-reduced words. Then 
@@ -1080,6 +1092,8 @@ $\cvec=\dvec$ in $\UP$  if and only if $n=m$ and $1$ is a $P$-reduction of the w
 $(d_m^{-1},\ldots, d_1^{-1},c_1,\ldots , c_m)$. 
 \end{lemma}
 
+If $\avec \in P^\ast$ and both $\bvec$ and $\cvec$ are $P$-reduced, $P$-reductions of $\avec$ then
+it follows from Theorem \ref{thm:sup} that $\bvec\approx \cvec$. 
 
 Rimilinger \cite{Rimlinger_1987a} (see also Rimilinger \cite{Rimlinger_1987b} and Hoare \cite{Hoare_1988}) 
 has shown that, 
@@ -1089,6 +1103,8 @@ be constructed such that $\UP = G$;  and conversely that
 \item  given a pregroup $P$ wich satisfies a condition called ``finite height'' then a graph
 of groups with fundamental group $\UP$ may be constructed.
 \end{itemize}
+
+
 
 \subsection{Pregroups and the Grzegorczyk hierarchy}
 
@@ -1111,7 +1127,7 @@ by $j(i(p))=i(p^{-1})$, for all $p\in P$.
 Then $P$ is said to have 
 {\em index} $(i,m^\prime,j)$. 
 \begin{definition}
-A pregroup $(P,D)$ is \grz{n}$(A)$-\emph{computable}, with respect to
+The pregroup $P$ is \grz{n}$(A)$-\emph{computable}, with respect to
 index $(i,m^\prime,j)$, if 
 \be
 \item $i(P)$ is \grz{n}$(A)$-decidable;
@@ -1128,10 +1144,170 @@ index $(i,m^\prime,j)$, if
 is \grz{n+1}-computable.
 \end{theorem}
 
+In order to prove this theorem we first introduce some functions and then use these to construct
+an index for $\UP$. 
+\subsection{Functions for pregroups}
+In this section we shall use the notation and constructions  of
+Section \ref{sec:lists}. As we shall mostly be working with encoded lists we use 
+$\avec$ to represent both an encoded list $\avec$ or an arbitrary non-negative integer $\avec$, 
+as appropriate to
+the context. 
+Let $i:P\maps \NN$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
+We shall assume that $i(\eps)=1$.   
+Elements of $P^*$ are regarded as finite sequences of elements of $P$.  Define an indexing function
+$i_1:P^*\maps \NN$ by 
+\begin{equation}\label{eq:imonoid}
+i_1(a_0,\ldots,a_m)=[i(a_0),\ldots ,i(a_m)].
+\end{equation} 
+Then $i_1$ is injective; in particular, by definition of the
+G\"odel number of the empty sequence,  
+$i_1(1)=1$, while,  on the other hand, $i_1(\eps)= 4$.  
+
+The function $i_1$ is 
+ \grz{n}-decidable: the characteristic function of $i_1(P^*)$ is the function 
+$c$ such that 
+\[c(\avec)=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
+
+We also define functions corresponding to multiplication in $P^*$  and to the extension of the inversion
+operation on $P$ to $P^*$. That is we define $m_1:\NN\times\NN\maps \NN$ and $j_1:\NN\maps \NN$ by
+\begin{equation}\label{eq:mmonoid}
+m_1(i_1(\uvec),i_1(\vvec))=i_1(\uvec)\concat i_1(\vvec)) 
+\end{equation}
+and 
+\begin{equation}\label{eq:jmonoid}
+j_1(i_1(u_0,\ldots, u_m))=i_1(j(u_m),\ldots ,j(u_0)). 
+\end{equation}
+Then $m_1$ and $j_1$ are \grz{n}-computable functions, $m_1((i_1(\uvec),i_1(\vvec))=i_1(\uvec\vvec)$ 
+and $j_1(i_1(u_0,\ldots, u_m))=i_1(u_m^{-1},\ldots , u_0^{-1})$, as required.
+
+Next we define functions to work with $P$-reduction of encoded words.
+Define $\Dfind:\NN\maps \NN$ by 
+\begin{equation}\label{eq:Dfind}
+\Dfind(\avec)=\min_y(y<|\avec|\wedge ((\avec)_y,(\avec)_{y+1})\in D^\prime).
+\end{equation}
+As $D^\prime$ is \grz{n}-decidable and the minimisation is bounded this is
+an \grz{n}-computable function. 
+
+Next define the predicate $\Preduced$ on $\NN$ by
+\begin{equation}\label{eq:Preduced}
+\Preduced(\avec)=\find(\avec,i(\eps))=|\avec|\wedge \Dfind(\avec)=|\avec|.
+\end{equation} 
+Again this is \grz{n}-computable and we have $\Preduced(i_1(\uvec))=1$ if and 
+only if $\uvec$ is a $P$-reduced word in $P^\ast$. 
+
+Now we construct a function to perform $P$-reduction on an encoded word. This
+function will perform elementary $P$-reduction at the leftmost position where
+it is possible in a given word. As pointed out in Section \ref{sec:stall} the
+order in which $P$-reductions are performed does not affect the equivalence
+class of the $P$-reduced word that is produced, so there will be no need to
+consider any other possible  sequences of $P$-reduction. 
+
+Define a function $\leftm:\NN\maps \NN$ by
+\begin{equation}\label{eq:leftm}
+\leftm(\avec)=
+\left\{
+\begin{array}{ll}
+1,& \textrm{ if } \avec = [1], \textrm{ or } [\eps]\\
+\avec[0\cdots \Dfind(\avec)-1]\concat &\\
+m^\prime((\avec)_{\Dfind(\avec)},(\avec)_{\Dfind(\avec)+1})\concat&\\
+\avec[\Dfind(\avec)+2\cdots |\avec|-1] ,& \textrm{ otherwise. } 
+\end{array}
+\right.
+\end{equation}
+
+
+This is an \grz{n}-computable function. 
+
+Now define $\Predn:\NN\times \NN \maps \NN$ by
+\begin{align}
+\Predn(\avec,0) & = \avec,\notag\\
+\Predn(\avec, n+1) & = \leftm(\Predn(\avec,n))\label{eq:Pr}.
+\end{align} 
+As $\Predn$ is defined by primitive recursion using \grz{n}-computable functions it
+is \grz{n+1}-computable. As the value of $m^\prime(x,y)$ is not necessarily bounded by
+a \grz{n}-computable function the recursion is not in general bounded.
+
+Finally define $\Preduce:\NN\maps \NN$ by
+\begin{equation}\label{eq:Preduce}
+\Preduce(\avec)=\Predn(\avec,|\avec|).
+\end{equation}
+Now if $\uvec \in P^\ast$ and $\vvec$ is a $P$-reduced word 
+obtained from $\uvec$ by $P$-reduction, where reduction is always made 
+at the leftmost possible position, then $\Preduce(i_1(\uvec)=i_1(\vvec)$. 
+
+In order to recognize when two encoded words represent elements of the same
+$\approx$ equivalence class we define the relation $\Interleaven\subseteq \NN\times \NN$ 
+defined as 
+\begin{equation}\label{eq:interleaven}
+\begin{split}
+\Interleaven(\avec,\bvec) &=\Preduced(\avec)\wedge \Preduced(\bvec) \\ 
+&\wedge |\avec|=|\bvec|
+\wedge \Preduce(m_1(j_1(\bvec),\avec))=1.
+\end{split}
+\end{equation}
+This is an \grz{n+1}-decidable relation and from Theorem \ref{thm:sup} and Lemma \ref{lem:interleave} we have,
+for $P$-reduced words $\uvec$ and $\vvec$, 
+$\uvec=\vvec\in \UP$ if and only if  $|\uvec|=|\vvec|$ and $\vvec^{-1}\uvec$ $P$-reduces to the
+empty word,  if and only if $\Interleaven(i_1(\uvec),i_1(\vvec))$.  
+We shall write $m\approx n$, for integers $m,n$ such that $\Interleaven(m,n)$. 
+\subsection{Proof of Theorem \ref{thm:UPgrz}}
+
+We define a function $i_2:\NN\maps \NN$ which will be used to construct an
+index for $\UP$. 
+\begin{equation}\label{eq:i2}
+i_2(\avec)=\min_y(y<\avec \wedge y\in i_1(P) \wedge \Preduced(y) \wedge y\approx \avec).
+\end{equation}
+Now define functions $i_G:P^*\maps \NN$, 
+$m_G:i_G(P^*)\times i_G(P^*) \maps \NN$
+and $j_G:i_G(P^*)\maps \NN$ by 
+\begin{align}
+i_G(\uvec) &=i_2i_1(\uvec),\\
+m_G(\avec, \bvec)& =i_2(\Preduce(m_1(\avec,\bvec)) \textrm{ and }\\
+j_G(\avec)&= i_2j_1(\avec),
+\end{align}
+for all for all $P$-reduced words $\uvec\in P^*$ and $\avec$, $\bvec \in i_G(P^*)$. 
+Theorem \ref{thm:UPgrz} then follows from the next Proposition. 
+\begin{proposition}
+The group $G=\UP$ has \grz{n+1} index $(i_G,m_G,j_G)$. 
+\end{proposition}
+
 \begin{proof}
+The group $G$ consists of equivalence classes of $P$-reduced words under the  relation $\approx$.
+If $\uvec$ and $\vvec$ are $P$-reduced words with $\uvec\approx \vvec$ then 
+$i_G(\uvec)=i_2i_1(\uvec)=i_2i_1(\vvec)=i_G(\vvec)$, by construction. Therefore $i_G$ is 
+a well defined function on $G$.  Moreover if  $\uvec$ and $\vvec$ are $P$-reduced words
+such that $i_G(\uvec)=i_G(\vvec)$ then both $\uvec$ and 
+$\vvec$ are equivalent to some $\wvec$, so $i_G$ is injective. Let $R$ be the set of 
+$P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \NN$, 
+\[c_B(\xvec)=\xvec\in i_1(P_1) \wedge \Preduced(\xvec) \wedge i_2(\xvec)=\xvec,\]
+so $c_B$ is \grz{n+1}-computable. Hence $i_G(R)=i_G(G)$ is \grz{n+1}-decidable. 
 
+As $i_2$ is \grz{n+1}-computable, so are $m_G$ and $j_G$. It therefore remains to
+show that, for all $\uvec,\vvec \in R$, 
+\[m_G(i_G(\uvec),i_G(\vvec))=i_G(\uvec\cdot \vvec)\textrm{ and } j_G(i_G(\uvec))=i_G(\uvec^{-1}),\]
+where $\uvec\cdot \vvec$ denotes the product of $\uvec$ and $\vvec$ in $G$. 
+
+Let $\uvec_0$ and $\vvec_0$ be $P$-reduced words such that $i_G(\uvec_0)=i_2(i_1(\uvec_0))=i_1(\uvec_0)=
+i_G(\uvec)$ and similarly $i_2(i_1(\vvec_0))=i_1(\vvec_0)=
+i_G(\vvec)$. Let $\avec=i_1(\uvec_0)$ and $\bvec=i_1(\vvec_0)$; so $i_2(\avec)=\avec$ and 
+$i_2(\bvec)=\bvec$.  
+The product  $\uvec\cdot \vvec$ is the $\approx$ equivalence class of the
+$P$-reduction of the concatenation of $\uvec$ and $\vvec$. Therefore 
+$i_G(\uvec\cdot \vvec)=i_2(\Preduce(m_1(i_1(\uvec),i_1(\vvec))))$.  
+Since $\uvec=_G \uvec_0$ and $\vvec=_G \vvec_0$, we have $\uvec\cdot \vvec=_G \uvec_0\cdot \vvec_0$, 
+so  $\Preduce(m_1(i_1(\uvec),i_1(\vvec))= \Preduce(m_1(\avec,\bvec)).$ Hence 
+$i_G(\uvec\cdot \vvec)=i_2(\Preduce(m_1(\avec,\bvec)))=m_G(\avec,\bvec)=m_G((i_G(\uvec),i_G(\vvec))$,
+ as required.
+
+A similar argument shows that $j_G(i_G(\uvec))=i_G(\uvec^{-1})$.
 \end{proof}
-
+\subsection{Questions}
+\be
+\item Under which conditions is $\UP$ \grz{n}-computable?
+\item How does the index found in this section compare with that found for Bass-Serre groups in
+earlier sections?
+\item ....
+\ee
 \bibliographystyle{alpha}
 \bibliography{grzegorczyk}
 
