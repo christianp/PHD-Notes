@@ -5,7 +5,7 @@
 \usepackage{amsthm}
 \usepackage{verbatim}
 \usepackage{enumerate}
-\usepackage[usenames]{color}
+\usepackage[usenames,dvipsnames]{color}
 \usepackage{setspace}
 \singlespacing
 %\onehalfspacing
@@ -23,8 +23,6 @@
 \newcommand{\maps}{\longrightarrow}
 
 \newcommand\eps{\varepsilon}
-
-\newcommand{\least}[2]{\underset{#1}{\mu}\left( #2 \right)}	% least #1 such that #2 holds
 
 \newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
 \newcommand{\ith}{$i^{\textrm{th}}$~}
@@ -93,8 +91,12 @@
 \newtheorem{definition}[theorem]{Definition}
 
 \newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{cpe}{\noindent\color{OliveGreen} CP }{}
+\newcommand{\cp}[1]{
+\begin{cpe} #1 \end{cpe}}
 %%
-\newenvironment{ad}{\noindent\color{green} AJD }{}
+\newenvironment{ad}{\noindent\color{blue} AJD }{}
 \newcommand{\ajd}[1]{
 \begin{ad} #1 \end{ad}}
 %%
@@ -401,6 +403,10 @@ In our language, this is:
 \begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
 where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
 
+The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the least integer $n$ such that $n^2 < x$.
+
+\[ \lfloor x^{\frac{1}{2}} \rfloor := \min_{n < x}{\left ( n \cdot n < x \right )} \]
+
 \subsection{\grz{3} functions}
 \grz{3} is where just about all the really useful operations are.
 
@@ -448,8 +454,7 @@ We will be working with $n$-tuples, or lists, extensively. All of the list opera
 
 G\"odel encoding of an $n$-tuple:
 \begin{equation} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
-The $+1$ in the exponent is so we can reliably determine the length of a list. 
-\ajd{The empty list should be encoded as $1$: then it will have length $0$.} 
+The $+1$ in the exponent is so we can reliably determine the length of a list.  The empty list should be encoded as $1$: then it will have length $0$.
 The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
 
 Value of \nth position in an encoded list:
@@ -516,23 +521,23 @@ A graph is {\it connected} if there exists a path between each pair of its verti
 \begin{definition}
 A tree is a connected, non-empty graph with no reduced circuits.
 
-A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or leftmost, child, and so on. 
+A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or {\it leftmost}, child, and so on. 
 \end{definition}
 
 \begin{definition}
 An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursive process which begins with the root node and adds vertices below existing ones, in effect enumerating the edges.
 \end{definition}
 
-We can assign a labelling to an ordered recursive tree by giving vertices labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
+We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
 
-If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. For the purposes of the computation, negative edges will have the same label as their positive counterpart.
+If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. For the purposes of the computation, each negative edge will have the same label as its positive counterpart.
 
 \begin{definition}
-Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is \grz{n}-computable if there is an \grz{n}-decidable labelling 
+	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
 \[i: V \rightarrow \NN,\]
 (we can assume $i(v_0) = 0$) and an \grz{n}-computable `parent function'
 \[\phi_T:i(V) \rightarrow i(V),\]
-which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0)$.
+which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$.
 \end{definition}
 
 \begin{definition}
@@ -556,7 +561,7 @@ To find the first and second occurrences of the edge with label $n$ in the walk:
 \operatorname{snd}(\tvec,n) &:= \find\left( \tvec[\operatorname{fst}(\tvec,n)+1 \dots |\tvec|-1],n \right).
 }
 
-find is \grz{3}-computable, and snd is bounded by $|\tvec|$ so is also \grz{3}-computable.
+The function $\operatorname{find}$ is \grz{3}-computable, and $\operatorname{snd}$ is bounded by $|\tvec|$ so is also \grz{3}-computable.
 
 To get the label of the \nth child of the root:
 \recur{
@@ -579,16 +584,16 @@ The number of children of the root node:
 kids is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
 
 Whether the root has a child with label $n$:
-\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \least{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
+\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
 
 Finally, the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
 
 \recur{
 \phi_{\tvec}(0) &:= 0, \\
-\phi_{\tvec}(n) &:= \operatorname{p}'(x,n,0).
+\phi_{\tvec}(n+1) &:= \operatorname{p}'(\tvec,n+1,0).
 }
 \recurN{
-\operatorname{p}'(x,n,p) &:= \begin{cases}
+\operatorname{p}'(\tvec,n,p) &:= \begin{cases}
 						0 & n \not \in \tvec, \\
 						p & \operatorname{haschild}(\tvec,n), \\
 						\operatorname{p}'(\operatorname{subtree}(\tvec,z),n,\operatorname{child}(\tvec,z)) & \textrm{otherwise.}
@@ -598,7 +603,7 @@ Finally, the parent function $\phi_{\tvec}$. The idea is basically to do the dep
 \begin{equation*} z := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
 
 We will also need to know if the tree contains an edge $e_{ij}$:
-\begin{equation} e_{ij} \in \tvec \Leftrightarrow \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \end{equation}
+\begin{equation} e_{ij} \in \tvec \Leftrightarrow \left ( \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \right ) \wedge i \neq j \end{equation}
 
 
 \begin{lemma}
@@ -613,12 +618,13 @@ As the tree is finite, of course its labelling is an \grz{3}-decidable subset of
 
 Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
 
-\ajd{$i$ is not computable: its image has computable characteristic function.}
 \begin{itemize}
 	\item $i: G \rightarrow \NN$ is an injection of $G$ onto an \grz{n}-decidable subset of $\NN$;
 	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
 	\item $j: i(G) \rightarrow i(G)$ computes the inverse of any element of $G$.
 \end{itemize}
+
+Note that $i$ itself is not computable but its image has computable characteristic function.
 
 \begin{lemma}\cite[3.1]{Cannonito_1973}
 	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably many generators is \grz{3}-computable.
@@ -627,34 +633,34 @@ Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it 
 The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
 \[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
 
-$J(x,y)$ is an \grz{3}-computable integer pairing function defined in \cite{Cannonito_1973}.
+$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\NN \times \ZZ \rightarrow \NN$ defined in \cite{Cannonito_1973}.
 
 
 \begin{definition} \cite[2.3]{Cannonito_1973}
 	Let $A \subset \NN$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\NN^k$ for aribtrary $k$ and range $\NN$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
 	\begin{align}
-		E(x) &:= x - \lfloor x^{\frac{1}{2}} \rfloor, \\
 		c_A(x) &:= \begin{cases}
 									0 & \textrm{if}\; x \in A, \\
 									1 & \textrm{if}\;  x \notin A.
 							\end{cases}
 	\end{align}
 \end{definition}
-\ajd{$E(x)=\min_{i<x}(i^2\le x)$, so is in \grz{2}.}
  
 \begin{lemma} \label{relativetonormalcomputable}
 	Let $A \subset \NN$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
-\ajd{In this lemma and the next theorem, $n\ge 2$.}
+
+\begin{definition}
+	The {\it word problem} WP$(G)$, associated with a group $G$ with generating set $X$, is the set of all words $w \in X^{\ast}$ such that $w =_G 1$. That is, it is the set of all words representing the trivial element of $G$.
+\end{definition}
+
 \begin{theorem} \cite[3.2]{Cannonito_1973} \label{wp-computable-implies-group}
 	For every countable group $G$ there exists $a \subset \NN$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
-\ajd{What does it mean for a group to be \grz{n}$A$-computable?
-Define the word problem of a group $G$ and explain the notation WP$(G)$.
 
-I think that a corollary should be given here, as an analogue to
-Rabin's result, to which it should be compared. Namely, WP$(G)$ is 
-\grz{n}-decidable if and only if $G$ is \grz{n}-computable.}
+\begin{corollary}
+	WP$(G)$ is \grz{n}-decidable if and only if $G$ is \grz{n}-computable.
+\end{corollary}
 
 \begin{comment}
 		\begin{definition} \cite[3.3]{Cannonito_1973}
@@ -673,40 +679,29 @@ Let $\Gamma = (V,E)$ be a connected graph.
 \begin{definition}
 Associate with each vertex $v$ a vertex group $G_v = \present{X_v}{R_v}$, with the $X_v$ all pairwise disjoint. Call the set of all vertex groups $\mathbf{G}$. 
 
-For each edge $e \in E$ associate two isomorphic groups $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$.
+For each edge $e \in E$ associate two isomorphic {\it edge groups} $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$ satisfiying $\phi_e^{-1} = \phi_{\bar{e}}$.
 
 $(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
 \end{definition}
-\ajd{Also, it is required that  $\phi_e^{-1}=\phi_{\bar e}$. 
-It makes life easier if $A_e$ and $B_e$ are defined as the 
-{\em edge groups} of $e$ and $\bar e$, respectively.}
-\begin{definition}
-Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then $G = \fgoagog$ is called the {\it fundamental group} of $(\mathbf{G},\Gamma)$, defined by
 
-\begin{equation}
-G = \fgoagog = \left( \ast_{v \in V} G_v \right) \underset{\phi_e}{\ast} F(E)
-\end{equation}
+\begin{definition}
+Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then the {\it fundamental group} of $(\mathbf{G},\Gamma)$, with respect to $T$ and $v_0$, is the group $G = \fgoagog$, defined as follows:
 
 The generators of $G$ are
 \[ X = \left( \bigcup_{v \in V}X_v \right) \cup \left( \bigcup_{e \in E}\{e\} \right),\]
 and the relations are 
-\[ R = \left( \bigcup_{v \in V}R_v \right) \cup \{e^{-1}A_ee = B_e,  \forall e \in E\} \cup \{ e^{-1} = \bar{e}, \forall e \in E\} \cup \{ e = 1, \forall e \in T \}.\]
+\[ R = \left( \bigcup_{v \in V}R_v \right) \cup \{e^{-1}ae = \phi_e(a),  \forall a \in A_e, \forall e \in E\} \cup \{ e^{-1} = \bar{e}, \forall e \in E\} \cup \{ e = 1, \forall e \in T \}.\]
+
+$G$ can also be defined as the free product of all the vertex groups and the free group on the graph's edges minus the spanning tree, with the appropriate edge groups amalgamated.
+
+\begin{equation}
+G = \fgoagog = \left( \ast_{v \in V} G_v \right) \underset{\phi_e}{\ast} F(E(\Gamma \setminus T))
+\end{equation}
+
 \end{definition}
-\ajd{``Then the {\it fundamental group} of $(\mathbf{G},\Gamma)$, with
-respect to $T$ and $v_0$,  is the
-group  $G = \fgoagog$ defined by ...''. 
 
-The free part of the amalgam above
-should be $F(E(\Gamma \backslash T))$. 
-
-I think (53) should be given as
-a consequence of the definition of $G$ by generators and relations. 
-
-The
-definition of the relation involving edge groups needs to be made
-more explicit: $e^{-1}ae=\phi_e^{-1}(b)$ ...}
 \begin{definition}
-A word $w \in X^{\ast}$ is {\it admissible} if it is in the form
+A word $w \in X^{\ast}$ is {\it admissible} if it can be factored in the form
 \[ w = a_0 e_1 a_1 e_2 \dots a_{n-1} e_n a_n \]
 where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dots,v_n)$, such that $v_0 = v_n$, $v_i = \iota(e_{i+1})=\tau(e_i)$, $0 < i < n$, and $a_i \in G_{v_i}$, $i=0,\dots,n$.
 \end{definition}
@@ -726,6 +721,7 @@ Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
 	\item $n > 0$ and there exists $0<i<n$ such that $e_{i+1}=\bar{e_i}$ and $a_i \in B_{e_i}$.
 \end{itemize}
 \end{lemma}
+\cp{Can't find the relevant lemma in Higgins. Proof is very simple - should I just write it out?}
 
 \begin{definition}
 Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v_j$ can be found by freely reducing the path $\psi(i,j)$, defined by:
@@ -737,16 +733,8 @@ Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v
 \end{split}\end{equation}
 
 The free reduction of $\psi(i,j)$ will be implicit from now on.
-\ajd{Should there be an \grz{3} 
-function which takes an encoded tree and produces
-an encoding of  the freely reduced path from $v_i$ to $v_j$? If so perhaps
-this should all go in Section 4. 
 
-]On the other hand perhaps all of this
-can be done by using the free group on the edges and reducing words there:
-which is  known  to be \grz{3}.}
-
-What we really want is a function $\pi(g):G \rightarrow X^{\ast}$ that gives an admissible word beginning and ending at $v_0$ and containing a representation of $g$ as a contiguous subword. 
+What we really want is a function $\pi:G \rightarrow X^{\ast}$ that gives an admissible word beginning and ending at $v_0$ and containing a representation of $g$ as a contiguous subword.  So $\pi(g)$ is an admissible word which represents $g \in G$.
 \ajd{So is $\pi(g)$ ideally an admissible word $w$ which represents 
 $g\in G$?}
 
@@ -754,28 +742,11 @@ If $g$ belongs to some $G_{v_i}$, then $\pi(g) = \psi(0,i) \cdot g \cdot \psi(i,
 \end{definition}
 
 \begin{lemma}
-Let $w$ be a word on $G$. Then by replacing each generator $g$ by $\pi(g)$ and freely reducing the resulting word, we obtain an admissible word starting at $v_0$ which is equivalent to $w$. Call this word $\pi(w)$, abusing notation a bit.
+	Let $w = x_1 \dots x_n$ be a word in $X^{\ast}$, representing the group element $g \in G$. Then by replacing each generator $x_i$ by $\pi(x_i)$ and freely reducing the resulting word, we obtain an admissible word starting at $v_0$ which is equivalent to $w$. Call this word $\pi(w)$.
 \end{lemma}
-\ajd{$w$ is a word on $X$ (or in $X^\ast$). $w$ should represent the
-element $g$ of $G$, to make the statement of the lemma coherent.
 
-Is $\pi$ working with generators or with their images under $i$? 
-
-At some point presumably it's necessary to show this whole process
-corresponds to a function on an encoded word.
-
-Do
-products of generators in $G_v$ get replaced by elements of $G_v$ they
-represent or are they left as words in the generators. 
-
-The index of a word
-in the generators will have to be computed using the multiplication function
-$m_v$ for $G_v$.}
 \begin{proof}
-The new word is equivalent to $w$ because the only letters we are adding are edge letters from the spanning tree, which are all trivial in the presentation of $G$.
-\ajd{Also, it is admissible. This follows since the unreduced word is
-admissible and free reduction preserves admissibility. (However, the 
-sequence of the definition may not be immediately apparent.)}
+The new word is equivalent to $w$ because the only letters we are adding are edge letters from the spanning tree, which are all trivial in the presentation of $G$. Also, it is admissible since each $x_i$ in $w$ is replaced by an admissible word with circuit starting and ending at $v_0$.
 \end{proof}
 
 \ajd{Before stating the next theorem the precise definition of \grz{n}-computable
