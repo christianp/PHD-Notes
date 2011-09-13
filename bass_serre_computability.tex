@@ -371,6 +371,19 @@ Bounded maximisation:
 
 If $P$ is an \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
 
+\begin{lemma}
+	Let $A = \{a_0, a_1, \dots\} \subseteq \NN$ be a monotonically increasing integer sequence. Define a function $\sigma_A : \NN \to A$ such that $\sigma_A(n) = a_n$.
+	
+	If $\sigma_A$ is \grz{n}-computable, $n \geq 1$, then its inverse $\sigma_A^{-1} : a_n \mapsto n$ is also \grz{n}-computable.
+\end{lemma}
+\begin{proof}
+	Since $A$ is monotonically increasing, $a_n \geq a_0 + n \geq n$. So we can construct $\sigma_A^{-1}$ through bounded minimisation on $\sigma_A$.
+
+	\[ \sigma_A^{-1}(n) := \min_{i < n+1}{\sigma_A(i) = n} \]
+
+	Constructed this way, $\sigma_A^{-1}$ is \grz{n}-computable since the function performing the bounded minimisation is \grz{1}-computable and the equality predicate is \grz{0}-computable.
+\end{proof}
+
 \subsection{\grz{2} functions}
 Multiplication is an unbounded recursion on the addition operation:
 \recur{
