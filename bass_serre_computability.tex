@@ -137,7 +137,7 @@ Functions in general can take any number of parameters, so it is clearly impract
 We will begin by defining the {\it primitive functions}, which are functions of one of the following three types:
 
 \begin{itemize}
-	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write $0$ to mean the zero function.
+	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
 	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
 	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith parameter.
 \end{itemize}
@@ -187,7 +187,7 @@ so that
 \subsection{Further notation}
 
 \subsubsection{Bound variables}
-A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in the porjection function $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
+A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in the projection function $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
 
 \subsubsection{Iteration}
 A function which evaluates $n$ iterations of a function $f$, where $n$ is a bound variable, can be constructed by composing $f$ with itself $n-1$ times.
@@ -220,9 +220,9 @@ A class \classC{}  is {\it closed under finite composition} if, whenever $f, g_1
 
 A function $f$ is said to be {\it bounded} by another function $g$ if, for all $\xvec$, $f(\xvec) < g(\xvec)$.
 
-A class \classC{} is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC{} and $R(f,g)(\xvec)$ is bounded by $h(\xvec)$, then $R(f,g)$ also belongs to \classC{}. 
+A class \classC{} is {\it closed under bounded recursion} if, whenever $f,g,h$ belong to \classC{} and $R(f,g)(\xvec)$ is bounded by $h(\xvec)$, then $R(f,g)$ also belongs to \classC{}. If, for some $f$ and $g$, there is no such $h \in \mathcal{C}$ bounding $R(f,g)$, then $R(f,g)$ is said to be obtained by an {\it unbounded recursion} on $f$ and $g$.
 
-The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{n} of functions which are each closed under finite composition and bounded recursion. 
+The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{n} of functions which are each closed under finite composition and by bounded recursion. 
 
 \grz{0} consists of just the primitive functions, and whatever else can be obtained by finitely many applications of the composition operator and bounded recursion.
 
@@ -240,7 +240,7 @@ The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{
 Below I will give explicit definitions for the operations of elementary arithmetic, plus some other useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
 
 \subsection{\grz{0} functions}
-Add a constant $n$ to $x$ by iterating the successor function $n$ times on $x$:
+Add a constant integer $n$ to $x$ by iterating the successor function $n$ times on $x$:
 \begin{equation} +_n(x) \equiv x + n := s^{(n)}(x). \end{equation}
 
 Note that $n$ is a bound variable, that is, there is a different function $+_n$ for each $n$.
@@ -248,7 +248,7 @@ Note that $n$ is a bound variable, that is, there is a different function $+_n$ 
 A nullary function returning any single constant can be constructed by composing $+_n$ with $z$
 \begin{equation} c_n() := 0 + n. \end{equation}
 
-From now on I will just write the number $n$ to mean the function $c_n$, when appropriate.
+From now on I will just write the number $n$ to mean the function $c_n$, when it is not likely to lead to confusion.
 
 Decrement by 1:
 \recur{
@@ -262,7 +262,7 @@ Proper subtraction:
 	x \psub (y+1) &:= dec(x \psub y).
 }
 
-$x \psub y$ is bounded by $P_2^1 \equiv x$, so belongs to \grz{0}.
+$x \psub y$ is bounded by $P_2^1 \equiv x$, so $\psub$ belongs to \grz{0}.
 
 Signature:
 \recur{
@@ -299,7 +299,7 @@ Ordering:
 \begin{equation} \begin{split} 
 	x > y &:= x \psub y, 	\\
 	x < y &:= y \psub x, \\
-	x \geq y &:= \neg (y>x),	\\
+	x \geq y &:= \neg (y<x),	\\
 	x \leq y &:= \neg (x>y).
 \end{split} \end{equation}
 
@@ -312,13 +312,13 @@ The smallest of two numbers:
 Remainder when dividing $x$ by $y$:
 \recur{
 	0 \bmod{y} &:= 0,	\\
-	(x+1) \bmod{y} &:= rm' \left( y \psub \left( (x \bmod{y}) + 1 \right), x \bmod{y} \right).
+	(x+1) \bmod{y} &:= \operatorname{rm}' \left( y \psub \left( (x \bmod{y}) + 1 \right), x \bmod{y} \right).
 	}
 \recurN{
-	rm'(0,y) &:= 0, 	\\
-	rm'(x+1,y) &:= y+1.
+	\operatorname{rm}'(0,y) &:= 0, 	\\
+	\operatorname{rm}'(x+1,y) &:= y+1.
 }
-$rm'$ is bounded by $y+1$ so belongs to \grz{0}. $x \bmod{y}$ is defined by recursion on \grz{0} functions and is bounded by $y-1$, so belongs to \grz{0}.
+$\operatorname{rm}'$ is bounded by $y+1$ so belongs to \grz{0}. $x \bmod{y}$ is defined by recursion on \grz{0} functions and is bounded by $y$, so belongs to \grz{0}.
 
 \subsection{\grz{1} functions}
 Adding two numbers together is achieved by a recursion on the successor function.
@@ -343,9 +343,9 @@ Absolute difference:
 Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
 \begin{equation} n \cdot x  \equiv 0 + n + \dots + n := +_x^{(n)}(0). \end{equation}
 
-So we can also get any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. 
+	So we can also get any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions of \grz{1} functions. 
 
-Remember that the functions we are considering have domain $\ZZ_{\geq 0}^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
+Remember that the functions we are considering have domain $\ZZ_{\geq 0}^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative with addition. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
 
 Quotient:
 \recur{
@@ -356,11 +356,11 @@ Quotient:
 Does $x$ divide $y$:
 \begin{equation} x \mid y := \rsg( x \bmod{y} ). \end{equation}
 
-Bounded minimisation: given a predicate $P(\xvec,i)$ and a bound $y$ this returns the least $i$ strictly less than $y$ such that $P(\xvec,i)$ is true. If there is no such $i$, $y$ is returned.
+Bounded minimisation: given a predicate $P(\xvec,i)$ and a bound $y$, this returns the least $i<y$ such that $P(\xvec,i)$ is true. If there is no such $i$, $y$ itself is returned.
 
 \recur{
 	\min_{i < 0} P(\xvec,i) &:= 0,	\\
-	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,y)=y) \wedge (P(\xvec,y) = 0) \right).
+	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,y))=y \wedge (P(\xvec,y) = 0) \right).
 }
 
 Bounded maximisation:
@@ -379,7 +379,7 @@ If $P$ is an \grz{1} function then so are bounded minimisations and maximisation
 \begin{proof}
 	Since $A$ is monotonically increasing, $a_n \geq a_0 + n \geq n$. So we can construct $\sigma_A^{-1}$ through bounded minimisation on $\sigma_A$.
 
-	\[ \sigma_A^{-1}(n) := \min_{i < n+1}{\sigma_A(i) = n} \]
+	\[ \sigma_A^{-1}(n) := \min_{i < n+1}{\left( \sigma_A(i) = n \right)} \]
 
 	Constructed this way, $\sigma_A^{-1}$ is \grz{n}-computable since the function performing the bounded minimisation is \grz{1}-computable and the equality predicate is \grz{0}-computable.
 \end{proof}
@@ -391,7 +391,7 @@ Multiplication is an unbounded recursion on the addition operation:
 	x \cdot (y+1) &:= (x \cdot y) + x.
 }
 
-We can get $x^n$, when $n$ is constant, by $n$ compositions of multiplication by $x$, and hence any (positive-coefficient) polynomial by finite compositions of addition and multiplication. So polynomials belong to \grz{2}.
+We can calculate $x^n$, when $n$ is constant, by $n$ compositions of multiplication by $x$, and hence any (positive-coefficient) polynomial can be obtained by finite compositions of addition and multiplication. So polynomials are \grz{2}-computable.
 
 Series sum:
 \recur{
@@ -416,9 +416,9 @@ In our language, this is:
 \begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
 where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
 
-The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the least integer $n$ such that $n^2 < x$.
+The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the greatest integer $n$ such that $n^2 < x$.
 
-\[ \lfloor x^{\frac{1}{2}} \rfloor := \min_{n < x}{\left ( n \cdot n < x \right )} \]
+\[ \lfloor x^{\frac{1}{2}} \rfloor := \max_{n < x}{\left ( n \cdot n < x \right )} \]
 
 \subsection{\grz{3} functions}
 \grz{3} is where just about all the really useful operations are.
@@ -438,7 +438,7 @@ Factorial:
 Series product:
 \recur{
 	P_f(\xvec,0) \equiv \prod_{i < 0} f(\xvec,i) &:= 1,	\\
-	P_f(\xvec,y+1) \equiv \prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y+1) \cdot \prod_{i < y} f(\xvec, i).
+	P_f(\xvec,y+1) \equiv \prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y) \cdot \prod_{i < y} f(\xvec, i).
 }
 If $f$ is in \grz{3} then so is the product $P_f(\xvec,y)$, as it consists of $y-1$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
 
@@ -449,8 +449,8 @@ Primality:
 \begin{equation} x \textrm{ prime} :=  (x > 1) \wedge \forall_{z < x} \left( (z < 2) \vee \neg (z \mid x) \right). \end{equation}
 
 The first prime after $x$:
-\begin{equation} \operatorname{nextprime}(x) := \min_{i \leq x!+1} (i \textrm{ prime}) \wedge (i > x). \end{equation}
-Note that this is an exceptionally inefficient way of finding primes, in terms of number of computations performed. 
+\begin{equation} \operatorname{nextprime}(x) := \min_{i \leq x!+1} \left( (i \textrm{ prime}) \wedge (i > x) \right). \end{equation}
+Note that this is an exceptionally inefficient way of finding primes, in terms of the number of computations performed. 
 
 The \nth prime, starting at $n=0$:
 \recur{
@@ -458,7 +458,7 @@ The \nth prime, starting at $n=0$:
 	p_{n+1} \equiv p(n+1) &:= \operatorname{nextprime} (p_n).
 }
 
-Exponent of $x$ in the decomposition of $y$:
+The exponent of $x$ in the decomposition of $y$:
 \begin{equation} [y]_x := \max_{i < y} \left( x^i \mid y \right). \end{equation}
 
 \subsection{Lists}\label{sec:lists}
@@ -470,7 +470,7 @@ G\"odel encoding of an $n$-tuple:
 The $+1$ in the exponent is so we can reliably determine the length of a list.  The empty list should be encoded as $1$: then it will have length $0$.
 The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
 
-Value of \nth position in an encoded list:
+The value of the \ith position in an encoded list:
 \begin{equation} (\xvec)_i := [\xvec]_{p_i} - 1. \end{equation}
 
 Length of an encoded list:
