@@ -113,7 +113,7 @@ We describe the Grzegorczyk hierarchy and present a clear notation for defining 
 
 Section \ref{buildingblocks} defines the notation used in this paper. Section \ref{grzegorczyk} defines the Grzegorczyk hierarchy of computable functions and gives definitions and positions on the hierarchy for many useful functions. Section \ref{graphs} repeats Serre's formulation of graphs, and Section \ref{trees} gives conditions for a tree to be computable at a certain level of the Grzegorczyk hierarchy.
 
-In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of an \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. We also discuss a flaw in \cite{Cannonito_1973}'s concept of a ``standard'' group.
+In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of an \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. 
 
 Section \ref{bass-serre} consists of a statement and proof of the main result of this paper -- that the fundamental group of a graph of \grz{n} groups is \grz{n+1}-computable, generalising the results of \cite{Cannonito_1973}. Additionally, we show that the fundamental group of a graph of finitely-generated \grz{n}-computable groups is also \grz{n}-computable, and give an example of a graph of \grz{3}-computable groups whose fundamental group is at least \grz{4}-computable.
 
@@ -201,7 +201,7 @@ For a binary function $f_{\ast}$, representing the operation $\ast$, we will use
 \[x \ast y := f_{\ast}(x,y). \]
 
 \subsubsection{Sets}
-A set $S \subseteq \NN^d$ is defined by its characteristic function $\chi_S$.
+A set $S \subseteq \ZZ_{\geq 0}^d$ is defined by its characteristic function $\chi_S$.
 \[\chi_S(\xvec) := \begin{cases}
  1 & \xvec \in S, \\
  0 & \xvec \notin S.
@@ -209,7 +209,7 @@ A set $S \subseteq \NN^d$ is defined by its characteristic function $\chi_S$.
 \]
 
 \subsubsection{Relations}
-If $R \subseteq \NN^d$ is a relation, $R$ is defined by $\chi_R$. In addition, for binary relations I will write
+If $R \subseteq \ZZ_{\geq 0}^d$ is a relation, $R$ is defined by $\chi_R$. In addition, for binary relations I will write
 \[ x R y := \chi_R(x,y). \]
 
 \subsubsection{Logic}
@@ -345,7 +345,7 @@ Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
 
 So we can also get any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions. 
 
-Remember that the functions we are considering have domain $\NN^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
+Remember that the functions we are considering have domain $\ZZ_{\geq 0}^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
 
 Quotient:
 \recur{
@@ -372,7 +372,7 @@ Bounded maximisation:
 If $P$ is an \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
 
 \begin{lemma}
-	Let $A = \{a_0, a_1, \dots\} \subseteq \NN$ be a monotonically increasing integer sequence. Define a function $\sigma_A : \NN \to A$ such that $\sigma_A(n) = a_n$.
+	Let $A = \{a_0, a_1, \dots\} \subseteq \ZZ_{\geq 0}$ be a monotonically increasing integer sequence. Define a function $\sigma_A : \ZZ_{\geq 0} \to A$ such that $\sigma_A(n) = a_n$.
 	
 	If $\sigma_A$ is \grz{n}-computable, $n \geq 1$, then its inverse $\sigma_A^{-1} : a_n \mapsto n$ is also \grz{n}-computable.
 \end{lemma}
@@ -547,7 +547,7 @@ If we say that the positive edges point downwards, every positive edge can also 
 
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
-\[i: V \rightarrow \NN,\]
+	\[i: V \rightarrow \ZZ_{\geq 0},\]
 (we can assume $i(v_0) = 0$) and an \grz{n}-computable `parent function'
 \[\phi_T:i(V) \rightarrow i(V),\]
 which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$.
@@ -624,7 +624,7 @@ A finite ordered tree is \grz{3} computable.
 \end{lemma}
 
 \begin{proof}
-As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\NN$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
+	As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\ZZ_{\geq 0}$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
 \end{proof}
 
 \section{Computable Groups \label{groups}}
@@ -632,7 +632,7 @@ As the tree is finite, of course its labelling is an \grz{3}-decidable subset of
 Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
 
 \begin{itemize}
-	\item $i: G \rightarrow \NN$ is an injection of $G$ onto an \grz{n}-decidable subset of $\NN$;
+	\item $i: G \rightarrow \ZZ_{\geq 0}$ is an injection of $G$ onto an \grz{n}-decidable subset of $\ZZ_{\geq 0}$;
 	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
 	\item $j: i(G) \rightarrow i(G)$ computes the inverse of any element of $G$.
 \end{itemize}
@@ -646,11 +646,11 @@ Note that $i$ itself is not computable but its image has computable characterist
 The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
 \[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
 
-$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\NN \times \ZZ \rightarrow \NN$ defined in \cite{Cannonito_1973}.
+$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined in \cite{Cannonito_1973}.
 
 
 \begin{definition} \cite[2.3]{Cannonito_1973}
-	Let $A \subset \NN$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\NN^k$ for aribtrary $k$ and range $\NN$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
+	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for aribtrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
 	\begin{align}
 		c_A(x) &:= \begin{cases}
 									0 & \textrm{if}\; x \in A, \\
@@ -660,7 +660,7 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\NN \times \ZZ \ri
 \end{definition}
  
 \begin{lemma} \label{relativetonormalcomputable}
-	Let $A \subset \NN$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
+	Let $A \subset \ZZ_{\geq 0}$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
 
 \begin{definition}
@@ -668,7 +668,7 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\NN \times \ZZ \ri
 \end{definition}
 
 \begin{theorem} \cite[3.2]{Cannonito_1973} \label{wp-computable-implies-group}
-	For every countable group $G$ there exists $a \subset \NN$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
+	For every countable group $G$ there exists $a \subset \ZZ_{\geq 0}$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
 
 \begin{corollary} \label{wp-iff-group}
@@ -686,7 +686,7 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\NN \times \ZZ \ri
 
 \begin{comment}
 		\begin{definition} \cite[3.3]{Cannonito_1973}
-			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalization from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \NN$.
+			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalization from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \ZZ_{\geq 0}$.
 		\end{definition}
 
 		\begin{theorem} \cite[3.4]{Cannonito_1973}
@@ -898,9 +898,9 @@ these subgroups. This means that a homomorphism can be defined merely
 by defining the images of the generators.
 
 We begin by defining the homomorphism $\phi_e$ for the generators of $G_0$ with even powers of $x$:
-\[	\phi_{e}(x^{-2n}yx^{2n}) := a^{(-n)!}ba^{(n)!}, \forall n \in \NN. \]
+\[	\phi_{e}(x^{-2n}yx^{2n}) := a^{(-n)!}ba^{(n)!}, \forall n \in \ZZ_{\geq 0}. \]
 
-Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \NN\}$. \recur{
+Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \ZZ_{\geq 0}\}$. \recur{
 \operatorname{fi}(n) &:= \operatorname{fi}'(n,n).\\
 \operatorname{fi}'(n,0) &:= 0, \\
 \operatorname{fi}'(n,d+1) &:= 
@@ -916,7 +916,7 @@ The function $\operatorname{fi}(n)$ is \grz{3}-computable since it is bounded by
 
 In order for $\phi_e$ to be an isomorphism, we need to identify the remaining generators of $G_0$ (those with odd powers of $x$) with the remaining generators of $G_1$ (those with non-factorial powers of $x$).
 
-To do that, we need a bijection between $\NN$ and the the non-factorial numbers.
+To do that, we need a bijection between $\ZZ_{\geq 0}$ and the the non-factorial numbers.
 
 Define 
 \recur{
@@ -933,7 +933,7 @@ Again, $\operatorname{nf}(n)$ is \grz{3}-computable. Its inverse is also \grz{3}
 \cp{Monotonically increasing integer sequences which are \grz{n}-computable, $n \geq 1$, always have \grz{n}-computable inverses. Is that worth mentioning somewhere?}
 
 Define
-\[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \NN. \]
+\[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \ZZ_{\geq 0}. \]
 
 Now we can define $\phi_{\bar{e}}$ to be the inverse of $\phi_e$.
 \[ 
@@ -1095,15 +1095,15 @@ of groups with fundamental group $\UP$ may be constructed.
 \subsection{Pregroups and the Grzegorczyk hierarchy}
 
 
-Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \NN$.
+Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \ZZ_{\geq 0}$.
 (In this case $P$ must be countable.)  
 Define 
 \begin{itemize}
 \item $D^\prime=
-\{(x,y)\in \NN\times \NN\,:\, x=i(p), y=i(q), (p,q)\in D\}$,
+\{(x,y)\in \ZZ_{\geq 0}\times \ZZ_{\geq 0}\,:\, x=i(p), y=i(q), (p,q)\in D\}$,
 \item 
 the function 
-$m^\prime:D^\prime \maps \NN$, such that $m^\prime(i(p),i(q))=i(m(p,q))$, 
+$m^\prime:D^\prime \maps \ZZ_{\geq 0}$, such that $m^\prime(i(p),i(q))=i(m(p,q))$, 
 for 
 all $(p,q)\in D$,  
 and 
@@ -1138,10 +1138,10 @@ Section \ref{sec:lists}. As we shall mostly be working with encoded lists we use
 $\avec$ to represent both an encoded list $\avec$ or an arbitrary non-negative integer $\avec$, 
 as appropriate to
 the context. 
-Let $i:P\maps \NN$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
+Let $i:P\maps \ZZ_{\geq 0}$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
 We shall assume that $i(\eps)=1$.   
 Elements of $P^*$ are regarded as finite sequences of elements of $P$.  Define an indexing function
-$i_1:P^*\maps \NN$ by 
+$i_1:P^*\maps \ZZ_{\geq 0}$ by 
 \begin{equation}\label{eq:imonoid}
 i_1(a_0,\ldots,a_m)=[i(a_0),\ldots ,i(a_m)].
 \end{equation} 
@@ -1155,7 +1155,7 @@ $c$ such that
 \[c(\avec)=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
 
 We also define functions corresponding to multiplication in $P^*$  and to the extension of the inversion
-operation on $P$ to $P^*$. That is we define $m_1:\NN\times\NN\maps \NN$ and $j_1:\NN\maps \NN$ by
+operation on $P$ to $P^*$. That is we define $m_1:\ZZ_{\geq 0}\times\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ and $j_1:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:mmonoid}
 m_1(i_1(\uvec),i_1(\vvec))=i_1(\uvec)\concat i_1(\vvec)) 
 \end{equation}
@@ -1167,14 +1167,14 @@ Then $m_1$ and $j_1$ are \grz{n}-computable functions, $m_1((i_1(\uvec),i_1(\vve
 and $j_1(i_1(u_0,\ldots, u_m))=i_1(u_m^{-1},\ldots , u_0^{-1})$, as required.
 
 Next we define functions to work with $P$-reduction of encoded words.
-Define $\Dfind:\NN\maps \NN$ by 
+Define $\Dfind:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by 
 \begin{equation}\label{eq:Dfind}
 \Dfind(\avec)=\min_y(y<|\avec|\wedge ((\avec)_y,(\avec)_{y+1})\in D^\prime).
 \end{equation}
 As $D^\prime$ is \grz{n}-decidable and the minimisation is bounded this is
 an \grz{n}-computable function. 
 
-Next define the predicate $\Preduced$ on $\NN$ by
+Next define the predicate $\Preduced$ on $\ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:Preduced}
 \Preduced(\avec)=\find(\avec,i(\eps))=|\avec|\wedge \Dfind(\avec)=|\avec|.
 \end{equation} 
@@ -1188,7 +1188,7 @@ order in which $P$-reductions are performed does not affect the equivalence
 class of the $P$-reduced word that is produced, so there will be no need to
 consider any other possible  sequences of $P$-reduction. 
 
-Define a function $\leftm:\NN\maps \NN$ by
+Define a function $\leftm:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:leftm}
 \leftm(\avec)=
 \left\{
@@ -1204,7 +1204,7 @@ m^\prime((\avec)_{\Dfind(\avec)},(\avec)_{\Dfind(\avec)+1})\concat&\\
 
 This is an \grz{n}-computable function. 
 
-Now define $\Predn:\NN\times \NN \maps \NN$ by
+Now define $\Predn:\ZZ_{\geq 0}\times \ZZ_{\geq 0} \maps \ZZ_{\geq 0}$ by
 \begin{align}
 \Predn(\avec,0) & = \avec,\notag\\
 \Predn(\avec, n+1) & = \leftm(\Predn(\avec,n))\label{eq:Pr}.
@@ -1213,7 +1213,7 @@ As $\Predn$ is defined by primitive recursion using \grz{n}-computable functions
 is \grz{n+1}-computable. As the value of $m^\prime(x,y)$ is not necessarily bounded by
 a \grz{n}-computable function the recursion is not in general bounded.
 
-Finally define $\Preduce:\NN\maps \NN$ by
+Finally define $\Preduce:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:Preduce}
 \Preduce(\avec)=\Predn(\avec,|\avec|).
 \end{equation}
@@ -1222,7 +1222,7 @@ obtained from $\uvec$ by $P$-reduction, where reduction is always made
 at the leftmost possible position, then $\Preduce(i_1(\uvec)=i_1(\vvec)$. 
 
 In order to recognize when two encoded words represent elements of the same
-$\approx$ equivalence class we define the relation $\Interleaven\subseteq \NN\times \NN$ 
+$\approx$ equivalence class we define the relation $\Interleaven\subseteq \ZZ_{\geq 0}\times \ZZ_{\geq 0}$ 
 defined as 
 \begin{equation}\label{eq:interleaven}
 \begin{split}
@@ -1238,14 +1238,14 @@ empty word,  if and only if $\Interleaven(i_1(\uvec),i_1(\vvec))$.
 We shall write $m\approx n$, for integers $m,n$ such that $\Interleaven(m,n)$. 
 \subsection{Proof of Theorem \ref{thm:UPgrz}}
 
-We define a function $i_2:\NN\maps \NN$ which will be used to construct an
+We define a function $i_2:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ which will be used to construct an
 index for $\UP$. 
 \begin{equation}\label{eq:i2}
 i_2(\avec)=\min_y(y<\avec \wedge y\in i_1(P) \wedge \Preduced(y) \wedge y\approx \avec).
 \end{equation}
-Now define functions $i_G:P^*\maps \NN$, 
-$m_G:i_G(P^*)\times i_G(P^*) \maps \NN$
-and $j_G:i_G(P^*)\maps \NN$ by 
+Now define functions $i_G:P^*\maps \ZZ_{\geq 0}$, 
+$m_G:i_G(P^*)\times i_G(P^*) \maps \ZZ_{\geq 0}$
+and $j_G:i_G(P^*)\maps \ZZ_{\geq 0}$ by 
 \begin{align}
 i_G(\uvec) &=i_2i_1(\uvec),\\
 m_G(\avec, \bvec)& =i_2(\Preduce(m_1(\avec,\bvec)) \textrm{ and }\\
@@ -1264,7 +1264,7 @@ $i_G(\uvec)=i_2i_1(\uvec)=i_2i_1(\vvec)=i_G(\vvec)$, by construction. Therefore 
 a well defined function on $G$.  Moreover if  $\uvec$ and $\vvec$ are $P$-reduced words
 such that $i_G(\uvec)=i_G(\vvec)$ then both $\uvec$ and 
 $\vvec$ are equivalent to some $\wvec$, so $i_G$ is injective. Let $R$ be the set of 
-$P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \NN$, 
+$P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \ZZ_{\geq 0}$, 
 \[c_B(\xvec)=\xvec\in i_1(P_1) \wedge \Preduced(\xvec) \wedge i_2(\xvec)=\xvec,\]
 so $c_B$ is \grz{n+1}-computable. Hence $i_G(R)=i_G(G)$ is \grz{n+1}-decidable. 
 
