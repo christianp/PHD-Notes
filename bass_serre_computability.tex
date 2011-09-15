@@ -111,7 +111,7 @@ Grzegorczyk \cite{Grzegorczyk_1953} introduced a hierarchy of classes of recursi
 
 We describe the Grzegorczyk hierarchy and present a clear notation for defining functions within it, along with constructions of many useful elementary functions. 
 
-Section \ref{buildingblocks} defines the notation used in this paper. Section \ref{grzegorczyk} defines the Grzegorczyk hierarchy of computable functions and gives definitions and positions on the hierarchy for many useful functions. Section \ref{graphs} repeats Serre's formulation of graphs, and Section \ref{trees} gives conditions for a tree to be computable at a certain level of the Grzegorczyk hierarchy.
+Section \ref{buildingblocks} defines the notation used in this paper. Section \ref{grzegorczyk} defines the Grzegorczyk hierarchy of computable functions and gives definitions and positions on the hierarchy for many useful functions. Section \ref{graphs} repeats Serre's \cite{Serre_1977} formulation of graphs, and Section \ref{trees} gives conditions for a tree to be computable at a certain level of the Grzegorczyk hierarchy.
 
 In section \ref{groups} we restate \cite{Cannonito_1966}'s definition of an \grz{n}-computable group and \grz{3}-computable index of the free group on countably many generators. 
 
@@ -510,11 +510,11 @@ $\xvec \concat \yvec$ is bounded by $p_{|\xvec|+|\yvec|}^{(|\xvec|+|\yvec|) (\op
 \section{Graphs \label{graphs}}
 
 \begin{definition}
-A graph is a set of vertices $V$ and a set of directed edges $E = E^+ \cup E^-$, with two associated maps. The first,
-\[ e \rightarrow (\iota(e), \tau(e)), \]
+	Following \cite{Serre_1977}, a graph is a set of vertices $V$ and a set of directed edges $E = E^+ \cup E^-$, with two associated maps. The first,
+\[ e \mapsto (\iota(e), \tau(e)), \]
 associates each edge with its initial and terminal vertices. The second,
-\[ e \rightarrow \bar{e}, \]
-is an involution on the edges, which must satisfy the conditions that $\bar{\bar{e}} = e$ and $\iota(\bar{e}) = \tau(e)$, $\forall e \in E$. We will write $e_{ij}$ to mean the edge with $\iota(e_{ij}) = i$ and $\tau(e_{ij})=j$. For any pair of edges $e$ and $\bar{e}$, one is `positive' and belongs to $E^+$, and one is `negative' and belongs to $E^-$.
+\[ e \mapsto \bar{e}, \]
+is an involution on the edges, which must satisfy the conditions that $\bar{\bar{e}} = e$ and $\iota(\bar{e}) = \tau(e)$, $\forall e \in E$. We will write $e_{ij}$ to mean the edge with $\iota(e_{ij}) = i$ and $\tau(e_{ij})=j$. For any pair of opposing edges $e$ and $\bar{e}$, one is `positive' and belongs to $E^+$, and one is `negative' and belongs to $E^-$.
 \end{definition}
 
 \begin{definition}
@@ -522,7 +522,7 @@ A {\it path} in a graph is a sequence of edges $(e_1, e_2, \dots, e_n)$ such tha
 \end{definition}
 
 \begin{definition}
-A {\it circuit} is a path $(e_1, \dots, e_n)$ with $\iota(e_1) = \tau(e_n)$. 
+A {\it circuit} is a path $(e_0, \dots, e_n)$ with $\iota(e_1) = \tau(e_n)$. 
 \end{definition}
 
 \begin{definition}
@@ -532,41 +532,41 @@ A graph is {\it connected} if there exists a path between each pair of its verti
 \section{Computable Trees \label{trees}}
 
 \begin{definition}
-A tree is a connected, non-empty graph with no reduced circuits.
+A tree $T = (V,E)$ is a connected, non-empty graph with no reduced circuits.
 
-A {\it rooted} tree has a particular vertex $v_0$ said to be at the 'top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or {\it leftmost}, child, and so on. 
+Following \cite{Janson_2008}, a {\it rooted} tree has a particular vertex $v_0$ said to be at the `top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or {\it leftmost}, child, and so on. 
 \end{definition}
 
 \begin{definition}
 An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursive process which begins with the root node and adds vertices below existing ones, in effect enumerating the edges.
 \end{definition}
 
-We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing. 
+We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing, and the root can always be recognised. 
 
-If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. For the purposes of the computation, each negative edge will have the same label as its positive counterpart.
+If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. Because it makes easier the computation I will describe shortly, each negative edge will have the same label as its positive counterpart.
 
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
 	\[i: V \rightarrow \ZZ_{\geq 0},\]
-(we can assume $i(v_0) = 0$) and an \grz{n}-computable `parent function'
+(we can insist that $i(v_0) = 0$) and an \grz{n}-computable `parent function',
 \[\phi_T:i(V) \rightarrow i(V),\]
 which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$.
 \end{definition}
 
 \begin{definition}
-A finite ordered recursive tree can be entirely described in a canonical way by a {\it depth-first walk}. Note that every node has a single parent and a finite ordered set of children. The process on `visiting' a vertex $v_i$ goes as follows: for each child node $v_j$, travel along $e_{ij}$ and `visit' $v_j$, then travel backwards along $\overline{e_{ij}}$. The sequence of labelled edges travelled along by beginning this process at $v_0$ is the depth-first walk of the tree.
+	A finite ordered recursive tree can be entirely described in a canonical way by a {\it depth-first walk}. Note that every node has a single parent and a finite ordered set of children. Begin by `visiting' $v_0$. The process on `visiting' a vertex $v_i$ goes as follows: for each child node $v_j$, travel along $e_{ij}$ and `visit' $v_j$, then travel backwards along $\overline{e_{ij}}$. The sequence of labelled edges travelled along by beginning this process at $v_0$ is called the {\it depth-first walk} of the tree.
 \end{definition}
 
 Note that the root vertex's label will not appear in this sequence because it has no positive edge leading into it. 
 
 Because an edge and its inverse have the same label, the first occurrence of a label in the sequence represents the positive edge, and the second occurrence represents the trip back up the negative edge.
 
-The depth-first walk can be encoded as a G\"odel number by the method in Section \ref{sec:lists}. We will define a function $\phi_{\tvec}(n)$ which takes an encoded depth-first walk $\tvec$ of a tree and gives the label of the parent of the 
+The depth-first walk can be encoded as a G\"odel number by the method described in Section \ref{sec:lists}. We will define a function $\phi_{\tvec}(n)$ which takes an encoded depth-first walk $\tvec$ of a tree and gives the label of the parent of the 
 vertex with label $n$. 
 
 \subsection{Some functions to work with encoded trees}\label{encodetrees}
 
-Let $\tvec$ be an encoded depth-first walk of a tree.
+Let $\tvec$ be an encoded depth-first walk of a finite ordered tree.
 
 To find the first and second occurrences of the edge with label $n$ in the walk:
 \recur{
@@ -574,7 +574,7 @@ To find the first and second occurrences of the edge with label $n$ in the walk:
 \operatorname{snd}(\tvec,n) &:= \find\left( \tvec[\operatorname{fst}(\tvec,n)+1 \dots |\tvec|-1],n \right).
 }
 
-The function $\operatorname{find}$ is \grz{3}-computable, and $\operatorname{snd}$ is bounded by $|\tvec|$ so is also \grz{3}-computable.
+The function $\operatorname{find}$ is \grz{3}-computable, so the functions $\operatorname{fst}$ and $\operatorname{snd}$ are \grz{3}-computable.
 
 To get the label of the \nth child of the root:
 \recur{
@@ -582,24 +582,24 @@ To get the label of the \nth child of the root:
 \operatorname{child}(\tvec,n+1) &:= (\tvec)_{\operatorname{snd}(\tvec,\operatorname{child}(\tvec,n))+1}.
 }
 
-child is constructed from \grz{3} functions and is bounded by the number of vertices in the tree. As the tree is finite, child is \grz{3}-computable.
+The function $\operatorname{child}$ is constructed from \grz{3} functions and is bounded by the supremum of the labels of the vertices in the tree. As the tree is finite, $\operatorname{child}$ is \grz{3}-computable.
 
-The depth-first walk of the subtree descended from a vertex $v_n$ is the subsequence found between the two occurrences of $n$ in $\tvec$. 
+Note that he depth-first walk of the subtree descended from a vertex $v_n$ is the subsequence found between the two occurrences of $n$ in $\tvec$. 
 
 To find the subtree descended from the \nth child node of the root:
 \begin{equation} \operatorname{subtree}(\tvec,n) := \tvec[\operatorname{fst}(\operatorname{child}(\tvec,n))+1 \dots \operatorname{snd}(\operatorname{child}(\tvec,n))-1]. \end{equation}
 
-subtree is constructed from \grz{3} operations so is \grz{3}-computable.
+The function $\operatorname{subtree}$ is constructed from \grz{3} operations so is \grz{3}-computable.
 
-The number of children of the root node:
+To obtain the number of children of the root node:
 \begin{equation} \operatorname{kids}(\tvec) := \min_{i < \tvec} (\operatorname{child}(\tvec,i)=0). \end{equation}
 
-kids is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
+The function $\operatorname{kids}$ is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
 
-Whether the root has a child with label $n$:
+To decide whether the root has a child with label $n$:
 \begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
 
-Finally, the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
+Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
 
 \recur{
 \phi_{\tvec}(0) &:= 0, \\
@@ -614,6 +614,8 @@ Finally, the parent function $\phi_{\tvec}$. The idea is basically to do the dep
 }
 
 \begin{equation*} z := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
+
+The function $\operatorname{p}'$ is \grz{3}-computable because it is bounded by $\tvec$.
 
 We will also need to know if the tree contains an edge $e_{ij}$:
 \begin{equation} e_{ij} \in \tvec \Leftrightarrow \left ( \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \right ) \wedge i \neq j \end{equation}
@@ -648,6 +650,7 @@ The proof of the above lemma is not important for the purposes of this paper, bu
 
 $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined in \cite{Cannonito_1973}.
 
+Cannonito \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
 
 \begin{definition} \cite[2.3]{Cannonito_1973}
 	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for aribtrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
@@ -668,7 +671,7 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \time
 \end{definition}
 
 \begin{theorem} \cite[3.2]{Cannonito_1973} \label{wp-computable-implies-group}
-	For every countable group $G$ there exists $a \subset \ZZ_{\geq 0}$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
+	For every countable group $G$ there exists $A \subset \ZZ_{\geq 0}$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
 
 \begin{corollary} \label{wp-iff-group}
@@ -680,7 +683,7 @@ $J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \time
 \end{definition}
 
 \begin{definition}
-	A homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
+	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1, \]
 \end{definition}
 
@@ -707,7 +710,7 @@ $(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
 \end{definition}
 
 \begin{definition}
-Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then the {\it fundamental group} of $(\mathbf{G},\Gamma)$, with respect to $T$ and $v_0$, is the group $G = \fgoagog$, defined as follows:
+	Let $T$ be a spanning tree of $\Gamma$ (a subtree of $\Gamma$ containing every vertex), with a root vertex $v_0$. Then the {\it fundamental group} \cite{Serre_1977} of $(\mathbf{G},\Gamma)$, with respect to $T$ and $v_0$, is the group $G = \fgoagog$, defined as follows.
 
 The generators of $G$ are
 \[ X = \left( \bigcup_{v \in V}X_v \right) \cup \left( \bigcup_{e \in E}\{e\} \right),\]
