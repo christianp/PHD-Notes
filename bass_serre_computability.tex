@@ -731,15 +731,13 @@ where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dot
 It will be more convenient from now on to refer to $G_{v_i}$ by $G_i$.
 
 \begin{lemma}
-\label{trivialnormalform}
-(Higgins?)
+	\label{trivialnormalform} \cite[2.4]{Kapovich_2005}
 Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
 \begin{itemize}
 	\item $n=0$ and $a_0=1$ in $G_{v_0}$, or
 	\item $n > 0$ and there exists $0<i<n$ such that $e_{i+1}=\bar{e_i}$ and $a_i \in B_{e_i}$.
 \end{itemize}
 \end{lemma}
-\cp{Can't find the relevant lemma in Higgins. Proof is very simple - should I just write it out?}
 
 \begin{definition}
 Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v_j$ can be found by freely reducing the path $\psi(i,j)$, defined by:
@@ -776,11 +774,11 @@ each $G_v$.
 
 Encode the depth-first walk of the spanning tree $T$ as a G\"odel number $\tvec$ per Section \ref{encodetrees}. Then the vertex-parent function $\phi_{\tvec}$ is \grz{3}-computable. From now on each vertex group can be referred to by the integer label of the vertex it belongs to.
 
-To define $i(G)$, we will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i(e_{a,b}) := a \cdot \nu + b$.
+To define $i(G)$, we must assign numbers to the generators of $G$. Let $i_X(g)$ denote the number corresponding to the generator $g$. We will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i_X(e_{a,b}) := a \cdot \nu + b$.
 
-Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i(x_{i,j}) := \nu^2 + J(i,j)$.
+Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i_X(x_{i,j}) := \nu^2 + J(i,j)$.
 
-The rest of $i(G)$ works the same way as the standard free group index described in \cite[3.1]{Cannonito_1973}.	
+The rest of $i(G)$ works the same way as the standard free group index described in \cite[3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$.	
 
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
@@ -839,7 +837,7 @@ If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1
 \end{equation}
 (and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse. We don't need to know how to compute the whole multiplication table to do this.
 
-If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion raises us up a level on the Grzegorczyk hierarchy.
+If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion means the process is only computable on the next level of the Grzegorczyk hierarchy.
 
 So the word problem $WP(G)$ is \grz{n+1}-decidable, and hence $G$ is \grz{n+1}-computable by Corollary \ref{wp-iff-group}.
 \end{proof}
@@ -929,8 +927,6 @@ Define
 }
 
 Again, $\operatorname{nf}(n)$ is \grz{3}-computable. Its inverse is also \grz{3}-computable since $\operatorname{nf}^{-1}(n) = \min_{i<n} (\operatorname{nf}(i) = n)$.
-
-\cp{Monotonically increasing integer sequences which are \grz{n}-computable, $n \geq 1$, always have \grz{n}-computable inverses. Is that worth mentioning somewhere?}
 
 Define
 \[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \ZZ_{\geq 0}. \]
