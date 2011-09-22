@@ -820,11 +820,6 @@ And now the \nth syllable itself can be found:
 \begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
 
 The function $\operatorname{syllable}$ is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
-\ajd{For a non-edge syllable you obtain a syllable consisting of a 
- sequence $i(x_1), \ldots ,i(x_n)$, 
-where the $x_i$ are in some fixed $X_v$. The exact procedure for testing to see if 
-this 
-belongs to an edge group needs more explanation.}
 
 We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
 
@@ -833,12 +828,16 @@ If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable quest
 If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1}$. The first of these is given by
 \begin{equation}
 \begin{split}
-	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
-	& ( \operatorname{syllable}(\wvec',i+1) \in B_e ) \wedge \\ 
-	& ( \operatorname{syllable}(\wvec',i+2) = \operatorname{syllable}(\wvec',i)^{-1} ) )
+	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (
+		&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
+		& ( \operatorname{syllable}(\wvec',i+1) \in B_e ) \wedge \\ 
+		& ( \operatorname{syllable}(\wvec',i+2) = \operatorname{syllable}(\wvec',i)^{-1} ) 
+	)
 \end{split} 
 \end{equation}
 (and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse. We don't need to know how to compute the whole multiplication table to do this.
+
+To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement.
 
 If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion means the process is only computable on the next level of the Grzegorczyk hierarchy.
 
