@@ -162,10 +162,10 @@ We will omit the generalised parameters for most function definitions, like so:
 \end{eqnarray*}
 
 The mixing of functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$, 
-\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n,\]
+\[f_m := C(f,P_m^1, \dots, P_m^n),\]
 such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f(x_1, \dots, x_n)$.
 
-Variable substitution can also be dealt with systematically:
+Variable substitution can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except the position which will take the substituted value:
 \[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
 
 \subsubsection{Recursion}
