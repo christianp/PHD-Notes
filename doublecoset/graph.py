@@ -1,6 +1,7 @@
 #Labelled vertex, with labelled edges.
 #edges are doubles (label, vertex)
 import os
+import itertools
 
 class Vertex:
 	def __init__(self,label):
@@ -151,13 +152,41 @@ class Graph:
 
 		return len(folds)>0								#return true if any folds took place
 
+	#return double of this graph
+	#has a vertex labelled (u,v) for each u,v in original graph
+	#there is an edge (u,v) -> (a,b) with label x iff there are an edge u->a with label x and an edge v->b with label x in the original graph
+	def double(self):
+
+		def joinName(u,v):	#create a new name for vertices in the double graph so names of original pair can be easily seen
+			return str(u.label)+'-'+str(v.label)
+
+		newverts = {}	#a dictionary to keep track of new vertices
+
+
+		g=Graph()	#g will be the double graph
+
+		for u,v in itertools.product(self.vertices,self.vertices):	#for every ordered pair of vertices
+			uv = g.addVertex()			#add a vertex
+			uv.label = joinName(u,v)	#give it a name created from the names of the pair of original vertices
+			newverts[uv.label] = uv		#add the vertex to the dictionary
+
+		for u,v in itertools.product(self.vertices,self.vertices):	#for every ordered pair (u,v) of vertices
+			for label in u.outedges.keys():		#for each label for which u has one or more out-edges
+				if label in v.outedges.keys():	#if v has out-edges with the same label
+					uv=newverts[joinName(u,v)]	#get the vertex (u,v)
+					for a,b in itertools.product(u.outedges[label],v.outedges[label]):	#for each vertex a such that u->a and each b such that v->b,
+						g.addEdge(uv,newverts[joinName(a,b)],label)						#create an edge (u,v) -> (a,b)
+
+		return g
+
+
 	def graphViz(self,name='G'):
 		out = []
 		for u in self.vertices:
-			out.append('%s%s [shape=point];' % (name,u))
+			out.append('"%s%s" [shape=point];' % (name,u))
 			for label,vs in u.outedges.items():
 				for v in vs:
-					out.append( '%s%s -> %s%s [label="%s"];' % (name,u,name,v,label) )
+					out.append( '"%s%s" -> "%s%s" [label="%s"];' % (name,u,name,v,label) )
 		return '\n'.join(out)
 	
 	def __str__(self):
