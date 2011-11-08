@@ -128,9 +128,9 @@ When defining expressions or new notation, $E \equiv E' := D$ means I will write
 \subsection{Constructing functions}
 Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f(x_1, \dots, x_n)$ is a map,
 \[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0},\]
-taking $n \geq 0$ parameters and resulting in a single value.
+taking $n \geq 0$ arguments and resulting in a single value.
 
-Functions in general can take any number of parameters, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of parameters $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
+Functions in general can take any number of arguments, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of arguments $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
 
 \subsubsection{The primitive functions}
 
@@ -139,7 +139,7 @@ We will begin by defining the {\it primitive functions}, which are functions of 
 \begin{itemize}
 	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
 	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
-	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith parameter.
+	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith argument.
 \end{itemize}
 
 There are two operations we shall use to create new functions from these primitives.
@@ -154,7 +154,7 @@ In general, given an $n$-ary function $f$ and $m$-ary functions $g_1, \dots, g_n
 
 \[f(g_1(\xvec),\dots, g_n(\xvec)) := C(f,g_1, \dots, g_n)(\xvec).\]
 
-We will omit the generalised parameters for most function definitions, like so:
+We will omit the generalised arguments for most function definitions, like so:
 
 \begin{eqnarray*}
 	f \circ g &:=& C(f,g), \\
@@ -179,18 +179,18 @@ A function $h$ is constructed by {\it recursion} from functions $f$ and $g$ if
 
 in which case we write $h = R(f,g)$.
 
-Note that the parameter of recursion $n$ can be made to be in any position by composition with the projection functions. If we have a function $h(x_1,\dots,x_m,n)$, we can define a new function,
+Note that the argument of recursion $n$ can be made to be in any position by composition with the projection functions. If we have a function $h(x_1,\dots,x_m,n)$, we can define a new function,
 \[ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) := C(f, P_{m+1}^1, \dots, P_{m+1}^k, P_{m+1}^{k+2},\dots, P_{m+1}^m, P_{m+1}^{k+1}), \]
 so that 
 \[ f'(x_1, \dots, x_k, n, x_{k+1}, \dots, x_m) := f(x_1, \dots, x_m, n). \\ \]
 
 \subsection{Further notation}
 
-\subsubsection{Bound variables}
-A \textit{bound variable} is one which is used to define a function, not passed as a parameter into it. For instance, in the projection function $P_n^i$, $n$ and $i$ are bound variables. Bound variables do not contribute to the arity of a function.
+\subsubsection{Parameters}
+A {\it parameter} is a variable which is used in the definition of a function, not during evaluation. For instance, in the projection function $P_n^i$, $n$ and $i$ are parameters -- there is a different function for each pair of values $(n,i)$. Parameters do not count towards the arity of a function.
 
 \subsubsection{Iteration}
-A function which evaluates $n$ iterations of a function $f$, where $n$ is a bound variable, can be constructed by composing $f$ with itself $n-1$ times.
+A function which evaluates $n$ iterations of a function $f$, where $n$ is a parameter, can be constructed by composing $f$ with itself $n-1$ times.
 \[f^{(n)}(\xvec) := \underbrace{C(f,C(f,C(f, \dots C(f,f}_{n-1 \textrm{ compositions}}) )(\xvec).\]
 
 \subsubsection{Infix operators}
@@ -243,7 +243,7 @@ Below I will give explicit definitions for the operations of elementary arithmet
 Add a constant integer $n$ to $x$ by iterating the successor function $n$ times on $x$:
 \begin{equation} +_n(x) \equiv x + n := s^{(n)}(x). \end{equation}
 
-Note that $n$ is a bound variable, that is, there is a different function $+_n$ for each $n$.
+Note that $n$ is a parameter, that is, there is a different function $+_n$ for each $n$.
 
 A nullary function returning any single constant can be constructed by composing $+_n$ with $z$
 \begin{equation} c_n() := 0 + n. \end{equation}
@@ -326,7 +326,7 @@ Adding two numbers together is achieved by a recursion on the successor function
 	x + 0 &:= x,			\\
 	x + (y+1) &:= (x+y) + 1.
 }
-Because every function in \grz{0} is bounded by a function of the form $x+n$, where $n$ is a bound variable, addition must belong to \grz{1} and not \grz{0}.
+Because every function in \grz{0} is bounded by a function of the form $x+n$, where $n$ is a parameter, addition must belong to \grz{1} and not \grz{0}.
 
 We can define another version of $+_n$ where $n$ is unbound:
 \begin{equation} +_n(y) \equiv f_{+}(n,y) := n + y. \end{equation}
@@ -399,7 +399,7 @@ Series sum:
 	S_f(\xvec,y+1) \equiv \sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y) + \sum_{i < y} f(\xvec,i).
 }
 
-Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $S_f(\xvec,y)$ is also in \grz{2} because it entails $y-1$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by constructing the sum through $y$ compositions of addition.
+Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $S_f(\xvec,y)$ is also in \grz{2} because it entails $y-1$ additions. If $y$ is a parameter and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by constructing the sum through $y$ compositions of addition.
 
 Bounded existential quantifier:
 \begin{equation} \exists_{i < y} P(\xvec,i) := \sum_{i < y} P(\xvec,i). \end{equation}
@@ -414,7 +414,7 @@ Definition by cases: if  $P_i(\xvec)$, $0 \leq i \leq k$ is a finite collection 
 
 In our language, this is:
 \begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
-where $k$ is a bound variable. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
+where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
 
 The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the greatest integer $n$ such that $n^2 < x$.
 
@@ -440,7 +440,7 @@ Series product:
 	P_f(\xvec,0) \equiv \prod_{i < 0} f(\xvec,i) &:= 1,	\\
 	P_f(\xvec,y+1) \equiv \prod_{i < y+1} f(\xvec,i) &:= f(\xvec,y) \cdot \prod_{i < y} f(\xvec, i).
 }
-If $f$ is in \grz{3} then so is the product $P_f(\xvec,y)$, as it consists of $y-1$ multiplications. If $y$ is a bound variable, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
+If $f$ is in \grz{3} then so is the product $P_f(\xvec,y)$, as it consists of $y-1$ multiplications. If $y$ is a parameter, then we can define the product using $y$ compositions of multiplication instead of the recursion, so if $f$ is in \grz{2} then the series product is too.
 
 Bounded universal quantifier:
 \begin{equation} \forall_{i < y} P(\xvec,i) := \prod_{i < y} P(\xvec,i). \end{equation}
@@ -468,7 +468,7 @@ We will be working with $n$-tuples, or lists, extensively. All of the list opera
 G\"odel encoding of an $n$-tuple:
 \begin{equation} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
 The $+1$ in the exponent is so we can reliably determine the length of a list.  The empty list should be encoded as $1$: then it will have length $0$.
-The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
+The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of arguments in a function application. An encoded list $\xvec$ is just a single number.
 
 The value of the \ith position in an encoded list:
 \begin{equation} (\xvec)_i := [\xvec]_{p_i} - 1. \end{equation}
