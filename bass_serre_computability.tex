@@ -125,12 +125,15 @@ Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregrou
 \subsection{Notation}
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
 
-\subsection{Constructing functions}
-Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f(x_1, \dots, x_n)$ is a map,
-\[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0},\]
-taking $n \geq 0$ arguments and resulting in a single value.
+Expressions consist of operators, function names, variables and punctuation. An expression can only be evaluated if it does not contain any variables.
 
-Functions in general can take any number of arguments, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ represents an arbitrarily big vector.  When a function has to take at least a specific number of arguments $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$
+\subsection{Constructing functions}
+Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f$, taking $n$ arguments and resulting in a single value, is a map,
+\[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0}.\]
+
+Usually I will write the expression $f(x_1, \dots, x_n)$ to mean ``the application of $f$ to the arguments $x_1,\dots,x_n$.''
+
+Functions in general can take any number of arguments, so it is clearly impractical to write out definitions of each operation for each possible arity. When the arity of a function $f$ doesn't matter, I will write it as $f(\xvec)$, where $\xvec$ can represent an arbitrarily big vector.  When a function has to take at least a specific number of arguments $y_1, \dots, y_n$, and potentially more, I will write something of the form $f(\xvec, y_1, \dots, y_n)$.
 
 \subsubsection{The primitive functions}
 
@@ -146,13 +149,13 @@ There are two operations we shall use to create new functions from these primiti
 
 \subsubsection{Composition} 
 
-A function $h$ is constructed by {\it composition} of functions $f$ and $g$ if $h = f \circ g$ where
+Given an $n$-ary function $f$ and $m$-ary functions $g_1, \dots, g_n$, the {\it composition} operator $C$ constructs a new $m$-ary function $h$, where
+
+\[ h(\xvec) = f(g_1(\xvec),\dots, g_n(\xvec)) := C(f,g_1, \dots, g_n)(\xvec). \]
+
+If $f$ is unary, a function $h$ constructed by composition of $f$ with another function $g$ is denoted $h = f \circ g$ where
 
 \[f \circ g(\xvec) \equiv f(g(\xvec)) := C(f,g)(\xvec).\] 
-
-In general, given an $n$-ary function $f$ and $m$-ary functions $g_1, \dots, g_n$, the composition operator $C$ constructs a new $m$-ary function
-
-\[f(g_1(\xvec),\dots, g_n(\xvec)) := C(f,g_1, \dots, g_n)(\xvec).\]
 
 We will omit the generalised arguments for most function definitions, like so:
 
@@ -162,10 +165,10 @@ We will omit the generalised arguments for most function definitions, like so:
 \end{eqnarray*}
 
 The mixing of functions of different arities can be dealt with systematically. For every $n$-ary function $f$, and every $m > n$, we can define an $m$-ary function $f_m$, 
-\[f_m(x_1, \dots, x_n, \dots, x_m) := C(f,P_m^1, \dots, P_m^n,\]
+\[f_m := C(f,P_m^1, \dots, P_m^n),\]
 such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f(x_1, \dots, x_n)$.
 
-Variable substitution can also be dealt with systematically:
+Substitution of expressions into expressions with free variables can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except at the position which will take the substituted expression. In the expression $f(x_1, \dots, x_n)$, the $x_i$ are called {\it free variables} because they can take any value. Any free variable can be replaced with another expression $y$, defined in terms of the free variables, like so:
 \[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
 
 \subsubsection{Recursion}
@@ -216,7 +219,7 @@ If $R \subseteq \ZZ_{\geq 0}^d$ is a relation, $R$ is defined by $\chi_R$. In ad
 The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
 
 \section{The Grzegorczyk hierarchy \label{grzegorczyk}}
-A class \classC{}  is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC{}, then $C(f,g_1, \dots, g_m)$ also belongs to \classC{}. Therefore a function defined by finitely many compositions of elements of \classC{} is also an element of \classC{}.
+A class \classC{}  is {\it closed under finite composition} if, whenever $f, g_1, \dots, g_m$ all belong to \classC{}, then $C(f,g_1, \dots, g_m)$ also belongs to \classC{}. In this case a function defined by finitely many compositions of elements of \classC{} is also an element of \classC{}.
 
 A function $f$ is said to be {\it bounded} by another function $g$ if, for all $\xvec$, $f(\xvec) < g(\xvec)$.
 
@@ -240,7 +243,7 @@ The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{
 Below I will give explicit definitions for the operations of elementary arithmetic, plus some other useful things, using the notation defined above. I have tried to use definitions which, though not the most obvious, place functions as low down on the hierarchy as possible.
 
 \subsection{\grz{0} functions}
-Add a constant integer $n$ to $x$ by iterating the successor function $n$ times on $x$:
+For a constant integer $n$, we can construct a function to add $n$ to $x$ by iterating the successor function $n$ times on $x$:
 \begin{equation} +_n(x) \equiv x + n := s^{(n)}(x). \end{equation}
 
 Note that $n$ is a parameter, that is, there is a different function $+_n$ for each $n$.
@@ -249,6 +252,8 @@ A nullary function returning any single constant can be constructed by composing
 \begin{equation} c_n() := 0 + n. \end{equation}
 
 From now on I will just write the number $n$ to mean the function $c_n$, when it is not likely to lead to confusion.
+
+The rest of this section consists of descriptions of operations and their formal definitions.
 
 Decrement by 1:
 \recur{
@@ -335,15 +340,15 @@ This version is in \grz{1}. This is really an abuse of notation, but it will be 
 The biggest of two numbers:
 \begin{equation} \max(x,y) := x + (y \psub x). \end{equation}
 
-Note that $max(x,y)$ is bounded by one of $P_2^1$ or $P_2^2$, but I don't think there's a way of defining it without using addition, so it has to be in \grz{1}.
+Note that $\max(x,y)$ is bounded by one of $P_2^1$ or $P_2^2$ but, since it could be either one of them, neither projection will serve as an \grz{0} bound on $\max$, so $\max(x,y)$ only belongs to \grz{1} and not \grz{0}.
 
 Absolute difference:
 \begin{equation} |x - y| := (x \psub y) + (y \psub x). \end{equation}
 
 Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
-\begin{equation} n \cdot x  \equiv 0 + n + \dots + n := +_x^{(n)}(0). \end{equation}
+\begin{equation} n \cdot x  \equiv 0 + x + \dots + x := +_x^{(n)}(0). \end{equation}
 
-	So we can also get any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions of \grz{1} functions. 
+	So we can also construct any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions of \grz{1} functions. 
 
 Remember that the functions we are considering have domain $\ZZ_{\geq 0}^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative with addition. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
 
@@ -356,12 +361,14 @@ Quotient:
 Does $x$ divide $y$:
 \begin{equation} x \mid y := \rsg( x \bmod{y} ). \end{equation}
 
-Bounded minimisation: given a predicate $P(\xvec,i)$ and a bound $y$, this returns the least $i<y$ such that $P(\xvec,i)$ is true. If there is no such $i$, $y$ itself is returned.
+Bounded minimisation: 
 
 \recur{
 	\min_{i < 0} P(\xvec,i) &:= 0,	\\
-	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,y))=y \wedge (P(\xvec,y) = 0) \right).
+	\min_{i < y+1} P(\xvec,i) &:= \left( \min_{i  < y} P(\xvec,i) \right) + sg\left( (\min_{i<y}P(\xvec,i))=y \wedge (P(\xvec,y) = 0) \right).
 }
+
+Given a predicate $P(\xvec,i)$ and a bound $y$, this returns the least $i<y$ such that $P(\xvec,i)$ is true. If there is no such $i$, $y$ itself is returned.
 
 Bounded maximisation:
 \recur{
@@ -372,17 +379,19 @@ Bounded maximisation:
 If $P$ is an \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
 
 \begin{lemma}
-	Let $A = \{a_0, a_1, \dots\} \subseteq \ZZ_{\geq 0}$ be a monotonically increasing integer sequence. Define a function $\sigma_A : \ZZ_{\geq 0} \to A$ such that $\sigma_A(n) = a_n$.
+	Let $A = \{a_0, a_1, \dots\} \subseteq \ZZ_{\geq 0}$ be a strictly monotonically increasing integer sequence. Define a function $\sigma_A : \ZZ_{\geq 0} \to A$ such that $\sigma_A(n) = a_n$.
 	
-	If $\sigma_A$ is \grz{n}-computable, $n \geq 1$, then its inverse $\sigma_A^{-1} : a_n \mapsto n$ is also \grz{n}-computable.
+	If $\sigma_A$ is \grz{n}-computable, $n \geq 1$, then its inverse $\sigma_A^{-1} : a_n \mapsto n$ is also \grz{n}-computable. 
 \end{lemma}
 \begin{proof}
 	Since $A$ is monotonically increasing, $a_n \geq a_0 + n \geq n$. So we can construct $\sigma_A^{-1}$ through bounded minimisation on $\sigma_A$.
 
 	\[ \sigma_A^{-1}(n) := \min_{i < n+1}{\left( \sigma_A(i) = n \right)} \]
 
-	Constructed this way, $\sigma_A^{-1}$ is \grz{n}-computable since the function performing the bounded minimisation is \grz{1}-computable and the equality predicate is \grz{0}-computable.
+	Constructed this way, $\sigma_A^{-1}$ is \grz{n}-computable since the function performing the bounded minimisation is \grz{1}-computable and the equality predicate is \grz{0}-computable. 
 \end{proof}
+
+Note that $\sigma_A^{-1}$ has as its domain all of $\ZZ_{\geq 0}$ but, since it is not being used to decide membership of $A$, we don't care what value it takes on inputs not in $A$.
 
 \subsection{\grz{2} functions}
 Multiplication is an unbounded recursion on the addition operation:
@@ -399,7 +408,7 @@ Series sum:
 	S_f(\xvec,y+1) \equiv \sum_{i < y+1} f(\xvec,i) &:= f(\xvec,y) + \sum_{i < y} f(\xvec,i).
 }
 
-Note that the level of the sum on the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{2} then $S_f(\xvec,y)$ is also in \grz{2} because it entails $y-1$ additions. If $y$ is a parameter and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by constructing the sum through $y$ compositions of addition.
+Note that the level of the sum in the hierarchy really depends on the level of $f(\xvec,i)$. However, we can say that if $f$ is in \grz{n+2} then $S_f(\xvec,y)$ is also in \grz{n+2} because it entails $y-1$ additions. If $y$ is a bound variable and $f$ is in \grz{1}, then we could even place the sum in \grz{1} by constructing the sum through $y$ compositions of addition.
 
 Bounded existential quantifier:
 \begin{equation} \exists_{i < y} P(\xvec,i) := \sum_{i < y} P(\xvec,i). \end{equation}
@@ -467,8 +476,8 @@ We will be working with $n$-tuples, or lists, extensively. All of the list opera
 
 G\"odel encoding of an $n$-tuple:
 \begin{equation} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
-The $+1$ in the exponent is so we can reliably determine the length of a list.  The empty list should be encoded as $1$: then it will have length $0$.
-The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of arguments in a function application. An encoded list $\xvec$ is just a single number.
+The $+1$ in the exponent is so we can reliably determine the length of a list by counting distinct prime factors (the empty list should be encoded as $1$: then it will have length $0$).
+The bold $\xvec$ is shorthand so I don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
 
 The value of the \ith position in an encoded list:
 \begin{equation} (\xvec)_i := [\xvec]_{p_i} - 1. \end{equation}
@@ -534,7 +543,7 @@ A graph is {\it connected} if there exists a path between each pair of its verti
 \begin{definition}
 A tree $T = (V,E)$ is a connected, non-empty graph with no reduced circuits.
 
-Following \cite{Janson_2008}, a {\it rooted} tree has a particular vertex $v_0$ said to be at the `top'. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or {\it leftmost}, child, and so on. 
+Following \cite{Janson_2008}, a {\it rooted} tree has a particular vertex $v_0$ said to be at the `top' and called the {\it root}. The children of a vertex $v$ are those vertices adjacent to $v$ and further from the root than $v$. In an {\it ordered} tree, the set of children of each vertex is ordered, so there is a least, or {\it leftmost}, child, and the other children are greater, or on its right.
 \end{definition}
 
 \begin{definition}
@@ -550,7 +559,7 @@ If we say that the positive edges point downwards, every positive edge can also 
 	\[i: V \rightarrow \ZZ_{\geq 0},\]
 (we can insist that $i(v_0) = 0$) and an \grz{n}-computable `parent function',
 \[\phi_T:i(V) \rightarrow i(V),\]
-which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$.
+which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$ and allow $\phi_T(v_0)$ to take any value on the complement of $i(V)$.
 \end{definition}
 
 \begin{definition}
@@ -734,15 +743,13 @@ where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dot
 It will be more convenient from now on to refer to $G_{v_i}$ by $G_i$.
 
 \begin{lemma}
-\label{trivialnormalform}
-(Higgins?)
+	\label{trivialnormalform} \cite[2.4]{Kapovich_2005}
 Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
 \begin{itemize}
 	\item $n=0$ and $a_0=1$ in $G_{v_0}$, or
 	\item $n > 0$ and there exists $0<i<n$ such that $e_{i+1}=\bar{e_i}$ and $a_i \in B_{e_i}$.
 \end{itemize}
 \end{lemma}
-\cp{Can't find the relevant lemma in Higgins. Proof is very simple - should I just write it out?}
 
 \begin{definition}
 Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v_j$ can be found by freely reducing the path $\psi(i,j)$, defined by:
@@ -779,11 +786,11 @@ each $G_v$.
 
 Encode the depth-first walk of the spanning tree $T$ as a G\"odel number $\tvec$ per Section \ref{encodetrees}. Then the vertex-parent function $\phi_{\tvec}$ is \grz{3}-computable. From now on each vertex group can be referred to by the integer label of the vertex it belongs to.
 
-To define $i(G)$, we will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i(e_{a,b}) := a \cdot \nu + b$.
+To define $i(G)$, we must assign numbers to the generators of $G$. Let $i_X(g)$ denote the number corresponding to the generator $g$. We will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i_X(e_{a,b}) := a \cdot \nu + b$.
 
-Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i(x_{i,j}) := \nu^2 + J(i,j)$.
+Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i_X(x_{i,j}) := \nu^2 + J(i,j)$.
 
-The rest of $i(G)$ works the same way as the standard free group index described in \cite[3.1]{Cannonito_1973}.	
+The rest of $i(G)$ works the same way as the standard free group index described in \cite[3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$.	
 
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
@@ -822,11 +829,6 @@ And now the \nth syllable itself can be found:
 \begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
 
 The function $\operatorname{syllable}$ is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
-\ajd{For a non-edge syllable you obtain a syllable consisting of a 
- sequence $i(x_1), \ldots ,i(x_n)$, 
-where the $x_i$ are in some fixed $X_v$. The exact procedure for testing to see if 
-this 
-belongs to an edge group needs more explanation.}
 
 We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
 
@@ -835,14 +837,18 @@ If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable quest
 If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1}$. The first of these is given by
 \begin{equation}
 \begin{split}
-	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
-	& ( \operatorname{syllable}(\wvec',i+1) \in B_e ) \wedge \\ 
-	& ( \operatorname{syllable}(\wvec',i+2) = \operatorname{syllable}(\wvec',i)^{-1} ) )
+	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (
+		&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
+		& ( \operatorname{syllable}(\wvec',i+1) \in B_e ) \wedge \\ 
+		& ( \operatorname{syllable}(\wvec',i+2) = \operatorname{syllable}(\wvec',i)^{-1} ) 
+	)
 \end{split} 
 \end{equation}
 (and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse. We don't need to know how to compute the whole multiplication table to do this.
 
-If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion raises us up a level on the Grzegorczyk hierarchy.
+To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement.
+
+If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion means the process is only computable on the next level of the Grzegorczyk hierarchy.
 
 So the word problem $WP(G)$ is \grz{n+1}-decidable, and hence $G$ is \grz{n+1}-computable by Corollary \ref{wp-iff-group}.
 \end{proof}
@@ -932,8 +938,6 @@ Define
 }
 
 Again, $\operatorname{nf}(n)$ is \grz{3}-computable. Its inverse is also \grz{3}-computable since $\operatorname{nf}^{-1}(n) = \min_{i<n} (\operatorname{nf}(i) = n)$.
-
-\cp{Monotonically increasing integer sequences which are \grz{n}-computable, $n \geq 1$, always have \grz{n}-computable inverses. Is that worth mentioning somewhere?}
 
 Define
 \[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \ZZ_{\geq 0}. \]
