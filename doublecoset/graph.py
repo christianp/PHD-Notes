@@ -179,6 +179,33 @@ class Graph:
 
 		return g
 
+	#product of this graph and graph g2
+	def product(self,g2):
+		def joinName(u,v):	#create a new name for vertices in the double graph so names of original pair can be easily seen
+			return str(u.label)+'-'+str(v.label)
+
+		newverts = {}	#a dictionary to keep track of new vertices
+
+
+		g=Graph()	#g will be the double graph
+
+		for u in self.vertices:	#for every vertex in this graph
+			for v in g2.vertices:	#for every vertex in g2
+				uv = g.addVertex()			#add a vertex
+				uv.label = joinName(u,v)	#give it a name created from the names of the pair of original vertices
+				newverts[uv.label] = uv		#add the vertex to the dictionary
+
+		for u in self.vertices:	#for every ordered pair of vertices
+			for v in g2.vertices:	#for every vertex in g2
+				for label in u.outedges.keys():		#for each label for which u has one or more out-edges
+					if label in v.outedges.keys():	#if v has out-edges with the same label
+						uv=newverts[joinName(u,v)]	#get the vertex (u,v)
+						for a,b in itertools.product(u.outedges[label],v.outedges[label]):	#for each vertex a such that u->a and each b such that v->b,
+							g.addEdge(uv,newverts[joinName(a,b)],label)						#create an edge (u,v) -> (a,b)
+
+		return g
+
+
 
 	def graphViz(self,name='G'):
 		out = []
