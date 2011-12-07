@@ -16,6 +16,6 @@ G.addEdge(d,e,'y')
 G.addEdge(f,e,'w')
 G.addEdge(f,a,'x')
 
-G2 = G.double()
-print(str(G2))
+print "digraph liza2 {"
 print(str(G))
+print "}"

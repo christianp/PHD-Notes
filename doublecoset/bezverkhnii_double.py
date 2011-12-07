@@ -23,6 +23,7 @@ G.addEdge(a,d,'y')
 G.addEdge(d,e,'y')
 G.addEdge(e,a,'y')
 
-print "digraph bez {"
-print(str(G))
+G2 = G.double()
+print "digraph bezx2 {"
+print(str(G2))
 print "}"

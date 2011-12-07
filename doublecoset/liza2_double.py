@@ -14,6 +14,7 @@ G.addEdge(d,a,'z')
 G.addEdge(a,e,'y')
 G.addEdge(e,e,'z')
 
-print "digraph liza {"
-print (str(G))
+G2 = G.double()
+print "digraph liza2x2 {"
+print (str(G2))
 print "}"
