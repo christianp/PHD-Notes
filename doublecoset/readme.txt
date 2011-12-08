@@ -6,7 +6,7 @@ write a program called mygraph.py which ends with lines like
         print "}"
 
 run
-	mygraph.py > mygraph.gv
+	python mygraph.py > mygraph.gv
 	neato -Tpng mygraph.gv > mygraph.png
 
 or 
