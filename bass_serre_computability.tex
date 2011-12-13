@@ -121,11 +121,15 @@ Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregrou
 
 
 \section{Building blocks \label{buildingblocks}}
-
+ 
 \subsection{Notation}
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
 
 Expressions consist of operators, function names, variables and punctuation. An expression can only be evaluated if it does not contain any variables.
+\ajd{Reverse the order of the 2 previous paragraphs (Define expression and
+then talk about notation). What does ``evaluated''
+mean? Do you mean for example that the function $f$ can be evaluated at
+the point $x=n$, but that $f(x)$ cannot be evaluated at the point $x=n$?}
 
 \subsection{Constructing functions}
 Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f$, taking $n$ arguments and resulting in a single value, is a map,
@@ -170,6 +174,20 @@ such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f
 
 Substitution of expressions into expressions with free variables can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except at the position which will take the substituted expression. In the expression $f(x_1, \dots, x_n)$, the $x_i$ are called {\it free variables} because they can take any value. Any free variable can be replaced with another expression $y$, defined in terms of the free variables, like so:
 \[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
+\ajd{What exactly does ``can take any value'' mean? What exactly
+ is an ``expression defined in terms of free variables''? 
+Normally ``bound variables'' are
+defined as those variables $x$ which occur in a term of the form $Qx$,
+where $Q$ is a quantifier ($\exists$ or $\forall$) and then free variables
+are those which are not bound. There are technicalities to overcome, because
+a variable can be bound in one formula of an expression and not in another,
+so your definition maybe sensible, but perhaps you should point out 
+that there are more formal versions (and refer to somewhere where
+they can be found).  
+I'm guessing what you mean here is that $y$ can be substituted for
+ a free variable $x$ in an expression, if the variables of $y$ are 
+all free.
+} 
 
 \subsubsection{Recursion}
 
@@ -214,6 +232,9 @@ A set $S \subseteq \ZZ_{\geq 0}^d$ is defined by its characteristic function $\c
 \subsubsection{Relations}
 If $R \subseteq \ZZ_{\geq 0}^d$ is a relation, $R$ is defined by $\chi_R$. In addition, for binary relations I will write
 \[ x R y := \chi_R(x,y). \]
+\ajd{This is really a definition: ``A $d$\emph{-ary relation on} $\ZZ_{\geq 0}$ is
+a subset $R$ of $\ZZ_{\geq 0}^d$, so is defined by its characteristic
+function $\chi_R$.''} 
 
 \subsubsection{Logic}
 The concept of falsity will be represented by the number $0$, and all other values will represent truth. With this in mind, predicates $P(\xvec)$ can be written out as ordinary functions once the logical operations have been defined.
@@ -252,7 +273,9 @@ The sequence of primitive recursive functions $E_n$ ($n=0,1,2,\dots$) is defined
 \begin{definition} \cite{Rose_1984}
 	Paraphrasing Rose, each class \grz{n+1} of the Grzegorczyk hierarchy contains all of \grz{n} plus the function $E_n$, closed under composition and bounded recursion.
 \end{definition}
-
+\ajd{Do you  mean that, for each $n\ge 0$, \grz{n+1} is the 
+smallest class which 
+ contains \grz{n} plus the function $E_n$, and is closed under composition and bounded recursion?}
 \begin{lemma} \cite[2.5]{Rose_1984}
 	Every function $f$ in \grz{0} satisfies
 	\[ f(x_1, \dots, x_n) \leq x_i + k, \]
