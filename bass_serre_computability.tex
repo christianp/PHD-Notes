@@ -122,8 +122,19 @@ Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregrou
 
 \section{Building blocks \label{buildingblocks}}
  
+\ajd{In the lists of functions below some definitions start with ``The'' and 
+others don't. (e.g. ``The smallest of two numbers'' and ``Remainder''). I shall add ``The''
+where it's appropriate, unless you object for some reason. Similarly, there are ``I''s 
+and ``we''s scattered randomly. I shall change all ``I'' to ``we'' if you don't stop me.}
 \subsection{Notation}
 Expressions consist of operators, function names, variables and punctuation. An expression can only be evaluated to a single numerical value if it does not contain any variables.
+\ajd{It's still not clear to me what you're getting at here. 
+The function $z_1$ given by $z_1(0)=z()$ and $z_1(n+1)=P_2^2(n,z_1(n))$, takes the value $0$ 
+at every point $x\in\ZZ_{\geq 0}$, but could be written as the 
+expression $z_1(x)=0$, which contains a variable.
+(On the other hand there
+are expressions like $.(f-+.($ that contain no variables and have
+no evaluation.)}
 
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
 
@@ -140,7 +151,7 @@ Functions in general can take any number of arguments, so it is clearly impracti
 We will begin by defining the {\it primitive functions}, which are functions of one of the following three types:
 
 \begin{itemize}
-	\item {\em The zero function}. The zero function is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
+	\item {\em The zero function}. The zero function \ajd{$z$} is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
 	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
 	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith argument.
 \end{itemize}
@@ -536,6 +547,7 @@ The value of the \ith position in an encoded list:
 
 Length of an encoded list:
 \begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
+\ajd{(The length of $[x_0,\ldots, x_{n-1}]$ is then $n$.) To reassure the reader.}
 
 The index of the first occurrence of a given value in an encoded list:
 \begin{equation} \find(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
@@ -604,8 +616,17 @@ An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursiv
 
 We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing, and the root can always be recognised. 
 
+\ajd{Every edge $e_{ij}$ can be given a unique label $\max(i,j)$ (irrespective of choice
+of pos and neg).  If positive edges are defined to be the ones pointing downwards (away
+from the root) then the label of a positive edge $e_{i,j}$ is always $j$. Positive and 
+negative edges $e$ and $\bar e$ have the same label.}
 If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. Because it makes easier the computation I will describe shortly, each negative edge will have the same label as its positive counterpart.
 
+\ajd{There should be a definition of \grz{n}-computable function and \grz{n}-decidable
+set and what it means for a function $i: V \rightarrow \ZZ_{\geq 0}$ to be 
+\grz{n}-decidable, where $V$ is an arbitrary set,  
+before this definition.(The latter means that $i$ is injective and its image is \grz{n}-decidable,
+ I believe.}
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
 	\[i: V \rightarrow \ZZ_{\geq 0},\]
