@@ -280,24 +280,24 @@ The sequence of primitive recursive functions $E_n$ ($n=0,1,2,\dots$) is defined
 	Paraphrasing Rose, for each $n \ge 0$, \grz{n+1} is the smallest class which contains \grz{n} plus the function $E_n$, and is closed under composition and bounded recursion.
 \end{definition}
 
-\begin{lemma} \cite[2.5]{Rose_1984}
+\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.5]{Rose_1984}
 	Every function $f$ in \grz{0} satisfies
 	\[ f(x_1, \dots, x_n) \leq x_i + k, \]
 	for some integers $k$ and $i$ where $1 \leq i \leq n$.
 \end{lemma}
 
-\begin{lemma} \cite[2.6]{Rose_1984}
+\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.6]{Rose_1984}
 	If $f$ is an $n$-ary function in \grz{1} there are integers $a_0,a_1, \dots,a_n$ such that
 	\[f(x_1,\dots,x_n) \leq a_0 + a_1 \cdot x_1 + a_2 \cdot x_2 + \dots + a_n \cdot x_n. \]
 	That is, every function in \grz{1} is bounded by a linear combination of its arguments.
 \end{lemma}
 
-\begin{lemma} \cite[2.7]{Rose_1984}
+\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.7]{Rose_1984}
 	If $f$ is an $n$-ary function in \grz{2} there is a polynomial $p$ in $n$ variables with the property
 	\[f(x_1, \dots,x_n) \leq p(x_1, \dots, x_n). \]
 \end{lemma}
 
-\begin{lemma} \cite[2.9]{Rose_1984}
+\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.9]{Rose_1984}
 	If $f$ is a $k$-ary function in \grz{n} and $n \geq 2$ then there is an integer $m$ such that
 	\[f(x_1, \dots, x_k) \leq E_{n-1}^{(m)}(\max(x_1, \dots, x_k)).\]
 \end{lemma}
@@ -547,7 +547,7 @@ The value of the \ith position in an encoded list:
 
 Length of an encoded list:
 \begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
-\ajd{(The length of $[x_0,\ldots, x_{n-1}]$ is then $n$.) To reassure the reader.}
+\ajd{(Thus the length of $[x_0,\ldots, x_{n-1}]$ is $n$.) To reassure the reader.}
 
 The index of the first occurrence of a given value in an encoded list:
 \begin{equation} \find(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
@@ -622,11 +622,16 @@ from the root) then the label of a positive edge $e_{i,j}$ is always $j$. Positi
 negative edges $e$ and $\bar e$ have the same label.}
 If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. Because it makes easier the computation I will describe shortly, each negative edge will have the same label as its positive counterpart.
 
-\ajd{There should be a definition of \grz{n}-computable function and \grz{n}-decidable
-set and what it means for a function $i: V \rightarrow \ZZ_{\geq 0}$ to be 
-\grz{n}-decidable, where $V$ is an arbitrary set,  
-before this definition.(The latter means that $i$ is injective and its image is \grz{n}-decidable,
- I believe.}
+\ajd{Somewhere before this definition, there should be a definition of \grz{n}-computable function 
+(from $S\subseteq \ZZ_{\geq 0}$ to $\ZZ_{\geq 0}$)  and \grz{n}-decidable
+set. Also, either a statement of what it means for a function 
+$i: V \rightarrow \ZZ_{\geq 0}$ to be 
+\grz{n}-decidable, where $V$ is an arbitrary set, is needed
+(it means that $i$ is injective and its image is \grz{n}-decidable) or the definition
+of \grz{n}-computable tree should change to be more like the definition of 
+\grz{n}-computable group. Being computable on a subset $S$ is the same as being partially computable
+with domain $S$, where $S$ is decidable. Such functions can be extended to (total) computable
+functions, by assigning an arbitrary constant value at each point not in $S$.}
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
 	\[i: V \rightarrow \ZZ_{\geq 0},\]
@@ -666,7 +671,7 @@ To get the label of the \nth child of the root:
 
 The function $\operatorname{child}$ is constructed from \grz{3} functions and is bounded by the supremum of the labels of the vertices in the tree. As the tree is finite, $\operatorname{child}$ is \grz{3}-computable.
 
-Note that he depth-first walk of the subtree descended from a vertex $v_n$ is the subsequence found between the two occurrences of $n$ in $\tvec$. 
+Note that the depth-first walk of the subtree descended from a vertex $v_n$ is the subsequence found between the two occurrences of $n$ in $\tvec$. 
 
 To find the subtree descended from the \nth child node of the root:
 \begin{equation} \operatorname{subtree}(\tvec,n) := \tvec[\operatorname{fst}(\operatorname{child}(\tvec,n))+1 \dots \operatorname{snd}(\operatorname{child}(\tvec,n))-1]. \end{equation}
@@ -680,6 +685,9 @@ The function $\operatorname{kids}$ is constructed by bounded minimisation on \gr
 
 To decide whether the root has a child with label $n$:
 \begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
+\ajd{Should this be
+\begin{equation*} \operatorname{haschild}(\tvec,n) :=  \min_{i < \tvec}(\operatorname{child}(\tvec,i)=n) < \operatorname{kids}(\tvec)? \end{equation*}
+}
 
 Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
 
@@ -697,14 +705,17 @@ Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to
 
 \begin{equation*} z := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
 
+\ajd{The function $z$ is $z(\tvec, n)$, so maybe the definitions should say
+$z=z(\tvec,n)=...$. Also, $z$ is already a function so maybe $d$ for descendant would be better.}
+
 The function $\operatorname{p}'$ is \grz{3}-computable because it is bounded by $\tvec$.
 
 We will also need to know if the tree contains an edge $e_{ij}$:
-\begin{equation} e_{ij} \in \tvec \Leftrightarrow \left ( \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \right ) \wedge i \neq j \end{equation}
+\begin{equation} e_{ij} \in \tvec \Leftrightarrow \left ( \phi_{\tvec}(i) = j \vee \phi_{\tvec}(j) = i \right ) \wedge i \neq j. \end{equation}
 
 
 \begin{lemma}
-A finite ordered tree is \grz{3} computable.
+A finite ordered tree is \grz{3}-computable.
 \end{lemma}
 
 \begin{proof}
@@ -723,19 +734,23 @@ Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it 
 
 Note that $i$ itself is not computable but its image has computable characteristic function.
 
-\begin{lemma}\cite[3.1]{Cannonito_1973}
+\begin{lemma}\cite[Lemma 3.1]{Cannonito_1973}
 	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably many generators is \grz{3}-computable.
 \end{lemma}
 
 The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
 \[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
+\ajd{This should be
+\[ i(w) = \prod_{k=0}^r p_k^{J(i_k,\alpha_k)} \]
+which is what Cannonito and Gatterdam must mean. }
+$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined 
+\ajd{ by $J(x,y)=((x+y)^2+x)^2+y$ (see %in
+ \cite{Cannonito_1973} for more details)}.
 
-$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined in \cite{Cannonito_1973}.
+Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
 
-Cannonito \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
-
-\begin{definition} \cite[2.3]{Cannonito_1973}
-	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for aribtrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
+\begin{definition} \cite[Definition 2.3]{Cannonito_1973}
+	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for arbitrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
 	\begin{align}
 		c_A(x) &:= \begin{cases}
 									0 & \textrm{if}\; x \in A, \\
@@ -743,7 +758,9 @@ Cannonito \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hier
 							\end{cases}
 	\end{align}
 \end{definition}
- 
+ \ajd{$\chi_A$ has already been defined as the characteristic function of $A$, so should 
+be used instead of $c_A$. The way it's defined above $\chi_A=\rsg(c_A)$, but probably 
+it would be best to change this.}
 \begin{lemma} \label{relativetonormalcomputable}
 	Let $A \subset \ZZ_{\geq 0}$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
@@ -752,12 +769,17 @@ Cannonito \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hier
 	The {\it word problem} WP$(G)$, associated with a group $G$ with generating set $X$, is the set of all words $w \in X^{\ast}$ such that $w =_G 1$. That is, it is the set of all words representing the trivial element of $G$.
 \end{definition}
 
-\begin{theorem} \cite[3.2]{Cannonito_1973} \label{wp-computable-implies-group}
+\begin{theorem} \cite[Theorem 3.2]{Cannonito_1973} \label{wp-computable-implies-group}
 	For every countable group $G$ there exists $A \subset \ZZ_{\geq 0}$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
 
 \begin{corollary} \label{wp-iff-group}
-	When $n \geq 3$, WP$(G)$ is \grz{n}-decidable if and only if $G$ is \grz{n}-computable. Also, WP$(G)$ is not \grz{n}-decidable if and only if $G$ is not \grz{n}-computable.
+	When $n \geq 3$ \ajd{and $G$ is a countable group}, WP$(G)$ is \grz{n}-decidable if and only if $G$ is \grz{n}-computable. Also, WP$(G)$ is not \grz{n}-decidable if and only if $G$ is not \grz{n}-computable.
+ \ajd{The second statement is equivalent to the first. However there is something wrong with
+both. $WP(G)$ is not a subset of $\ZZ_{\geq 0}$. To make sense of the statement an
+index $(i,m,j)$ for the free group $F(X)$ is needed, and then $A_i=i(WP(G))$ will be a subset
+of $i(F(X))\subseteq \ZZ_{\geq 0}$. If $A_i$ is \grz{n}-decidable, then $G$ is \grz{n}-computable,
+as shown in \cite[Theorem 3.2]{Cannonito_1973}. Is the converse true?}
 \end{corollary}
 
 \begin{definition}
@@ -770,11 +792,11 @@ Cannonito \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hier
 \end{definition}
 
 \begin{comment}
-		\begin{definition} \cite[3.3]{Cannonito_1973}
-			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalization from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \ZZ_{\geq 0}$.
+		\begin{definition} \cite[Definition 3.3]{Cannonito_1973}
+			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalisation from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \ZZ_{\geq 0}$.
 		\end{definition}
 
-		\begin{theorem} \cite[3.4]{Cannonito_1973}
+		\begin{theorem} \cite[Theorem 3.4]{Cannonito_1973}
 			If $G$ is finitely generated and \grz{n}$(A)$ for $n \geq 3$ then any standard index of $G$ is \grz{n}$(A)$.
 		\end{theorem}
 \end{comment}
@@ -786,7 +808,7 @@ Let $\Gamma = (V,E)$ be a connected graph.
 \begin{definition}
 Associate with each vertex $v$ a vertex group $G_v = \present{X_v}{R_v}$, with the $X_v$ all pairwise disjoint. Call the set of all vertex groups $\mathbf{G}$. 
 
-For each edge $e \in E$ associate two isomorphic {\it edge groups} $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$ satisfiying $\phi_e^{-1} = \phi_{\bar{e}}$.
+For each edge $e \in E$ associate two isomorphic {\it edge groups} $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$ satisfying $\phi_e^{-1} = \phi_{\bar{e}}$.
 
 $(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
 \end{definition}
@@ -816,7 +838,7 @@ where $(e_1,\dots,e_n)$ is a circuit in $\Gamma$ with vertex sequence $(v_0,\dot
 It will be more convenient from now on to refer to $G_{v_i}$ by $G_i$.
 
 \begin{lemma}
-	\label{trivialnormalform} \cite[2.4]{Kapovich_2005}
+	\label{trivialnormalform} \cite[Proposition 2.4]{Kapovich_2005}
 Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
 \begin{itemize}
 	\item $n=0$ and $a_0=1$ in $G_{v_0}$, or
@@ -863,7 +885,7 @@ To define $i(G)$, we must assign numbers to the generators of $G$. Let $i_X(g)$ 
 
 Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i_X(x_{i,j}) := \nu^2 + J(i,j)$.
 
-The rest of $i(G)$ works the same way as the standard free group index described in \cite[3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$.	
+The rest of $i(G)$ works the same way as the standard free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$.	
 
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
@@ -1127,7 +1149,7 @@ Then Stallings' equivalence relation $\approx$ is the transitive closure of $\si
 %%%%%%%%%%%%%%%%%%%%%%%%%% example
 
 Canonical examples of pregroups arise from free products of groups with
-almagamation and HNN-extensions (see \cite{DiekertDuncanMiasnikov_2010} for details).
+amalgamation and HNN-extensions (see \cite{DiekertDuncanMiasnikov_2010} for details).
 
 
 The following is the principal result on the universal groups of pregroups.
@@ -1161,12 +1183,12 @@ $(d_m^{-1},\ldots, d_1^{-1},c_1,\ldots , c_m)$.
 If $\avec \in P^\ast$ and both $\bvec$ and $\cvec$ are $P$-reduced, $P$-reductions of $\avec$ then
 it follows from Theorem \ref{thm:sup} that $\bvec\approx \cvec$. 
 
-Rimilinger \cite{Rimlinger_1987a} (see also Rimilinger \cite{Rimlinger_1987b} and Hoare \cite{Hoare_1988}) 
+Rimlinger \cite{Rimlinger_1987a} (see also Rimlinger \cite{Rimlinger_1987b} and Hoare \cite{Hoare_1988}) 
 has shown that, 
 \begin{itemize}
 \item given any graph of groups with fundamental group $G$, a pregroup $P$ may
 be constructed such that $\UP = G$;  and conversely that
-\item  given a pregroup $P$ wich satisfies a condition called ``finite height'' then a graph
+\item  given a pregroup $P$ which satisfies a condition called ``finite height'' then a graph
 of groups with fundamental group $\UP$ may be constructed.
 \end{itemize}
 
@@ -1301,7 +1323,7 @@ Now if $\uvec \in P^\ast$ and $\vvec$ is a $P$-reduced word
 obtained from $\uvec$ by $P$-reduction, where reduction is always made 
 at the leftmost possible position, then $\Preduce(i_1(\uvec)=i_1(\vvec)$. 
 
-In order to recognize when two encoded words represent elements of the same
+In order to recognise when two encoded words represent elements of the same
 $\approx$ equivalence class we define the relation $\Interleaven\subseteq \ZZ_{\geq 0}\times \ZZ_{\geq 0}$ 
 defined as 
 \begin{equation}\label{eq:interleaven}
