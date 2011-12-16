@@ -122,19 +122,15 @@ Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregrou
 
 \section{Building blocks \label{buildingblocks}}
  
-\ajd{In the lists of functions below some definitions start with ``The'' and 
-others don't. (e.g. ``The smallest of two numbers'' and ``Remainder''). I shall add ``The''
-where it's appropriate, unless you object for some reason. Similarly, there are ``I''s 
-and ``we''s scattered randomly. I shall change all ``I'' to ``we'' if you don't stop me.}
 \subsection{Notation}
-Expressions consist of operators, function names, variables and punctuation. An expression can only be evaluated to a single numerical value if it does not contain any variables.
-\ajd{It's still not clear to me what you're getting at here. 
+Expressions consist of operators, function names, variables and punctuation. \ajd{It's still not clear to me what you're getting at here. 
 The function $z_1$ given by $z_1(0)=z()$ and $z_1(n+1)=P_2^2(n,z_1(n))$, takes the value $0$ 
 at every point $x\in\ZZ_{\geq 0}$, but could be written as the 
 expression $z_1(x)=0$, which contains a variable.
 (On the other hand there
 are expressions like $.(f-+.($ that contain no variables and have
 no evaluation.)}
+\cp{Then I'm fine with leaving it out entirely. I think I had deleted it before, but it reappeared during a git merge.}
 
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
 
@@ -151,7 +147,7 @@ Functions in general can take any number of arguments, so it is clearly impracti
 We will begin by defining the {\it primitive functions}, which are functions of one of the following three types:
 
 \begin{itemize}
-	\item {\em The zero function}. The zero function \ajd{$z$} is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
+	\item {\em The zero function}. The zero function \ajd{$z$}\cp{disagree. Its name is 0 and 0 is its only name. Why overload the meaning of the letter $z$?} is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
 	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
 	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith argument.
 \end{itemize}
@@ -179,22 +175,22 @@ The mixing of functions of different arities can be dealt with systematically. F
 \[f_m := C(f,P_m^1, \dots, P_m^n),\]
 such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f(x_1, \dots, x_n)$.
 
-Substitution of expressions into expressions with free variables can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except at the position which will take the substituted expression. In the expression $f(x_1, \dots, x_n)$, the $x_i$ are called {\it free variables} because they can take any value. Any free variable can be replaced with another expression $y$, defined in terms of the free variables, like so:
-\[f(x_1, \dots, y, \dots, x_n) := f(x_1, \dots, y(x_1, \dots, x_n), \dots, x_n) = C(f,P_n^1, \dots, y, \dots, P_n^n). \]
-\ajd{What exactly does ``can take any value'' mean? What exactly
- is an ``expression defined in terms of free variables''? 
-Normally ``bound variables'' are
-defined as those variables $x$ which occur in a term of the form $Qx$,
-where $Q$ is a quantifier ($\exists$ or $\forall$) and then free variables
-are those which are not bound. There are technicalities to overcome, because
-a variable can be bound in one formula of an expression and not in another,
-so your definition maybe sensible, but perhaps you should point out 
-that there are more formal versions (and refer to somewhere where
-they can be found).  
-I'm guessing what you mean here is that $y$ can be substituted for
- a free variable $x$ in an expression, if the variables of $y$ are 
-all free.
-} 
+Substitution of functions for parameters can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except at the position which will take the value of the substituted function.
+
+Suppose we have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$. The function $f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n)$, which computes $f$ with its $i^{\textrm{th}}$ parameter replaced by $g(x_1,\dots,x_n)$, is constructed like so:
+\[f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n) := C(f,P_n^1,\dots,P_n^{i-1},g,P_n^{i+1},\dots,P_n^n).\]
+
+\cp{I've got rid of the `free variables' thing.
+
+The motivating example for this bit was scenarios like this:
+
+Suppose we have $f(x_1,x_2) \equiv x_1 + x_2 := R(P_1^1,C(s,P_3^2))$. We can construct a function which computes $2x_1+x_2 = x_1+(x_1+x_2)$ by substituting $x_1+x_2$ for $x_2$ in the definition of $f$. That's done by the composition $g := C(f,P_2^1,f)$. 
+When evaluating $g(1,2)$, we first work out $P_2^1(1,2) = 1$, and $f(1,2) = 3$. So $g(1,2) = f(1,f(1,2)) = f(1,3) = 4$.
+
+So I was just clearing up that if you have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$, the way you construct $f(x_1,\dots,x_{i-1},g,x_{i+1},\dots,x_n)$ is by doing the composition $C(f,P_n^1,\dots,P_n^{i-1},g,P_n^{i+1},\dots,P_n^n)$.
+
+All the talk of ``free variables'' was because I wanted to talk in the context of the friendly notation rather than the non-human-readable language of primitive functions and $C$ and $R$.
+}
 
 \subsubsection{Recursion}
 
@@ -236,6 +232,9 @@ A set $S \subseteq \ZZ_{\geq 0}^d$ is defined by its characteristic function $\c
  \end{cases}
 \]
 
+An {\it indexing} of a set $X$ is an injective function
+\[ i : X \rightarrow Z_{\geq 0}. \]
+
 \subsubsection{Relations}
 A {\it $d$-ary relation on $\ZZ_{\geq 0}$} is
 a subset $R$ of $\ZZ_{\geq 0}^d$, so is defined by its characteristic
@@ -264,6 +263,13 @@ The {\it Grzegorczyk hierarchy} is an infinite nested hierarchy of classes \grz{
 	\item is closed under finite composition and bounded recursion.
 \end{itemize}
 
+\begin{definition}
+We say a function $f$ is {\it \grz{n}-computable} iff $f$ belongs to \grz{n}. Similarly, a set $S$ is said to be {\it \grz{n}-decidable} iff its characteristic function $\chi_S$ is \grz{n}-computable.
+
+An indexing $i: X \rightarrow Z_{\geq 0}$ is said to be \grz{n}-decidable iff its image is \grz{n}-decidable.
+
+\end{definition}
+
 It can be difficult to determine whether a particular function belongs to a particular level of the hierarchy. A definition of the Grzegorczyk hierarchy equivalent to the one given above uses a sequence of hierarchy functions which bound the classes \grz{n}. We repeat Rose's \cite{Rose_1984} definitions and Lemmas on the subject here.
 
 \begin{definition} \cite{Rose_1984}
@@ -280,24 +286,24 @@ The sequence of primitive recursive functions $E_n$ ($n=0,1,2,\dots$) is defined
 	Paraphrasing Rose, for each $n \ge 0$, \grz{n+1} is the smallest class which contains \grz{n} plus the function $E_n$, and is closed under composition and bounded recursion.
 \end{definition}
 
-\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.5]{Rose_1984}
-	Every function $f$ in \grz{0} satisfies
+\begin{lemma} \cite[Lemma 2.2.5]{Rose_1984}
+	Every function \grz{0}-computable function $f$ satisfies
 	\[ f(x_1, \dots, x_n) \leq x_i + k, \]
 	for some integers $k$ and $i$ where $1 \leq i \leq n$.
 \end{lemma}
 
-\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.6]{Rose_1984}
+\begin{lemma} \cite[Lemma 2.2.6]{Rose_1984}
 	If $f$ is an $n$-ary function in \grz{1} there are integers $a_0,a_1, \dots,a_n$ such that
 	\[f(x_1,\dots,x_n) \leq a_0 + a_1 \cdot x_1 + a_2 \cdot x_2 + \dots + a_n \cdot x_n. \]
-	That is, every function in \grz{1} is bounded by a linear combination of its arguments.
+	That is, every \grz{1}-computable function is bounded by a linear combination of its arguments.
 \end{lemma}
 
-\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.7]{Rose_1984}
+\begin{lemma} \cite[Lemma 2.2.7]{Rose_1984}
 	If $f$ is an $n$-ary function in \grz{2} there is a polynomial $p$ in $n$ variables with the property
 	\[f(x_1, \dots,x_n) \leq p(x_1, \dots, x_n). \]
 \end{lemma}
 
-\begin{lemma} \cite[\ajd{Theorem/Lemma} 2.9]{Rose_1984}
+\begin{lemma} \cite[Lemma 2.2.9]{Rose_1984}
 	If $f$ is a $k$-ary function in \grz{n} and $n \geq 2$ then there is an integer $m$ such that
 	\[f(x_1, \dots, x_k) \leq E_{n-1}^{(m)}(\max(x_1, \dots, x_k)).\]
 \end{lemma}
@@ -547,7 +553,7 @@ The value of the \ith position in an encoded list:
 
 Length of an encoded list:
 \begin{equation} |\xvec| := \min_{i < \xvec} \left([\xvec]_{p_i} = 0  \right).\end{equation}
-\ajd{(Thus the length of $[x_0,\ldots, x_{n-1}]$ is $n$.) To reassure the reader.}
+(Thus the length of $[x_0,\ldots, x_{n-1}]$ is $n$.)
 
 The index of the first occurrence of a given value in an encoded list:
 \begin{equation} \find(\xvec,y) := \min_{i < |\xvec|} (\xvec)_i = y. \end{equation}
@@ -616,22 +622,8 @@ An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursiv
 
 We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing, and the root can always be recognised. 
 
-\ajd{Every edge $e_{ij}$ can be given a unique label $\max(i,j)$ (irrespective of choice
-of pos and neg).  If positive edges are defined to be the ones pointing downwards (away
-from the root) then the label of a positive edge $e_{i,j}$ is always $j$. Positive and 
-negative edges $e$ and $\bar e$ have the same label.}
-If we say that the positive edges point downwards, every positive edge can also be given a unique labelling by saying that the edge $e_{ij}$ has label $max(i,j)$. Because it makes easier the computation I will describe shortly, each negative edge will have the same label as its positive counterpart.
+Every edge $e_{ij}$ can be given a unique label $\max(i,j)$ (irrespective of choice of pos and neg).  If positive edges are defined to be the ones pointing downwards (away from the root) then the label of a positive edge $e_{i,j}$ is always $j$. Positive and negative edges $e$ and $\bar e$ have the same label.
 
-\ajd{Somewhere before this definition, there should be a definition of \grz{n}-computable function 
-(from $S\subseteq \ZZ_{\geq 0}$ to $\ZZ_{\geq 0}$)  and \grz{n}-decidable
-set. Also, either a statement of what it means for a function 
-$i: V \rightarrow \ZZ_{\geq 0}$ to be 
-\grz{n}-decidable, where $V$ is an arbitrary set, is needed
-(it means that $i$ is injective and its image is \grz{n}-decidable) or the definition
-of \grz{n}-computable tree should change to be more like the definition of 
-\grz{n}-computable group. Being computable on a subset $S$ is the same as being partially computable
-with domain $S$, where $S$ is decidable. Such functions can be extended to (total) computable
-functions, by assigning an arbitrary constant value at each point not in $S$.}
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
 	\[i: V \rightarrow \ZZ_{\geq 0},\]
@@ -684,10 +676,7 @@ To obtain the number of children of the root node:
 The function $\operatorname{kids}$ is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
 
 To decide whether the root has a child with label $n$:
-\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
-\ajd{Should this be
-\begin{equation*} \operatorname{haschild}(\tvec,n) :=  \min_{i < \tvec}(\operatorname{child}(\tvec,i)=n) < \operatorname{kids}(\tvec)? \end{equation*}
-}
+\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min_{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
 
 Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
 
@@ -703,10 +692,7 @@ Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to
 					\end{cases}
 }
 
-\begin{equation*} z := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
-
-\ajd{The function $z$ is $z(\tvec, n)$, so maybe the definitions should say
-$z=z(\tvec,n)=...$. Also, $z$ is already a function so maybe $d$ for descendant would be better.}
+\begin{equation*} z(\tvec,n) := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
 
 The function $\operatorname{p}'$ is \grz{3}-computable because it is bounded by $\tvec$.
 
@@ -734,33 +720,27 @@ Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it 
 
 Note that $i$ itself is not computable but its image has computable characteristic function.
 
-\begin{lemma}\cite[Lemma 3.1]{Cannonito_1973}
+\begin{lemma}\cite[Lemma 3.1]{Cannonito_1973} \label{freegroupindex}
 	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably many generators is \grz{3}-computable.
 \end{lemma}
 
 The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
-\[ i(w) = \prod_{k=0}^r p_k e^{J(i_k,\alpha_k)}. \]
-\ajd{This should be
-\[ i(w) = \prod_{k=0}^r p_k^{J(i_k,\alpha_k)} \]
-which is what Cannonito and Gatterdam must mean. }
-$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined 
-\ajd{ by $J(x,y)=((x+y)^2+x)^2+y$ (see %in
- \cite{Cannonito_1973} for more details)}.
+\[ i(w) = \prod_{k=0}^r p_k^{J(i_k,\alpha_k)}. \]
+$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
+\[J(x,y)=((x+y)^2+x)^2+y\]
+(see \cite{Cannonito_1973} for more details).
 
 Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
 
 \begin{definition} \cite[Definition 2.3]{Cannonito_1973}
 	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for arbitrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
 	\begin{align}
-		c_A(x) &:= \begin{cases}
-									0 & \textrm{if}\; x \in A, \\
-									1 & \textrm{if}\;  x \notin A.
+		\chi_A(x) &:= \begin{cases}
+									1 & \textrm{if}\; x \in A, \\
+									0 & \textrm{if}\;  x \notin A.
 							\end{cases}
 	\end{align}
 \end{definition}
- \ajd{$\chi_A$ has already been defined as the characteristic function of $A$, so should 
-be used instead of $c_A$. The way it's defined above $\chi_A=\rsg(c_A)$, but probably 
-it would be best to change this.}
 \begin{lemma} \label{relativetonormalcomputable}
 	Let $A \subset \ZZ_{\geq 0}$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
@@ -774,12 +754,9 @@ it would be best to change this.}
 \end{theorem}
 
 \begin{corollary} \label{wp-iff-group}
-	When $n \geq 3$ \ajd{and $G$ is a countable group}, WP$(G)$ is \grz{n}-decidable if and only if $G$ is \grz{n}-computable. Also, WP$(G)$ is not \grz{n}-decidable if and only if $G$ is not \grz{n}-computable.
- \ajd{The second statement is equivalent to the first. However there is something wrong with
-both. $WP(G)$ is not a subset of $\ZZ_{\geq 0}$. To make sense of the statement an
-index $(i,m,j)$ for the free group $F(X)$ is needed, and then $A_i=i(WP(G))$ will be a subset
-of $i(F(X))\subseteq \ZZ_{\geq 0}$. If $A_i$ is \grz{n}-decidable, then $G$ is \grz{n}-computable,
-as shown in \cite[Theorem 3.2]{Cannonito_1973}. Is the converse true?}
+	Let $G$ be a countable group with generating set $X$. Let $i_F$ be the index of $F(X)$ defined in \ref{freegroupindex}.
+	
+	$i_F(WP(G))$ is \grz{n}-decidable, $n \geq 3$, if and only if $G$ is \grz{n}-computable. 
 \end{corollary}
 
 \begin{definition}
