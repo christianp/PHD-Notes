@@ -123,15 +123,7 @@ Finally, Section \ref{sec:pregroup} defines computability for Stallings' pregrou
 \section{Building blocks \label{buildingblocks}}
  
 \subsection{Notation}
-Expressions consist of operators, function names, variables and punctuation. \ajd{It's still not clear to me what you're getting at here. 
-The function $z_1$ given by $z_1(0)=z()$ and $z_1(n+1)=P_2^2(n,z_1(n))$, takes the value $0$ 
-at every point $x\in\ZZ_{\geq 0}$, but could be written as the 
-expression $z_1(x)=0$, which contains a variable.
-(On the other hand there
-are expressions like $.(f-+.($ that contain no variables and have
-no evaluation.)}
-\cp{Then I'm fine with leaving it out entirely. I think I had deleted it before, but it reappeared during a git merge.}
-
+Expressions consist of operators, function names, variables and punctuation. 
 When defining expressions or new notation, $E \equiv E' := D$ means I will write $E$ or $E'$ to mean $D$.
 
 \subsection{Constructing functions}
@@ -147,7 +139,7 @@ Functions in general can take any number of arguments, so it is clearly impracti
 We will begin by defining the {\it primitive functions}, which are functions of one of the following three types:
 
 \begin{itemize}
-	\item {\em The zero function}. The zero function \ajd{$z$}\cp{disagree. Its name is 0 and 0 is its only name. Why overload the meaning of the letter $z$?} is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
+	\item {\em The zero function}. The zero function  is a nullary function which returns the number $0$. For brevity I will write the digit $0$ to mean the zero function, instead of using the function notation with brackets defined above.
 	\item {\em The successor function}. The successor function $s(x) := x + 1$ is a unary function which adds $1$ to its input.
 	\item {\em The projection functions}. For every $n > 0 $ and every $1 \leq i \leq n$ there is a projection function $P_n^i(x_1, \dots, x_n) := x_i$. $P_n^i$ is an $n$-ary function which returns its \ith argument.
 \end{itemize}
@@ -180,17 +172,7 @@ Substitution of functions for parameters can also be dealt with systematically, 
 Suppose we have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$. The function $f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n)$, which computes $f$ with its $i^{\textrm{th}}$ parameter replaced by $g(x_1,\dots,x_n)$, is constructed like so:
 \[f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n) := C(f,P_n^1,\dots,P_n^{i-1},g,P_n^{i+1},\dots,P_n^n).\]
 
-\cp{I've got rid of the `free variables' thing.
 
-The motivating example for this bit was scenarios like this:
-
-Suppose we have $f(x_1,x_2) \equiv x_1 + x_2 := R(P_1^1,C(s,P_3^2))$. We can construct a function which computes $2x_1+x_2 = x_1+(x_1+x_2)$ by substituting $x_1+x_2$ for $x_2$ in the definition of $f$. That's done by the composition $g := C(f,P_2^1,f)$. 
-When evaluating $g(1,2)$, we first work out $P_2^1(1,2) = 1$, and $f(1,2) = 3$. So $g(1,2) = f(1,f(1,2)) = f(1,3) = 4$.
-
-So I was just clearing up that if you have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$, the way you construct $f(x_1,\dots,x_{i-1},g,x_{i+1},\dots,x_n)$ is by doing the composition $C(f,P_n^1,\dots,P_n^{i-1},g,P_n^{i+1},\dots,P_n^n)$.
-
-All the talk of ``free variables'' was because I wanted to talk in the context of the friendly notation rather than the non-human-readable language of primitive functions and $C$ and $R$.
-}
 
 \subsubsection{Recursion}
 
@@ -317,7 +299,7 @@ For a constant integer $n$, we can construct a function to add $n$ to $x$ by ite
 
 Note that $n$ is a parameter, that is, there is a different function $+_n$ for each $n$.
 
-A nullary function returning any single constant can be constructed by composing $+_n$ with $z$
+A nullary function returning any single constant can be constructed by composing $+_n$ with the zero function 
 \begin{equation} c_n() := 0 + n. \end{equation}
 
 From now on I will just write the number $n$ to mean the function $c_n$, when it is not likely to lead to confusion.
@@ -622,7 +604,9 @@ An {\it ordered recursive tree} is a rooted, ordered tree obtained by a recursiv
 
 We can assign a labelling to an ordered recursive tree by giving vertices increasing integer labels corresponding to the order in which they were added to the tree, beginning with $0$ for the root. This way, the sequence of labels encountered on a path heading downwards is always increasing, and the root can always be recognised. 
 
-Every edge $e_{ij}$ can be given a unique label $\max(i,j)$ (irrespective of choice of pos and neg).  If positive edges are defined to be the ones pointing downwards (away from the root) then the label of a positive edge $e_{i,j}$ is always $j$. Positive and negative edges $e$ and $\bar e$ have the same label.
+Every edge $e_{ij}$ can be given a unique label $\max(i,j)$. 
+If positive edges are defined to be the ones pointing downwards (away from the root) then the label of a positive edge $e_{i,j}$ is always $j$. For all 
+edges $e$, both $e$ and $\bar e$  have the same label.
 
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
@@ -676,7 +660,8 @@ To obtain the number of children of the root node:
 The function $\operatorname{kids}$ is constructed by bounded minimisation on \grz{3} operations so is \grz{3}-computable.
 
 To decide whether the root has a child with label $n$:
-\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min_{i < \operatorname{kids}(\tvec)}{\operatorname{child}(\tvec,i)=n} \right) < \operatorname{kids}(\tvec). \end{equation}
+\begin{equation} \operatorname{haschild}(\tvec,n) :=  \left( \min_{i < \operatorname{kids}(\tvec)}({\operatorname{child}(\tvec,i)=n}) \right) < \operatorname{kids}(\tvec). \end{equation}
+
 
 Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to do the depth-first walk, remembering which vertex you just came from. If you reach a subtree which doesn't contain $n$ then turn back, or if you reach the required vertex then return the label of the vertex you just came from.
 
