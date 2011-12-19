@@ -677,7 +677,7 @@ Finally, we present the parent function $\phi_{\tvec}$. The idea is basically to
 					\end{cases}
 }
 
-\begin{equation*} z(\tvec,n) := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
+\begin{equation*} z=z(\tvec,n) := \min_{i < kids(\tvec)}(n \in subtree(\tvec,i)). \end{equation*}
 
 The function $\operatorname{p}'$ is \grz{3}-computable because it is bounded by $\tvec$.
 
@@ -749,8 +749,9 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 \end{definition}
 
 \begin{definition}
+\ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }
 	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
-\[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1, \]
+\[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
 
 \begin{comment}
@@ -770,7 +771,7 @@ Let $\Gamma = (V,E)$ be a connected graph.
 \begin{definition}
 Associate with each vertex $v$ a vertex group $G_v = \present{X_v}{R_v}$, with the $X_v$ all pairwise disjoint. Call the set of all vertex groups $\mathbf{G}$. 
 
-For each edge $e \in E$ associate two isomorphic {\it edge groups} $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$ satisfying $\phi_e^{-1} = \phi_{\bar{e}}$.
+To each edge $e \in E$ associate two isomorphic {\it edge groups} $A_e \leq G_{\iota(e)}$ and $B_e \leq G_{\tau(e)}$, with $A_e = B_{\bar{e}}$, and an isomorphism $\phi_e : A_e \rightarrow B_e$ satisfying $\phi_e^{-1} = \phi_{\bar{e}}$.
 
 $(\mathbf{G},\Gamma)$ is called a {\it graph of groups}.
 \end{definition}
@@ -816,6 +817,8 @@ Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v
 \psi(0,i) &:= \psi(i,0)^{-1}, \\
 \psi(i,j) &:= \psi(i,0) \psi(0,j).
 \end{split}\end{equation}
+\ajd{It looks like the second line should be
+\[\psi(i,0) := (e_{i,\phi_T(i)}) \cdot \psi(\phi_T(i),0),\]}
 
 The free reduction of $\psi(i,j)$ will be implicit from now on.
 
@@ -847,11 +850,22 @@ To define $i(G)$, we must assign numbers to the generators of $G$. Let $i_X(g)$ 
 
 Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i_X(x_{i,j}) := \nu^2 + J(i,j)$.
 
-The rest of $i(G)$ works the same way as the standard free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$.	
+The rest of $i(G)$ works the same way as the standard free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$. \ajd{If I understand correctly you are encoding 
+the free group on the generators $X$ of $G$ and you're using what 
+C\& G call the ``standard'' index for the free group for this. Probably
+this should be made explicit, as otherwise  $i(G)$ looks like an index
+for $G$ rather than $F(X)$. 
+(In fact, since
+you use J above, the result won't quite be the standard index, which
+assumes the generators are indexed by the first $|X|$ natural numbers.)}	
 
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
-To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter.
+To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. \ajd{One for the set of edges? To see you 
+have an edge you can 
+use the fact that, for all elements $a\in X$, $a$ is an edge if and 
+only if $i_X(a)\le \nu^2-1$. For other letters the left inverse function
+$L$ of  $J$ is needed isn't it?}
 
 As $\approx$ has finitely many equivalence classes, and they are all \grz{n}-decidable, $\approx$ is \grz{n}-decidable.
 
@@ -870,6 +884,8 @@ Define a function which gives the position of the start of the syllable to which
 																					\operatorname{backtrack}(\wvec,i)	&	(\wvec)_i \approx (\wvec)_{i+1}.
 																				\end{cases}
 }
+\ajd{1st line should say $\le \nu^2-1$. Here and elesewhere the convention 
+is that definition by cases involves exclusive or. This needs to be said.}
 
 The function $\operatorname{backtrack}$ is constructed from \grz{n} operations and is bounded by $|\wvec|$, so is \grz{n}-computable.
 
@@ -880,14 +896,17 @@ Now, the start of the \nth syllable is given by:
 }
 
 The number of syllables can be computed like so:
-\begin{equation} \operatorname{numsyllables}(\wvec) = \min_{i < |\wvec|} ( \operatorname{start}(\wvec,i) = |\wvec|. \end{equation}
+\begin{equation} \operatorname{numsyllables}(\wvec) = \min_{i < |\wvec|} ( \operatorname{start}(\wvec,i) = |\wvec|). \end{equation}
 
 And now the \nth syllable itself can be found:
 \begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
 
 The function $\operatorname{syllable}$ is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
+\ajd{Up to here functions have been constructed using finite sets $X_i$
+and the tree $\tvec$, so I think are all \grz{3}.}
 
 We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
+\ajd{Do you mean whether  $\wvec$ encoded as $\wvec' = (a_0,e_1, \dots, e_n, a_n)$, is trivial?}
 
 If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable question.
 
@@ -901,7 +920,7 @@ If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1
 	)
 \end{split} 
 \end{equation}
-(and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse. We don't need to know how to compute the whole multiplication table to do this.
+(and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse \ajd{(which is a matter of appling the inverses $L$ and $R$ of $J$)}. We don't need to know how to compute the whole multiplication table to do this.
 
 To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement.
 
@@ -924,7 +943,7 @@ The G\"odel encoding of any word of length $n$ on a finite alphabet is bounded a
 
 \begin{corollary}
 
-Same assumptions as Theorem \ref{fgoagogcomp}, but also assume that the edge groups are finitely generated. So each edge homomorphism $\phi_{e_{ij}}$ sends a finitely generated subgroup $E_{ij} \leq G_i$ to another finitely generated subgroup $E_{ji} \leq G_j$.
+In addition to the  assumptions of Theorem \ref{fgoagogcomp}, also assume that the edge groups are finitely generated: so each edge homomorphism $\phi_{e_{ij}}$ sends a finitely generated subgroup $E_{ij} \leq G_i$ to another finitely generated subgroup $E_{ji} \leq G_j$.
 
 Then $G = \pi_1(\mathbf{G}, \Gamma, T, v_0)$ is \grz{n}-computable.
 
@@ -936,9 +955,9 @@ In the algorithm from Theorem \ref{fgoagogcomp}, the potential for unbounded rec
 
 Let $w$ be a word on $G$ of length $n$. An upper bound on the number of syllables in $w$ is $n$, so let's say there are $n$ applications of edge homomorphisms.
 
-A homomorphism $\phi_{e_{ij}}$ rewrites generators $x \in X_i$ as words $\phi_{e_{ij}}(x) \in X_j^{\ast}$. As $G-i$ is finitely generated, there is a word $\phi_{e_{ij}}(x)$ of maximum, finite, length $k_{ij}$. So a word $w_i \in E_{ij}$ of length $m$ is rewritten to a word $w_j \in E_j$ of length at most $k_{ij}m$.
+A homomorphism $\phi_{e_{ij}}$ rewrites generators $x \in X_i$ as words $\phi_{e_{ij}}(x) \in X_j^{\ast}$. As $G_i$ is finitely generated, there is a word $\phi_{e_{ij}}(x)$ of maximum, finite, length $k_{ij}$. So a word $w_i \in E_{ij}$ of length $m$ is rewritten to a word $w_j \in E_j$ of length at most $k_{ij}m$.
 
-Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$ has length at most $k^n n = L$.
+Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$ has length at most $k^n n = L$.\ajd{What is $G_0$?}
 
 Hence the index of the resulting word is bounded by
 
