@@ -474,7 +474,8 @@ Definition by cases: if  $P_i(\xvec)$, $0 \leq i \leq k$ is a finite collection 
 
 In our language, this is:
 \begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
-where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions.
+where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions. \ajd{The fact that, if all the $P_i$ and $g_i$ are in \grz{n},
+where $n\ge 2$, then so is $f$, is used frequently.} 
 
 The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the greatest integer $n$ such that $n^2 < x$.
 
@@ -884,8 +885,7 @@ Define a function which gives the position of the start of the syllable to which
 																					\operatorname{backtrack}(\wvec,i)	&	(\wvec)_i \approx (\wvec)_{i+1}.
 																				\end{cases}
 }
-\ajd{1st line should say $\le \nu^2-1$. Here and elesewhere the convention 
-is that definition by cases involves exclusive or. This needs to be said.}
+\ajd{1st line should say $\le \nu^2-1$.}
 
 The function $\operatorname{backtrack}$ is constructed from \grz{n} operations and is bounded by $|\wvec|$, so is \grz{n}-computable.
 
@@ -978,13 +978,17 @@ be two copies of the free group on two generators. Let $(\mathbf{G},\Gamma)$
 graph
 with a single edge $e$ from $v_0$ to $v_1$; so $\Gamma = T = (\{v_0,v_1\},\{e,\bar{e}\})$.
 
-Let $E_{01} = \left \langle \{x^{-n}yx^n, n \in \mathbb{N} \} \right \rangle$, $E_{10} = \left\langle \{ a^{-n}ba^n, n \in \mathbb{N} \} \right\rangle$ be the (infinitely generated) identified subgroups of $G_0$ and $G_1$, respectively. In fact the given generators of the edge subgroups freely generate
+Let $E_{01} = \left \langle \{x^{-n}yx^n, n \in \mathbb{N} \} \right \rangle$, 
+$E_{10} = \left\langle \{ a^{-n}ba^n, n \in \mathbb{N} \} \right\rangle$ be the 
+(infinitely generated) identified subgroups of $G_0$ and $G_1$, respectively.
+\ajd{Why $\mathbb{N}$ not $\ZZ_{\geq 0}$ here?} 
+In fact the given generators of the edge subgroups freely generate
 these subgroups. This means that a homomorphism can be defined merely
 by defining the images of the generators.
 
 We begin by defining the homomorphism $\phi_e$ for the generators of $G_0$ with even powers of $x$:
 \[	\phi_{e}(x^{-2n}yx^{2n}) := a^{(-n)!}ba^{(n)!}, \forall n \in \ZZ_{\geq 0}. \]
-
+\ajd{Should begin with $n=1$ instead of $n=0$, as $1!=0!=1$.}
 Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \ZZ_{\geq 0}\}$. \recur{
 \operatorname{fi}(n) &:= \operatorname{fi}'(n,n).\\
 \operatorname{fi}'(n,0) &:= 0, \\
@@ -1017,7 +1021,7 @@ Again, $\operatorname{nf}(n)$ is \grz{3}-computable. Its inverse is also \grz{3}
 
 Define
 \[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \ZZ_{\geq 0}. \]
-
+\ajd{Let $n\in \ZZ_{\geq 1}$ to avoid starting with $-1$.} 
 Now we can define $\phi_{\bar{e}}$ to be the inverse of $\phi_e$.
 \[ 
 	\phi_{\bar{e}}(a^{-n}ba^n) := 
@@ -1034,7 +1038,11 @@ Construct the index for $G = G_0 \underset{\phi_e}{\ast} G_1$ by following the m
 Consider a word $w$ of the form
 \[ w = ea^{-1}e^{-1} \dots x^{-1}ea^{-1}e^{-1}x^{-2n}yx^{2n}eae^{-1}x \dots eae^{-1}. \]
 
-In order to decide if this word is trivial, it must be simplified to something of the form $x^{-m}yx^m$. Start with the central subword $x^{-2n}yx^{2n}$. Each conjugation by $eae^{-1}x$ causes the number $m$ to be raised to the factorial of itself. Since there can be arbitrarily many such conjugations, the final value of $m$ will not be bounded by any \grz{3} function.
+In order to decide if this word is trivial, it must be simplified to something of the form $x^{-m}yx^m$. Start with the central subword $x^{-2n}yx^{2n}$. Each conjugation by $eae^{-1}x$ causes the number $m$ to be raised to the factorial of itself. 
+\ajd{I calculate that conjugation of $x^{-2n}yx^{2n}$ by  $eae^{-1}x$ results 
+in $x^{-k}yx^{k}$, where $k = n!+n+2$. For the process to keep going this requires $n$ to be even. However
+after one more conjugation the new $k$ will be odd.}
+Since there can be arbitrarily many such conjugations, the final value of $m$ will not be bounded by any \grz{3} function.
 
 As $m$ depends on the input, the length of the simplified word can only be computed by unbounded recursion on an \grz{3} function, so is \grz{4}-computable and not \grz{3}-computable. 
 
