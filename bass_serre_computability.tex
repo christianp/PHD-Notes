@@ -1109,8 +1109,8 @@ $\UP$ forms a group.
 
 
 If ${\Sigma}$ is any set, then
-the disjoint union $P= \smallset{\eps} \cup \Sigma \cup \ov{\Sigma}$
-where $\ov{\Sigma}$ is a copy of ${\Sigma}$
+the disjoint union $P= \smallset{\eps} \cup \Sigma \cup \ov{\Sigma}$, 
+where $\ov{\Sigma}=\{\bar a:a\in \Sigma\}$ is a copy of ${\Sigma}$, 
 yields a pregroup with involution given by $\ov \eps=\eps$, $\ov{\ov{a}}=a$,
 for all $a\in \Sigma$,  such that $p \ov{p} = \eps$,
 for all $p\in P$.
@@ -1128,7 +1128,7 @@ inclusion map $P \rightarrow P^\ast$
  with the standard quotient map $P^\ast \rightarrow \UP$ is injective,
 where $P^\ast$ is the free monoid on $P$. His construction involves defining
 an equivalence relation, which we shall now describe, on the set of 
-$P$-reduced words.
+$P$-reduced sequences.
 First define the binary relation  $\sim$ on the set $P$-reduced sequences of elements
 of $P$ by
 $$(a_1,\ldots, a_i,a_{i+1},\ldots, a_n)\sim
@@ -1180,14 +1180,14 @@ be constructed such that $\UP = G$;  and conversely that
 \item  given a pregroup $P$ which satisfies a condition called ``finite height'' then a graph
 of groups with fundamental group $\UP$ may be constructed.
 \end{itemize}
-
-
+Not all pregroups have finite height, so there exist universal groups of pregroups which
+are not  the fundamental groups of any  graph of groups. 
 
 \subsection{Pregroups and the Grzegorczyk hierarchy}
 
 
 Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \ZZ_{\geq 0}$.
-(In this case $P$ must be countable.)  
+ %(In this case $P$ must be countable.)  
 Define 
 \begin{itemize}
 \item $D^\prime=
