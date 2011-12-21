@@ -1223,6 +1223,7 @@ is \grz{n+1}-computable.
 
 In order to prove this theorem we first introduce some functions and then use these to construct
 an index for $\UP$. 
+
 \subsection{Functions for pregroups}
 In this section we shall use the notation and constructions  of
 Section \ref{sec:lists}. As we shall mostly be working with encoded lists we use 
@@ -1231,7 +1232,8 @@ as appropriate to
 the context. 
 Let $i:P\maps \ZZ_{\geq 0}$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
 We shall assume that $i(\eps)=1$.   
-Elements of $P^*$ are regarded as finite sequences of elements of $P$.  Define an indexing function
+Elements of $P^*$ are regarded as finite sequences of elements of $P$, and 
+usually referred to as \emph{words}.  Define an indexing function
 $i_1:P^*\maps \ZZ_{\geq 0}$ by 
 \begin{equation}\label{eq:imonoid}
 i_1(a_0,\ldots,a_m)=[i(a_0),\ldots ,i(a_m)].
@@ -1242,8 +1244,8 @@ $i_1(1)=1$, while,  on the other hand, $i_1(\eps)= 4$.
 
 The function $i_1$ is 
  \grz{n}-decidable: the characteristic function of $i_1(P^*)$ is the function 
-$c$ such that 
-\[c(\avec)=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
+$\chi$ such that 
+\[\chi(\avec)=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
 
 We also define functions corresponding to multiplication in $P^*$  and to the extension of the inversion
 operation on $P$ to $P^*$. That is we define $m_1:\ZZ_{\geq 0}\times\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ and $j_1:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
@@ -1267,7 +1269,8 @@ an \grz{n}-computable function.
 
 Next define the predicate $\Preduced$ on $\ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:Preduced}
-\Preduced(\avec)=\find(\avec,i(\eps))=|\avec|\wedge \Dfind(\avec)=|\avec|.
+\Preduced(\avec):=\left(\find(\avec,i(\eps))=|\avec|\right)\wedge
+\left( \Dfind(\avec)=|\avec|\right).
 \end{equation} 
 Again this is \grz{n}-computable and we have $\Preduced(i_1(\uvec))=1$ if and 
 only if $\uvec$ is a $P$-reduced word in $P^\ast$. 
