@@ -169,7 +169,7 @@ such that, for all $x_1, \dots, x_m$, $f_m(x_1, \dots, x_n, \dots, x_m) \equiv f
 
 Substitution of functions for parameters can also be dealt with systematically, by composing with the projection function $P_i^i$ everywhere except at the position which will take the value of the substituted function.
 
-Suppose we have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$. The function $f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n)$, which computes $f$ with its $i^{\textrm{th}}$ parameter replaced by $g(x_1,\dots,x_n)$, is constructed like so:
+Suppose we have two $n$-ary functions $f(x_1,\dots,x_n)$ and $g(x_1,\dots,x_n)$. The function \[f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n),\] which computes $f$ with its $i^{\textrm{th}}$ parameter replaced by $g(x_1,\dots,x_n)$, is constructed like so:
 \[f(x_1,\dots,x_{i-1},g(x_1,\dots,x_n),x_{i+1},\dots,x_n) := C(f,P_n^1,\dots,P_n^{i-1},g,P_n^{i+1},\dots,P_n^n).\]
 
 
@@ -474,8 +474,7 @@ Definition by cases: if  $P_i(\xvec)$, $0 \leq i \leq k$ is a finite collection 
 
 In our language, this is:
 \begin{equation} f(\xvec) := \sum_{i < k+1} g_i(\xvec) \cdot sg(P_i(\xvec)), \end{equation}
-where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{2}, then so is $f$, because we are just doing $k+1$ multiplications and additions. \ajd{The fact that, if all the $P_i$ and $g_i$ are in \grz{n},
-where $n\ge 2$, then so is $f$, is used frequently.} 
+where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{n}, $n \geq 2$, then so is $f$, because we are just doing $k+1$ multiplications and additions.  
 
 The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the greatest integer $n$ such that $n^2 < x$.
 
@@ -750,7 +749,7 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 \end{definition}
 
 \begin{definition}
-\ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }
+	\ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }\cp{This isn't strictly necessary. For example, the identity homomorphism is always \grz{0}-computable, no matter what the $i_{G_1}$ and $i_{G_2}$ are.}
 	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
@@ -814,12 +813,10 @@ Let $w \in X^{\ast}$ be an admissible word, and suppose $w =_G 1$. Then either:
 Let $\phi_T(n)$ be the parent function for $T$. The path in $T$ from $v_i$ to $v_j$ can be found by freely reducing the path $\psi(i,j)$, defined by:
 \begin{equation}\begin{split}
 \psi(0,0) &:= \epsilon, \\
-\psi(i,0) &:= (e_{i,p_T(i)}) \cdot \psi(p_T(i)), \\
+\psi(i,0) &:= (e_{i,\phi_T(i)}) \cdot \psi(\phi_T(i),0), \\
 \psi(0,i) &:= \psi(i,0)^{-1}, \\
 \psi(i,j) &:= \psi(i,0) \psi(0,j).
 \end{split}\end{equation}
-\ajd{It looks like the second line should be
-\[\psi(i,0) := (e_{i,\phi_T(i)}) \cdot \psi(\phi_T(i),0),\]}
 
 The free reduction of $\psi(i,j)$ will be implicit from now on.
 
@@ -847,30 +844,27 @@ each $G_v$.
 
 Encode the depth-first walk of the spanning tree $T$ as a G\"odel number $\tvec$ per Section \ref{encodetrees}. Then the vertex-parent function $\phi_{\tvec}$ is \grz{3}-computable. From now on each vertex group can be referred to by the integer label of the vertex it belongs to.
 
-To define $i(G)$, we must assign numbers to the generators of $G$. Let $i_X(g)$ denote the number corresponding to the generator $g$. We will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i_X(e_{a,b}) := a \cdot \nu + b$.
+We will define $i(F(X))$, an index of the free group on the generators of $X$, and use that to decide the word problem of $G$. First, we must assign numbers to the generators of $G$. Let $i_X(g)$ denote the number corresponding to the generator $g$. We will begin by using the first $\nu^2$ numbers to represent potential edges. For $0 \leq a,b \leq \nu - 1$ define $i_X(e_{a,b}) := a \cdot \nu + b$.
 
 Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, define $i_X(x_{i,j}) := \nu^2 + J(i,j)$.
 
-The rest of $i(G)$ works the same way as the standard free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- words are encoded as G\"odel lists, and for each $g \in G$, the word with minimal G\"odel encoding representing $g$ is used for $i(g)$. \ajd{If I understand correctly you are encoding 
-the free group on the generators $X$ of $G$ and you're using what 
-C\& G call the ``standard'' index for the free group for this. Probably
-this should be made explicit, as otherwise  $i(G)$ looks like an index
-for $G$ rather than $F(X)$. 
-(In fact, since
-you use J above, the result won't quite be the standard index, which
-assumes the generators are indexed by the first $|X|$ natural numbers.)}	
+Now that every generator has been given an integer label, $i(F(X))$ works the same way as the ``standard'' free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- elements of $F(X)$ are freely-reduced words, encoded as G\"odel lists.
 
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
-To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{n}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. \ajd{One for the set of edges? To see you 
+To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{3}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. 
+
+\ajd{One for the set of edges? To see you 
 have an edge you can 
 use the fact that, for all elements $a\in X$, $a$ is an edge if and 
 only if $i_X(a)\le \nu^2-1$. For other letters the left inverse function
 $L$ of  $J$ is needed isn't it?}
 
-As $\approx$ has finitely many equivalence classes, and they are all \grz{n}-decidable, $\approx$ is \grz{n}-decidable.
+\cp{No, we still want to split up different edges into different syllables.}
 
-Each letter $w_i$ in $w$ can then be replaced by $\pi(w_i)$. When working on the encoded version of $w$, this process is \grz{n}-computable, since $\phi_{\tvec}$ is computable, and we only want to go as far as producing a list of generators, not a single element of $i(G)$. By concatenating all of the $\pi(w_i)$, we will create an admissible word equivalent to $w$.
+As $\approx$ has finitely many equivalence classes, and they are all \grz{3}-decidable, $\approx$ is \grz{3}-decidable.
+
+Each letter $w_i$ in $w$ can then be replaced by $\pi(w_i)$. When working on the encoded version of $w$, this process is \grz{3}-computable, since $\phi_{\tvec}$ is \grz{3}-computable, and we only want to go as far as producing a list of generators, not a single element of $i(G)$. By concatenating all of the $\pi(w_i)$, we will create an admissible word equivalent to $w$.
 
 The next task is to split $w'$ into `syllables', or contiguous subwords. A syllable is either a single edge letter or a word from one of the vertex groups.
 
@@ -880,14 +874,13 @@ Define a function which gives the position of the start of the syllable to which
 \recur{
 	\operatorname{backtrack}(\wvec,0) &:= 0, \\
 	\operatorname{backtrack}(\wvec,i+1) &:= \begin{cases}
-																					i+1	&	(\wvec)_{i+1} \leq \nu^2, \\
+																					i+1	&	(\wvec)_{i+1} < \nu^2, \\
 																					i+1	&	(\wvec)_i \not \approx (\wvec)_{i+1}, \\
 																					\operatorname{backtrack}(\wvec,i)	&	(\wvec)_i \approx (\wvec)_{i+1}.
 																				\end{cases}
 }
-\ajd{1st line should say $\le \nu^2-1$.}
 
-The function $\operatorname{backtrack}$ is constructed from \grz{n} operations and is bounded by $|\wvec|$, so is \grz{n}-computable.
+The function $\operatorname{backtrack}$ is constructed from \grz{3}-computable operations and is bounded by $|\wvec|$, so is itself \grz{3}-computable.
 
 Now, the start of the \nth syllable is given by:
 \recur{
@@ -901,12 +894,9 @@ The number of syllables can be computed like so:
 And now the \nth syllable itself can be found:
 \begin{equation} \operatorname{syllable}(\wvec,n) = \wvec[\operatorname{start}(\wvec,n) \dots \operatorname{start}(\wvec,n+1)-1]. \end{equation}
 
-The function $\operatorname{syllable}$ is constructed from \grz{n}-computable functions and is bounded by $\wvec$ so is \grz{n}-computable.
-\ajd{Up to here functions have been constructed using finite sets $X_i$
-and the tree $\tvec$, so I think are all \grz{3}.}
+The function $\operatorname{syllable}$ is constructed from \grz{3}-computable functions and is bounded by $\wvec$ so is \grz{3}-computable.
 
-We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $w' = (a_0,e_1, \dots, e_n, a_n)$, encoded as $\wvec'$, is trivial.
-\ajd{Do you mean whether  $\wvec$ encoded as $\wvec' = (a_0,e_1, \dots, e_n, a_n)$, is trivial?}
+We can then use the conditions of Lemma \ref{trivialnormalform} to determine if $\wvec$, encoded as $\wvec' = (a_0,e_1, \dots, e_n, a_n)$, is trivial.
 
 If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable question.
 
@@ -920,7 +910,7 @@ If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1
 	)
 \end{split} 
 \end{equation}
-(and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse \ajd{(which is a matter of appling the inverses $L$ and $R$ of $J$)}. We don't need to know how to compute the whole multiplication table to do this.
+(and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse,which is a matter of applying the inverses $L$ and $R$ of the pairing function $J$. We don't need to know how to compute the whole multiplication table to do this.
 
 To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement.
 
@@ -957,7 +947,7 @@ Let $w$ be a word on $G$ of length $n$. An upper bound on the number of syllable
 
 A homomorphism $\phi_{e_{ij}}$ rewrites generators $x \in X_i$ as words $\phi_{e_{ij}}(x) \in X_j^{\ast}$. As $G_i$ is finitely generated, there is a word $\phi_{e_{ij}}(x)$ of maximum, finite, length $k_{ij}$. So a word $w_i \in E_{ij}$ of length $m$ is rewritten to a word $w_j \in E_j$ of length at most $k_{ij}m$.
 
-Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$ has length at most $k^n n = L$.\ajd{What is $G_0$?}
+Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$, the group attached to the graph's root vertex, has length at most $k^n n = L$.\ajd{What is $G_0$?}
 
 Hence the index of the resulting word is bounded by
 
@@ -981,14 +971,13 @@ with a single edge $e$ from $v_0$ to $v_1$; so $\Gamma = T = (\{v_0,v_1\},\{e,\b
 Let $E_{01} = \left \langle \{x^{-n}yx^n, n \in \mathbb{N} \} \right \rangle$, 
 $E_{10} = \left\langle \{ a^{-n}ba^n, n \in \mathbb{N} \} \right\rangle$ be the 
 (infinitely generated) identified subgroups of $G_0$ and $G_1$, respectively.
-\ajd{Why $\mathbb{N}$ not $\ZZ_{\geq 0}$ here?} 
 In fact the given generators of the edge subgroups freely generate
 these subgroups. This means that a homomorphism can be defined merely
 by defining the images of the generators.
 
 We begin by defining the homomorphism $\phi_e$ for the generators of $G_0$ with even powers of $x$:
-\[	\phi_{e}(x^{-2n}yx^{2n}) := a^{(-n)!}ba^{(n)!}, \forall n \in \ZZ_{\geq 0}. \]
-\ajd{Should begin with $n=1$ instead of $n=0$, as $1!=0!=1$.}
+\[	\phi_{e}(x^{-2n}yx^{2n}) := a^{-(n!)}ba^{n!}, \forall n \in \NN. \]
+
 Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \ZZ_{\geq 0}\}$. \recur{
 \operatorname{fi}(n) &:= \operatorname{fi}'(n,n).\\
 \operatorname{fi}'(n,0) &:= 0, \\
@@ -1005,7 +994,7 @@ The function $\operatorname{fi}(n)$ is \grz{3}-computable since it is bounded by
 
 In order for $\phi_e$ to be an isomorphism, we need to identify the remaining generators of $G_0$ (those with odd powers of $x$) with the remaining generators of $G_1$ (those with non-factorial powers of $x$).
 
-To do that, we need a bijection between $\ZZ_{\geq 0}$ and the the non-factorial numbers.
+To do that, we need a bijection between $\NN$ and the the non-factorial numbers.
 
 Define 
 \recur{
@@ -1020,8 +1009,8 @@ Define
 Again, $\operatorname{nf}(n)$ is \grz{3}-computable. Its inverse is also \grz{3}-computable since $\operatorname{nf}^{-1}(n) = \min_{i<n} (\operatorname{nf}(i) = n)$.
 
 Define
-\[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \ZZ_{\geq 0}. \]
-\ajd{Let $n\in \ZZ_{\geq 1}$ to avoid starting with $-1$.} 
+\[ \phi_{e}(x^{-(2n-1)}yx^{2n-1}) := a^{-\operatorname{nf}(n)}ba^{\operatorname{nf}(n)}, \forall n \in \NN. \]
+
 Now we can define $\phi_{\bar{e}}$ to be the inverse of $\phi_e$.
 \[ 
 	\phi_{\bar{e}}(a^{-n}ba^n) := 
@@ -1038,10 +1027,7 @@ Construct the index for $G = G_0 \underset{\phi_e}{\ast} G_1$ by following the m
 Consider a word $w$ of the form
 \[ w = ea^{-1}e^{-1} \dots x^{-1}ea^{-1}e^{-1}x^{-2n}yx^{2n}eae^{-1}x \dots eae^{-1}. \]
 
-In order to decide if this word is trivial, it must be simplified to something of the form $x^{-m}yx^m$. Start with the central subword $x^{-2n}yx^{2n}$. Each conjugation by $eae^{-1}x$ causes the number $m$ to be raised to the factorial of itself. 
-\ajd{I calculate that conjugation of $x^{-2n}yx^{2n}$ by  $eae^{-1}x$ results 
-in $x^{-k}yx^{k}$, where $k = n!+n+2$. For the process to keep going this requires $n$ to be even. However
-after one more conjugation the new $k$ will be odd.}
+In order to decide if this word is trivial, it must be simplified to something of the form $x^{-m}yx^m$. Start with the central subword $x^{-2n}yx^{2n}$. Each conjugation of $x^{-2n}yx^{2n}$ by $eae^{-1}x$ causes the number $2n$ to be raised to (roughly) the factorial of itself. 
 Since there can be arbitrarily many such conjugations, the final value of $m$ will not be bounded by any \grz{3} function.
 
 As $m$ depends on the input, the length of the simplified word can only be computed by unbounded recursion on an \grz{3} function, so is \grz{4}-computable and not \grz{3}-computable. 
