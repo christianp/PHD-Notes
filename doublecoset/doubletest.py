@@ -11,4 +11,6 @@ g.addEdge(d,b,'y')
 g.addEdge(a,b,'y')
 
 g2 = g.double()
+print "digraph double {"
 print(str(g2))
+print "}"
