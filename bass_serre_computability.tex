@@ -74,7 +74,7 @@
 \newcommand{\Preduced}{\operatorname{Preduced}}
 \newcommand{\leftm}{\operatorname{leftm}}
 \newcommand{\Predn}{\operatorname{Predn}}
-\newcommand{\Preduce}{\operatorname{Preduce}}
+\newcommand{\Preduction}{\operatorname{Preduction}}
 \newcommand{\Interleaven}{\operatorname{Interleaven}}
 
 \newcommand{\be}{\begin{enumerate}}
@@ -1236,7 +1236,7 @@ Elements of $P^*$ are regarded as finite sequences of elements of $P$, and
 usually referred to as \emph{words}.  Define an indexing function
 $i_1:P^*\maps \ZZ_{\geq 0}$ by 
 \begin{equation}\label{eq:imonoid}
-i_1(a_0,\ldots,a_m)=[i(a_0),\ldots ,i(a_m)].
+i_1(a_0,\ldots,a_m):=[i(a_0),\ldots ,i(a_m)].
 \end{equation} 
 Then $i_1$ is injective; in particular, by definition of the
 G\"odel number of the empty sequence,  
@@ -1245,16 +1245,16 @@ $i_1(1)=1$, while,  on the other hand, $i_1(\eps)= 4$.
 The function $i_1$ is 
  \grz{n}-decidable: the characteristic function of $i_1(P^*)$ is the function 
 $\chi$ such that 
-\[\chi(\avec)=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
+\[\chi(\avec):=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
 
 We also define functions corresponding to multiplication in $P^*$  and to the extension of the inversion
 operation on $P$ to $P^*$. That is we define $m_1:\ZZ_{\geq 0}\times\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ and $j_1:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:mmonoid}
-m_1(i_1(\uvec),i_1(\vvec))=i_1(\uvec)\concat i_1(\vvec)) 
+m_1(i_1(\uvec),i_1(\vvec)):=i_1(\uvec)\concat i_1(\vvec)) 
 \end{equation}
 and 
 \begin{equation}\label{eq:jmonoid}
-j_1(i_1(u_0,\ldots, u_m))=i_1(j(u_m),\ldots ,j(u_0)). 
+j_1(i_1(u_0,\ldots, u_m)):=i_1(j(u_m),\ldots ,j(u_0)). 
 \end{equation}
 Then $m_1$ and $j_1$ are \grz{n}-computable functions, $m_1((i_1(\uvec),i_1(\vvec))=i_1(\uvec\vvec)$ 
 and $j_1(i_1(u_0,\ldots, u_m))=i_1(u_m^{-1},\ldots , u_0^{-1})$, as required.
@@ -1262,7 +1262,7 @@ and $j_1(i_1(u_0,\ldots, u_m))=i_1(u_m^{-1},\ldots , u_0^{-1})$, as required.
 Next we define functions to work with $P$-reduction of encoded words.
 Define $\Dfind:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by 
 \begin{equation}\label{eq:Dfind}
-\Dfind(\avec)=\min_y(y<|\avec|\wedge ((\avec)_y,(\avec)_{y+1})\in D^\prime).
+\Dfind(\avec):=\min_y(y<|\avec|\wedge ((\avec)_y,(\avec)_{y+1})\in D^\prime).
 \end{equation}
 As $D^\prime$ is \grz{n}-decidable and the minimisation is bounded this is
 an \grz{n}-computable function. 
@@ -1284,7 +1284,7 @@ consider any other possible  sequences of $P$-reduction.
 
 Define a function $\leftm:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
 \begin{equation}\label{eq:leftm}
-\leftm(\avec)=
+\leftm(\avec):=
 \left\{
 \begin{array}{ll}
 1,& \textrm{ if } \avec = [1], \textrm{ or } [\eps]\\
@@ -1300,29 +1300,32 @@ This is an \grz{n}-computable function.
 
 Now define $\Predn:\ZZ_{\geq 0}\times \ZZ_{\geq 0} \maps \ZZ_{\geq 0}$ by
 \begin{align}
-\Predn(\avec,0) & = \avec,\notag\\
-\Predn(\avec, n+1) & = \leftm(\Predn(\avec,n))\label{eq:Pr}.
+\Predn(\avec,0) & := \avec,\notag\\
+\Predn(\avec, n+1) & := \leftm(\Predn(\avec,n))\label{eq:Pr}.
 \end{align} 
 As $\Predn$ is defined by primitive recursion using \grz{n}-computable functions it
-is \grz{n+1}-computable. As the value of $m^\prime(x,y)$ is not necessarily bounded by
-a \grz{n}-computable function the recursion is not in general bounded.
+is \grz{n+1}-computable. 
+The recursion requires up to $n$ applications of $m^\prime(x,y)$, and we 
+do not have 
+a \grz{n}-computable bounding function for the recursion; so cannot say
+whether or not $\Predn(\avec,n)$ is in \grz{n}.
 
-Finally define $\Preduce:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
-\begin{equation}\label{eq:Preduce}
-\Preduce(\avec)=\Predn(\avec,|\avec|).
+Finally define $\Preduction:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
+\begin{equation}\label{eq:Preduction}
+\Preduction(\avec):=\Predn(\avec,|\avec|).
 \end{equation}
 Now if $\uvec \in P^\ast$ and $\vvec$ is a $P$-reduced word 
 obtained from $\uvec$ by $P$-reduction, where reduction is always made 
-at the leftmost possible position, then $\Preduce(i_1(\uvec)=i_1(\vvec)$. 
+at the leftmost possible position, then $\Preduction(i_1(\uvec))=i_1(\vvec)$. 
 
 In order to recognise when two encoded words represent elements of the same
 $\approx$ equivalence class we define the relation $\Interleaven\subseteq \ZZ_{\geq 0}\times \ZZ_{\geq 0}$ 
 defined as 
 \begin{equation}\label{eq:interleaven}
 \begin{split}
-\Interleaven(\avec,\bvec) &=\Preduced(\avec)\wedge \Preduced(\bvec) \\ 
-&\wedge |\avec|=|\bvec|
-\wedge \Preduce(m_1(j_1(\bvec),\avec))=1.
+\Interleaven(\avec,\bvec) & :=\Preduced(\avec)\wedge \Preduced(\bvec) \\ 
+&\wedge (|\avec|=|\bvec|)
+\wedge \left( \Preduction(m_1(j_1(\bvec),\avec))=1\right).
 \end{split}
 \end{equation}
 This is an \grz{n+1}-decidable relation and from Theorem \ref{thm:sup} and Lemma \ref{lem:interleave} we have,
@@ -1335,15 +1338,15 @@ We shall write $m\approx n$, for integers $m,n$ such that $\Interleaven(m,n)$.
 We define a function $i_2:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ which will be used to construct an
 index for $\UP$. 
 \begin{equation}\label{eq:i2}
-i_2(\avec)=\min_y(y<\avec \wedge y\in i_1(P) \wedge \Preduced(y) \wedge y\approx \avec).
+i_2(\avec):=\min_y(y<\avec \wedge (y\in i_1(P)) \wedge \Preduced(y) \wedge (y\approx \avec)).
 \end{equation}
 Now define functions $i_G:P^*\maps \ZZ_{\geq 0}$, 
 $m_G:i_G(P^*)\times i_G(P^*) \maps \ZZ_{\geq 0}$
 and $j_G:i_G(P^*)\maps \ZZ_{\geq 0}$ by 
 \begin{align}
-i_G(\uvec) &=i_2i_1(\uvec),\\
-m_G(\avec, \bvec)& =i_2(\Preduce(m_1(\avec,\bvec)) \textrm{ and }\\
-j_G(\avec)&= i_2j_1(\avec),
+i_G(\uvec) &:=i_2i_1(\uvec),\\
+m_G(\avec, \bvec)& :=i_2(\Preduction(m_1(\avec,\bvec))) \textrm{ and }\\
+j_G(\avec)&:= i_2j_1(\avec),
 \end{align}
 for all for all $P$-reduced words $\uvec\in P^*$ and $\avec$, $\bvec \in i_G(P^*)$. 
 Theorem \ref{thm:UPgrz} then follows from the next Proposition. 
@@ -1357,10 +1360,10 @@ If $\uvec$ and $\vvec$ are $P$-reduced words with $\uvec\approx \vvec$ then
 $i_G(\uvec)=i_2i_1(\uvec)=i_2i_1(\vvec)=i_G(\vvec)$, by construction. Therefore $i_G$ is 
 a well defined function on $G$.  Moreover if  $\uvec$ and $\vvec$ are $P$-reduced words
 such that $i_G(\uvec)=i_G(\vvec)$ then both $\uvec$ and 
-$\vvec$ are equivalent to some $\wvec$, so $i_G$ is injective. Let $R$ be the set of 
+$\vvec$ are equivalent to $i_2i_1(\uvec)$, so $i_G$ is injective. Let $R$ be the set of 
 $P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \ZZ_{\geq 0}$, 
-\[c_B(\xvec)=\xvec\in i_1(P_1) \wedge \Preduced(\xvec) \wedge i_2(\xvec)=\xvec,\]
-so $c_B$ is \grz{n+1}-computable. Hence $i_G(R)=i_G(G)$ is \grz{n+1}-decidable. 
+\[\chi_S(\xvec)=(\xvec\in i_1(P_1)) \wedge \Preduced(\xvec) \wedge (i_2(\xvec)=\xvec),\]
+so $\chi_S$ is \grz{n+1}-computable. Hence $i_G(R)=i_G(G)$ is \grz{n+1}-decidable. 
 
 As $i_2$ is \grz{n+1}-computable, so are $m_G$ and $j_G$. It therefore remains to
 show that, for all $\uvec,\vvec \in R$, 
@@ -1373,10 +1376,10 @@ i_G(\vvec)$. Let $\avec=i_1(\uvec_0)$ and $\bvec=i_1(\vvec_0)$; so $i_2(\avec)=\
 $i_2(\bvec)=\bvec$.  
 The product  $\uvec\cdot \vvec$ is the $\approx$ equivalence class of the
 $P$-reduction of the concatenation of $\uvec$ and $\vvec$. Therefore 
-$i_G(\uvec\cdot \vvec)=i_2(\Preduce(m_1(i_1(\uvec),i_1(\vvec))))$.  
+$i_G(\uvec\cdot \vvec)=i_2(\Preduction(m_1(i_1(\uvec),i_1(\vvec))))$.  
 Since $\uvec=_G \uvec_0$ and $\vvec=_G \vvec_0$, we have $\uvec\cdot \vvec=_G \uvec_0\cdot \vvec_0$, 
-so  $\Preduce(m_1(i_1(\uvec),i_1(\vvec))= \Preduce(m_1(\avec,\bvec)).$ Hence 
-$i_G(\uvec\cdot \vvec)=i_2(\Preduce(m_1(\avec,\bvec)))=m_G(\avec,\bvec)=m_G((i_G(\uvec),i_G(\vvec))$,
+so  $\Preduction(m_1(i_1(\uvec),i_1(\vvec))= \Preduction(m_1(\avec,\bvec)).$ Hence 
+$i_G(\uvec\cdot \vvec)=i_2(\Preduction(m_1(\avec,\bvec)))=m_G(\avec,\bvec)=m_G((i_G(\uvec),i_G(\vvec))$,
  as required.
 
 A similar argument shows that $j_G(i_G(\uvec))=i_G(\uvec^{-1})$.
