@@ -748,8 +748,36 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 	Let $H$ be a subgroup of an \grz{n}-computable group $G$. $H$ is {\it \grz{m}-decidable}, with $m$ necessarily larger than or equal to $n$, if the characteristic function of $i(H) \subseteq i(G)$ is \grz{m}-computable.
 \end{definition}
 
+	
 \begin{definition}
-	\ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }\cp{This isn't strictly necessary. For example, the identity homomorphism is always \grz{0}-computable, no matter what the $i_{G_1}$ and $i_{G_2}$ are.}
+ \ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }\cp{This isn't strictly necessary. For example, the identity homomorphism is always \grz{0}-computable, no matter what the $i_{G_1}$ and $i_{G_2}$ are.} \ajd{This returns
+to the necessity to correctly define computable functions from $S$ to $T$, 
+where $S\subseteq \ZZ_{\geq 0}^m$ and $T\subseteq \ZZ_{\geq 0}$. If 
+$S$ and $T$ are not decidable then it makes no sense to talk of computable
+functions from $S$ to $T$; and once  the grz-hierarchy comes in to play then
+a function from $S$ to $T$ should only be \grz{n}-computable if $S$ and 
+$T$ are \grz{n}-decidable. Otherwise there are \grz{n}-computable 
+functions from undecidable sets $S$ to undecidable sets $T$. Even to
+define the  constant function $f$ sending everything to $1$ between such 
+sets may be impossible. You
+can  define $f$ from $\NN$ to $\NN$, and then say that $f|_{S}$ (the
+restriction of $f$ to $S$) is computable:   
+but since you cannot say where it's defined that 
+would be an unworkable definition of computable. To define the function
+the characteristic function $\chi_S$ needs to be computable (at level n,
+in case we're interested in the hierarchy). Likewise, if $T$ is undecidable
+then you have no way in general of knowing whether 
+$1$ lies in $T$ or not. You could say that if it does then the 
+constant function is computable: and again you would be forced into
+an unworkable definition of computable. $\chi_T$ must be (\grz{n}) computable 
+to make such functions computable in any meaningful way. 
+Therefore,
+ something needs to be
+added to Definition 2.1. to clear up what it means for a function from
+$S$ to $T$, as above, to be \grz{n}-computable. (It should be something
+to do with a partially defined function, with domain $S$ and range $T$,
+as well as suitable conditions on $\chi_S$ and $\chi_T$.) This will then make
+the definition of a \grz{n}-computable homomorphism what it should be.}
 	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
@@ -853,14 +881,29 @@ Now that every generator has been given an integer label, $i(F(X))$ works the sa
 Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
 
 To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{3}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. 
+\ajd{One for the set of edges?}
 
-\ajd{One for the set of edges? To see you 
+\ajd{To see you 
 have an edge you can 
 use the fact that, for all elements $a\in X$, $a$ is an edge if and 
 only if $i_X(a)\le \nu^2-1$. For other letters the left inverse function
 $L$ of  $J$ is needed isn't it?}
 
 \cp{No, we still want to split up different edges into different syllables.}
+\ajd{What I was worrying about  here was the need to mention the
+functions $R$ and $L$.  
+I think you are starting with $w$ a sequence of encoded letters, using
+the index $i$.
+  If so, 
+you have  an encoded list and  the elements of this
+list which come from vertex groups are of the form $J(a,b)$, where $a$ is a vertex 
+and $b$ is a generator of $G_a$. To find $a$ and $b$ you need the 
+functions $L$ and $R$. I'm not sure if you need say this, and in any
+case this is not the best place to make such a remark. If it's atall
+necessary it should probably be part of the description of the standard free 
+group index in section 5. There was a similar comment below, which
+you've incorporated, about $L$ and $R$, and if this stays in then $L$
+and $R$ need to be defined.} 
 
 As $\approx$ has finitely many equivalence classes, and they are all \grz{3}-decidable, $\approx$ is \grz{3}-decidable.
 
@@ -947,7 +990,7 @@ Let $w$ be a word on $G$ of length $n$. An upper bound on the number of syllable
 
 A homomorphism $\phi_{e_{ij}}$ rewrites generators $x \in X_i$ as words $\phi_{e_{ij}}(x) \in X_j^{\ast}$. As $G_i$ is finitely generated, there is a word $\phi_{e_{ij}}(x)$ of maximum, finite, length $k_{ij}$. So a word $w_i \in E_{ij}$ of length $m$ is rewritten to a word $w_j \in E_j$ of length at most $k_{ij}m$.
 
-Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$, the group attached to the graph's root vertex, has length at most $k^n n = L$.\ajd{What is $G_0$?}
+Because the graph is finite, we can find a greatest $k \in \{k_{ij}\}$. So after reducing all the syllables (assuming that can be done for the input word), the resulting word in $G_0$, the group attached to the graph's root vertex, has length at most $k^n n = L$.
 
 Hence the index of the resulting word is bounded by
 
