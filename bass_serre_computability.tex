@@ -531,7 +531,7 @@ The exponent of $x$ in the decomposition of $y$:
 We will be working with $n$-tuples, or lists, extensively. All of the list operations can be defined as \grz{3} functions on numbers by way of the G\"odel encoding.
 
 The G\"odel encoding of an $n$-tuple:
-\begin{equation} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
+\begin{equation}\label{eq:ntuple} \xvec \equiv [x_0, \dots, x_{n-1}] := \prod_{i < n} p_i^{x_i+1}. \end{equation}
 The $+1$ in the exponent is so we can reliably determine the length of a list by counting distinct prime factors (the empty list should be encoded as $1$: then it will have length $0$).
 The bold $\xvec$ is shorthand so we don't have to write out the brackets formation. It shouldn't be confused with the use of $\xvec$ previously to mean an arbitrary number of parameters in a function application. An encoded list $\xvec$ is just a single number.
 

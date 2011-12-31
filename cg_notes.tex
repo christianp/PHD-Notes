@@ -1,0 +1,148 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{setspace}
+\usepackage{xr}
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+%\setstretch{1.1}
+
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}	%grzegorczyk level
+
+\newcommand{\NN}{\mathbb{N}}	%blackboard bold
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand\ov[1]{\overline{#1}} %overline
+\newcommand{\maps}{\longrightarrow}
+
+\newcommand\eps{\varepsilon}
+
+\newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
+\newcommand{\ith}{$i^{\textrm{th}}$~}
+
+\newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
+
+\newcommand{\avec}{\mathbf{a}}	% vector
+\newcommand{\bvec}{\mathbf{b}}	% vector 
+\newcommand{\cvec}{\mathbf{c}}	% vector 
+\newcommand{\dvec}{\mathbf{d}}	% vector 
+\newcommand{\uvec}{\mathbf{u}}	% vector 
+\newcommand{\vvec}{\mathbf{v}}	% vector 
+\newcommand{\wvec}{\mathbf{w}}	% vector w
+\newcommand{\xvec}{\mathbf{x}}	% vector x
+\newcommand{\yvec}{\mathbf{y}}	% vector y
+\newcommand{\zvec}{\mathbf{z}}	% vector 
+\newcommand{\tvec}{\mathbf{t}}	% vector t
+\newcommand{\Uvec}{\mathbf{U}}	% vector U
+\newcommand{\psub}{\dot -}	% proper subtraction
+\newcommand{\rsg}{\overline{sg}} % reverse signature
+\newcommand{\recur}[1]{\begin{equation} \begin{split} #1 \end{split} \end{equation}}	%definition of recursive function
+\newcommand{\recurN}[1]{\begin{equation*} \begin{split} #1 \end{split} \end{equation*}}	%ditto, no equation number
+
+\newcommand{\classC}{$\mathcal{C}$}
+
+\newcommand{\concat}{\ensuremath{+\!\!\!\!+\,}}	% list concatenation
+
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}	%group presentation
+\newcommand{\fgoagog}{\pi_1(\mathbf{G},\Gamma,T,v_0)}	%fundamental group of a graph of groups
+%universal group of a pregroup P
+\newcommand{\UP}{\Uvec(P)}
+
+%%% sets { ... | ... }
+\newcommand{\set}[2]{\left\{\, \mathinner{#1}\vphantom{#2}\; \left|\; \vphantom{#1}\mathinner{#2} \right.\,\right\}}
+\newcommand{\oneset}[1]{\left\{\, \mathinner{#1} \,\right\}}
+\newcommand{\smallset}[1]{\left\{\mathinner{#1}\right\}}
+%%%%%%%%%%%% brackets etc
+\newcommand{\abs}[1]{\left|\mathinner{#1}\right|}
+\newcommand{\floor}[1]{\left\lfloor\mathinner{#1} \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil\mathinner{#1} \right\rceil}
+\newcommand{\bracket}[1]{\left[\mathinner{#1} \right]}
+\newcommand{\parenth}[1]{\left(\mathinner{#1} \right)}
+\newcommand{\gen}[1]{\left< \mathinner{#1} \right>}
+
+\newcommand{\rdeg}[1]{\mbox{red-deg}\left(\mathinner{#1}\right)}
+%%%%%%%%%%%%%functions
+\newcommand{\find}{\operatorname{find}}
+\newcommand{\Dfind}{\operatorname{Dfind}}
+\newcommand{\Preduced}{\operatorname{Preduced}}
+\newcommand{\leftm}{\operatorname{leftm}}
+\newcommand{\Predn}{\operatorname{Predn}}
+\newcommand{\Preduction}{\operatorname{Preduction}}
+\newcommand{\Interleaven}{\operatorname{Interleaven}}
+
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{cpe}{\noindent\color{OliveGreen} CP }{}
+\newcommand{\cp}[1]{
+\begin{cpe} #1 \end{cpe}}
+%%
+\newenvironment{ad}{\noindent\color{blue} AJD }{}
+\newcommand{\ajd}[1]{
+\begin{ad} #1 \end{ad}}
+%%
+\externaldocument{bass_serre_computability}
+\begin{document}
+\title{Notes on Cannonito and Gatterdam, Computablity of group const.}
+\author{Christian Perfect \and Andrew Duncan}
+\maketitle
+
+\section*{Theorem 3.1}
+
+
+$J(x,y)$ is the  integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
+\[J(x,y)=((x+y)^2+x)^2+y.\]
+This has ``left inverse'' $L$ and ``right inverse'' $R$ (called $K$ and
+$L$ in \cite{Cannonito_1973}) given by
+\begin{align*}
+R(x)&=x\psub \lfloor x^{1/2}\rfloor^2 \textrm{ and}\\
+L(x)&=R(\lfloor x^{1/2}\rfloor)=\lfloor x^{1/2}\rfloor \psub \lfloor\lfloor x^{1/2} \rfloor^{1/2} \rfloor^2,
+\end{align*}
+where $\lfloor x^{1/2}\rfloor$ is the greatest integer $y$ such that 
+$y^2<x$. 
+The functions $J$, $L$ and $R$ satisfy 
+\[LJ(x,y)=x\textrm{ and } RJ(x,y)=y\] 
+and from \cite{Ritchie_1965} it follows that they are \grz{3}-computable.
+
+For an integer $n$ define 
+\[\bar n= 2n, \textrm{ if } n\ge 0,\textrm{ and } -2n-1 \textrm{ otherwise}.\]
+
+Let $F$ be free on a finite or  countable set $\{a_1,\ldots \}$. 
+We shall define Cannonito and Gatterdam's 
+ standard index of $F$ using the functions defined
+in the Bass-Serre computability paper, as well as $J$, $L$ and $R$. 
+All references to equation numbers are to the Basse-Serre paper. 
+We identify $F$ with the set of reduced words on its generating set. 
+Define
+an index $i:F\maps \ZZ_{\geq 0}$ by 
+\begin{align*}
+i(\emptyset)&= 1\\
+i(a_{i_0}^{n_0}\cdots a_{i_r}^{n_r})&=[J(i_0,\bar n_0)-1,\ldots, J(i_r,\bar n_r)-1],
+\end{align*}
+for $r\ge 0$, $n_k\in \ZZ$, $n_k\neq 0$, 
+and $a_{i_k}\neq a_{i_{k+1}}$, where $[x]$ is defined in \eqref{eq:ntuple}. 
+
+\bibliographystyle{alpha}
+\bibliography{grzegorczyk}
+
+\end{document}
