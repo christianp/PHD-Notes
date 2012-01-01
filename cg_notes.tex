@@ -27,6 +27,8 @@
 
 \newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
 \newcommand{\ith}{$i^{\textrm{th}}$~}
+\renewcommand{\i}{\iota}
+\renewcommand{\t}{\tau}
 
 \newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
 
@@ -77,6 +79,12 @@
 \newcommand{\Predn}{\operatorname{Predn}}
 \newcommand{\Preduction}{\operatorname{Preduction}}
 \newcommand{\Interleaven}{\operatorname{Interleaven}}
+\newcommand{\GN}{\operatorname{GN}}
+\newcommand{\+}{\:\hat +\:}
+\newcommand{\¬}{\hat -}
+\newcommand{\biggest}{\operatorname{biggest}}
+\newcommand{\bigL}{\operatorname{bigL}}
+\newcommand{\bigR}{\operatorname{bigR}}
 
 \newcommand{\be}{\begin{enumerate}}
 \newcommand{\ee}{\end{enumerate}}
@@ -103,45 +111,237 @@
 %%
 \externaldocument{bass_serre_computability}
 \begin{document}
-\title{Notes on Cannonito and Gatterdam, Computablity of group const.}
+\title{Notes on Cannonito and Gatterdam, Computability of group const.}
 \author{Christian Perfect \and Andrew Duncan}
 \maketitle
 
 \section*{Theorem 3.1}
-
+We shall define Cannonito and Gatterdam's 
+ standard index of $F$ using the functions defined
+in the Bass-Serre computability paper, as well as those defined, below. 
+All references to equation numbers $<100$ are to the Basse-Serre paper.
+\addtocounter{equation}{100} 
 
 $J(x,y)$ is the  integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
-\[J(x,y)=((x+y)^2+x)^2+y.\]
+\begin{equation}
+J(x,y):=((x+y)^2+x)^2+y.
+\end{equation}
 This has ``left inverse'' $L$ and ``right inverse'' $R$ (called $K$ and
 $L$ in \cite{Cannonito_1973}) given by
-\begin{align*}
-R(x)&=x\psub \lfloor x^{1/2}\rfloor^2 \textrm{ and}\\
-L(x)&=R(\lfloor x^{1/2}\rfloor)=\lfloor x^{1/2}\rfloor \psub \lfloor\lfloor x^{1/2} \rfloor^{1/2} \rfloor^2,
-\end{align*}
-where $\lfloor x^{1/2}\rfloor$ is the greatest integer $y$ such that 
-$y^2<x$. 
+\begin{align}
+R(x)&:=x\psub \lfloor x^{1/2}\rfloor^2 \textrm{ and}\\
+L(x)&:=R(\lfloor x^{1/2}\rfloor)=\lfloor x^{1/2}\rfloor \psub \lfloor\lfloor x^{1/2} \rfloor^{1/2} \rfloor^2,
+\end{align}
+(where $\lfloor x^{1/2}\rfloor$ is the greatest integer $y$ such that 
+$y^2<x$, and is defined in the Bass-Serre paper). 
 The functions $J$, $L$ and $R$ satisfy 
 \[LJ(x,y)=x\textrm{ and } RJ(x,y)=y\] 
 and from \cite{Ritchie_1965} it follows that they are \grz{3}-computable.
 
-For an integer $n$ define 
-\[\bar n= 2n, \textrm{ if } n\ge 0,\textrm{ and } -2n-1 \textrm{ otherwise}.\]
+For an integer $n$ define
+\begin{equation} 
+\bar n: = 2n, \textrm{ if } n\ge 0,\textrm{ and } -2n-1 \textrm{ otherwise}.
+\end{equation}
+To define the multiplication and inverse functions for  the free 
+group it will be useful to have functions $\+$ and $\¬$ such that, 
+$\overline{m+n}=\bar m \+ \bar n$ and $\overline{-n}=\¬ \bar n$.
+These are defined, for $x,y\in \ZZ_{\geq 0}$,  by 
+\begin{equation}
+x\+ y :=
+\begin{cases}
+x+y &\textrm{ if } x \bmod 2=y \bmod 2=0 \\ 
+x-y-1 &\textrm{ if } x \bmod 2=0, y \bmod 2=1 \textrm{ and } x\ge y+1\\ 
+-x+y &\textrm{ if }  x \bmod 2=0, y \bmod 2=1 \textrm{ and } x< y+1\\ 
+-x+y-1 &\textrm{ if } x \bmod 2=1, y \bmod 2=0 \textrm{ and } y\ge x+1\\ 
+x-y &\textrm{ if } x \bmod 2=1, y \bmod 2=0 \textrm{ and } y< x+1 \\ 
+x+y+1 &\textrm{ if } x \bmod 2=y \bmod 2=1
+\end{cases}
+\end{equation}
+and 
+\begin{equation}
+\¬ x :=
+\begin{cases}
+0&\textrm{ if } x=0\\
+x-1&\textrm{ if } x\neq 0\textrm{ and } x \bmod 2=0\\
+x+1 &\textrm{ if } x\neq 0\textrm{ and } x \bmod 2=1
+\end{cases}
+.
+\end{equation}
+These are both \grz{3}-computable functions and have the required
+properties. In particular $\bar m\+\bar n=0$ if and only if $m+n=0$.  
 
 Let $F$ be free on a finite or  countable set $\{a_1,\ldots \}$. 
-We shall define Cannonito and Gatterdam's 
- standard index of $F$ using the functions defined
-in the Bass-Serre computability paper, as well as $J$, $L$ and $R$. 
-All references to equation numbers are to the Basse-Serre paper. 
 We identify $F$ with the set of reduced words on its generating set. 
 Define
 an index $i:F\maps \ZZ_{\geq 0}$ by 
-\begin{align*}
-i(\emptyset)&= 1\\
-i(a_{i_0}^{n_0}\cdots a_{i_r}^{n_r})&=[J(i_0,\bar n_0)-1,\ldots, J(i_r,\bar n_r)-1],
-\end{align*}
+\begin{align}
+i(\emptyset)&:= 1\notag\\
+i(a_{i_0}^{n_0}\cdots a_{i_r}^{n_r})&:=[J(i_0,\bar n_0),\ldots, J(i_r,\bar n_r)],\label{al:ifree}
+\end{align}
 for $r\ge 0$, $n_k\in \ZZ$, $n_k\neq 0$, 
-and $a_{i_k}\neq a_{i_{k+1}}$, where $[x]$ is defined in \eqref{eq:ntuple}. 
+and $a_{i_k}\neq a_{i_{k+1}}$, where $[\xvec]$ is defined in 
+\eqref{eq:ntuple}. This is slightly different from the index defined in
+\cite{Cannonito_1973}, where $J(i_k,\bar n_k)-1$ is used instead of
+$J(i_k,\bar n_k)$; the difference arising because of the $+1$ in
+\eqref{eq:ntuple}. 
 
+Define the predicate $\GN$, which checks for the G\"odel number of 
+a sequence of positive integers, by
+\begin{equation}
+\GN(\xvec) \iff 0\notin \xvec.
+\end{equation} 
+If $F$ is countably generated, by $\{a_1,\ldots \}$, then 
+\[\xvec\in i(F)\iff \xvec=1 \vee [\GN(\xvec) \wedge \min_k\{R((\xvec)_k)=0\}=|\xvec|]. \]
+If $F$ is generated by $\{a_1,\ldots, a_{n-1}\}$, we have 
+\[\xvec\in i(F)\iff \xvec=1 \vee [\GN(\xvec) \wedge \min_k\{[L((\xvec)_k)>n-1]\vee [R((\xvec)_k)=0]\}=|\xvec|]. \]
+Therefore $i$ is \grz{3}-decidable. 
+
+
+To make the definition of $m$ easier to read, for an encoded list
+$\xvec$ write $\xvec_\t$ for $L((\xvec)_{|\xvec|-1})$, $\xvec_\i$ for 
+$L((\xvec_0))$, $n(\xvec)_\t$ for $R((\xvec)_{|\xvec|-1})$ and 
+$n(\xvec)_\i$ for $R((\xvec_0))$ (so if $\xvec=i(a_{i_0}^{n_0}\cdots a_{i_r}^{n_r})$
+then $\xvec_\i=i_0$, $\xvec_\t=i_r$, $n(\xvec)_\t=\bar n_r$ and $n(\xvec)_\i =\bar n_0$.)
+Define
+\begin{equation}\label{eq:mfree}
+m(\xvec,\yvec) :=
+\begin{cases}
+ \xvec \concat \yvec& \textrm{ if } \xvec_\t\neq \yvec_\i\\
+\xvec[0..|\xvec|-2]&\\
+\quad\concat [J(\xvec_\t,\overline{n(\xvec)_\t}\+
+\overline{n(\yvec)_\i})]&\\
+\quad\quad\concat\yvec[1..|\yvec|-1]& \textrm{ if } \xvec_\t = \yvec_\i \wedge 
+(\overline{n(\xvec)_\t}\+
+\overline{n(\yvec)_\i}\neq 0)\\
+m(\xvec[0..|\xvec|-2],\yvec[1..|\yvec|-1])& \textrm{ if }\xvec_\t = \yvec_\i \wedge 
+(\overline{n(\xvec)_\t}\+
+\overline{n(\yvec)_\i} =0)
+\end{cases}
+\end{equation}
+and 
+
+\begin{equation}\label{eq:jfree}
+j(\xvec) :=j_1(\xvec,|\xvec|),
+\end{equation} 
+where 
+\begin{align*}
+j_1(\xvec,0) &:= 1 \textrm{ and }\\
+j_1(\xvec, n+1) &:= 
+\begin{cases}[J(L((\xvec)_n),\¬ R((\xvec)_n))]\concat j_1(\xvec,n)
+& \textrm{ if } n+1\le |\xvec|\\
+j_1(\xvec, n)& \textrm{ otherwise }
+\end{cases}
+\end{align*}
+If $\xvec=i(u)$ and $\yvec=i(v)$, where $u$ and $v$ are reduced words 
+in $F$ then $m(\xvec,\yvec)=i(uv)$ and $j(\xvec)=i(u^{-1})$, as required.
+Also, $m$ and $j$ are \grz{3}-computable, as observed in \cite{Cannonito_1973},
+since $m(\xvec,\yvec)\le \xvec \concat \yvec$ and \[j_1(\xvec)\le 
+p_{|\xvec|}^{|\xvec|(J(\bigL,\bigR + 1)+1)},\]
+where 
+\[\bigL:=\biggest[L((\xvec)_0),\ldots, L((\xvec)_{|\xvec|-1})]\] and 
+\[\bigR:=\biggest[R((\xvec)_0),\ldots, R((\xvec)_{|\xvec|-1})].\]
+
+\begin{definition}
+Let $F$ be free on a finite or  countable set $\{a_1,\ldots \}$. 
+Then $F$ is \grz{3}-computable with respect to the index $(i,m,j)$ defined
+in \eqref{al:ifree}, \eqref{eq:mfree} and \eqref{eq:jfree} above. This index is called the 
+\emph{standard index} of $F$ (w.r.t $\{a_1,\ldots \}$).
+\end{definition}
+\section{Definition 3.3}
+Let $G$ be a group with presentation $\langle X|R\rangle$, let $F=F(X)$ be the 
+free group on $X$ and let $K$ be the normal closure of $R$ in $F(X)$. 
+Assume that $X$ is countable or finite and   
+let $(i,m,j)$ be the standard index of $F$ w.r.t. $X$. 
+Define the predicate $E$ by
+\begin{equation}
+E(x,y)\iff x\in i(F)\wedge y\in i(F) \wedge m(j(x),y))\in i(K).
+\end{equation}
+Define the function $r$ by
+\begin{equation}
+r(x):=\min_y(y\le x \wedge E(x,y)).
+\end{equation}
+\begin{definition}
+The \emph{standard index} of $G$, with respect to the presentation
+$P:=\langle X| R\rangle$, is $(i_P,m_P,j_P)$, where
+\begin{equation}
+i_P:=ri,\: m_P:=rm\textrm{ and } j_P:=rj.
+\end{equation}
+The group $G$ is said to be \emph{\grz{n}(A) standard}, if there 
+is a presentation $P$ for $G$ such that $(i_P,m_P,j_P)$ is a \grz{n}(A) computable index for $G$.
+\end{definition}
+\section{Theorem 3.4}
+\begin{theorem}[\cite{Cannonito_1973}, Theorem 3.4]
+Let $G$ be a finitely generated  \grz{n}(A) standard group and let
+$Q:=\langle Y|S\rangle$ be a presentation for $G$, where $Y$ is finite. 
+Then the standard index $(i_Q,m_Q,j_Q)$ for $G$ is \grz{n}(A) computable. 
+\end{theorem}
+\begin{proof}
+As $G$ is a \grz{n}(A) standard group there is a presentation 
+$P=\langle X|R\rangle$ for $G$ such that the index $(i_P,m_P,j_P)$ is
+\grz{n}(A) computable. 
+
+Let $(i,m,j)$ and $(i^\prime, m^\prime, j^\prime)$ be the standard indices
+of $F(X)$ and $F(Y)$, respectively. 
+Let $\pi_P$%:F(X)\maps G$ 
+ and $\pi_Q$ be the canonical maps from $F(X)$ to
+$G$ and from $F(Y)$ to $G$. As noted in \cite{Cannonito_1973} it suffices
+to show that the map $\pi_Q$ is \grz{n}(A) computable with respect to
+the indices $(i^\prime,m^\prime,j^\prime)$ and $(i_P,m_P,j_P)$. That is,
+to show that the map $\hat\pi_Q:i^\prime(F(Y))\maps i_P(G)$, 
+given by $\hat\pi_Q(i^\prime(w))=i_P(\pi_Q(w))$, where  $w\in F(Y)$, is 
+\grz{n}(A) computable. 
+
+Let $Y=\{y_1,\ldots, y_n\}$. The maps $\pi_P$ and $\pi_Q$ are surjective, so
+for each $k$ we may choose $v_k\in F(X)$ such that $\pi_Q(y_k)=\pi_P(v_k)$. 
+Let $M=\max\{i(v_k^\eps): k=1,\ldots n, \eps=\pm 1\}$. 
+Now let $w=y_{k_0}^{\eps_0}\cdots y_{k_r}^{\eps_r}\in F(Y)$, with $y_{k_s}
+\in Y$ and $\eps_s=\pm 1$. Then
+\begin{align*}
+\hat\pi_Q(i^\prime(w)) & = \i_P(\pi_Q(w))\\
+&=i_P(\pi_Q(y_{k_0}^{\eps_0})\cdots\pi_Q(y_{k_r}^{\eps_r}))\\
+&=i_P(\pi_P(v_{k_0}^{\eps_0})\cdots  \pi_P(v_{k_r}^{\eps_r})).%\\
+%&=m_P(\ldots  m_P(\pi_P(v_{k_0}^{\eps_0}), \pi_P(v_{k_1}^{\eps_1})) \ldots
+%, \pi_P(v_{k_r}^{\eps_r})).
+\end{align*} 
+%(That is 
+The index of the product on the 3rd line is equal to the 
+number obtained by $r$ applications of $m_P$, beginning with the 
+leftmost pair. More precisely, define
+\begin{align*}
+\hat m_P(\xvec,0)&:=1 \textrm{ and }\\
+\hat m_P(\xvec, n+1)&:= 
+\begin{cases}
+m_P(\hat m_P(\xvec,n),(\xvec)_{n+1})
+& \textrm{ if } n+1< |\xvec|\\
+\hat m_P(\xvec,n)& \textrm{ otherwise }
+\end{cases}
+\end{align*}
+Then 
+\[i_P(\pi_P(v_{k_0}^{\eps_0})\cdots  \pi_P(v_{k_r}^{\eps_r}))
+= \hat m_P([i_P(\pi_P(v_{k_0}^{\eps_0})), \ldots ,
+\i_P(\pi_P(v_{k_r}^{\eps_r}) ]).\]
+
+As $(i_P,m_P,j_P)$ is a standard index we have
+$\hat m_P(\xvec)\le M\concat \cdots \concat M$, ($r$ $\concat$'s)
+so $\hat m_P\le p_{|w|}^{|w|(M+1)}$, and it follows that $\hat \pi_Q$ is
+\grz{n}(A) computable.
+\end{proof}
+
+Note that in the statement of the theorem above it is not assumed that
+the original standard index is defined with respect to a presentation
+with a finite generating set. However, if the original generating set,
+$X$ in the proof, is countably infinite, then
+  since $G$ is finitely generated, we may may choose generating elements
+$g_1,\ldots ,g_n$, and then $g_k$ is a word in finitely many elements of $X$,
+for $k=1,\ldots ,n$. The union $X^\prime$ of these elements is enough to generate
+$G$, and every word in $R$ can then be rewritten as a word over $X^\prime$, to
+give a new presentation $\langle X^\prime|R^\prime\rangle$, with 
+$X^\prime$ finite.
+The standard index with respect to this presentation is now \grz{n}(A)
+computable, by the Theorem. Thus, once we have the theorem, we may
+ assume that if $G$ is a f.g. \grz{n}(A) standard group then it
+has a \grz{n}(A) standard index with respect to  a presentation on
+a finite generating set.   
 \bibliographystyle{alpha}
 \bibliography{grzegorczyk}
 
