@@ -866,7 +866,7 @@ If $g$ belongs to some $G_{v_i}$, then $\pi(g) = \psi(0,i) \cdot g \cdot \psi(i,
 The new word is equivalent to $w$ because the only letters we are adding are edge letters from the spanning tree, which are all trivial in the presentation of $G$. Also, it is admissible since each $x_i$ in $w$ is replaced by an admissible word with circuit starting and ending at $v_0$.
 \end{proof}
 
-\begin{theorem} \label{fgoagogcomp}
+\begin{theorem} \label{thm:fgoagogcomp}
 Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose 
 all the $G_i$ are finitely generated \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
 \end{theorem}
@@ -981,7 +981,7 @@ The G\"odel encoding of any word of length $n$ on a finite alphabet is bounded a
 
 \begin{corollary}
 
-In addition to the  assumptions of Theorem \ref{fgoagogcomp}, also assume that the edge groups are finitely generated: so each edge homomorphism $\phi_{e_{ij}}$ sends a finitely generated subgroup $E_{ij} \leq G_i$ to another finitely generated subgroup $E_{ji} \leq G_j$.
+In addition to the  assumptions of Theorem \ref{thm:fgoagogcomp}, also assume that the edge groups are finitely generated: so each edge homomorphism $\phi_{e_{ij}}$ sends a finitely generated subgroup $E_{ij} \leq G_i$ to another finitely generated subgroup $E_{ji} \leq G_j$.
 
 Then $G = \pi_1(\mathbf{G}, \Gamma, T, v_0)$ is \grz{n}-computable.
 
@@ -989,7 +989,7 @@ Then $G = \pi_1(\mathbf{G}, \Gamma, T, v_0)$ is \grz{n}-computable.
 
 \begin{proof}
 
-In the algorithm from Theorem \ref{fgoagogcomp}, the potential for unbounded recursion comes from applying the edge homomorphisms repeatedly. We will show that in this case the result of applying the edge homomorphisms repeatedly is bounded by an \grz{3}-computable function.
+In the algorithm from Theorem \ref{thm:fgoagogcomp}, the potential for unbounded recursion comes from applying the edge homomorphisms repeatedly. We will show that in this case the result of applying the edge homomorphisms repeatedly is bounded by an \grz{3}-computable function.
 
 Let $w$ be a word on $G$ of length $n$. An upper bound on the number of syllables in $w$ is $n$, so let's say there are $n$ applications of edge homomorphisms.
 
@@ -1070,7 +1070,7 @@ Now we can define $\phi_{\bar{e}}$ to be the inverse of $\phi_e$.
 
 Note that since $G_0$ and $G_1$ are \grz{3}-computable, the edge isomorphism is \grz{3}-computable in both directions.
 
-Construct the index for $G = G_0 \underset{\phi_e}{\ast} G_1$ by following the method in \ref{fgoagogcomp}.
+Construct the index for $G = G_0 \underset{\phi_e}{\ast} G_1$ by following the method in \ref{thm:fgoagogcomp}.
 
 Consider a word $w$ of the form
 \[ w = ea^{-1}e^{-1} \dots x^{-1}ea^{-1}e^{-1}x^{-2n}yx^{2n}eae^{-1}x \dots eae^{-1}. \]
