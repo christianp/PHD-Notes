@@ -7,6 +7,7 @@
 \usepackage{enumerate}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{setspace}
+\usepackage{hyperref}
 \singlespacing
 %\onehalfspacing
 %\doublespacing
@@ -783,6 +784,7 @@ $S$ to $T$, as above, to be \grz{n}-computable. (It should be something
 to do with a partially defined function, with domain $S$ and range $T$,
 as well as suitable conditions on $\chi_S$ and $\chi_T$.) This will then make
 the definition of a \grz{n}-computable homomorphism what it should be.}
+\cp{I still disagree. I think the fact that a function $f$ has $f(S) \subseteq T$ is a property which you should prove outside the Grzegorczyk framework. All we care about is that a function does do what we say, not that we can verify its correctness using functions from some Grzegorczyk class.}
 	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
