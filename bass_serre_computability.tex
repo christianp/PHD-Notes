@@ -7,6 +7,7 @@
 \usepackage{enumerate}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{setspace}
+\usepackage{hyperref}
 \singlespacing
 %\onehalfspacing
 %\doublespacing
@@ -716,8 +717,18 @@ Note that $i$ itself is not computable but its image has computable characterist
 
 The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
 \[ i(w) = \prod_{k=0}^r p_k^{J(i_k,\alpha_k)}. \]
-$J(x,y)$ is an \grz{3}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
-\[J(x,y)=((x+y)^2+x)^2+y\]
+$J(x,y)$ is an \grz{2}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
+\[J(x,y)=((x+y)^2+x)^2+y.\]
+
+The functions $L(J(x,y)) = x$ and $R(J(x,y)) = y$ compute the inverses of $J$:
+
+\begin{align}
+	R(z) &= z - \left\lfloor z^{\frac{1}{2}} \right\rfloor, \\
+	L(z) &= R \left( \left\lfloor z^{\frac{1}{2}} \right\rfloor \right) = \left\lfloor z^{\frac{1}{2}} \right\rfloor - \left \lfloor \left \lfloor z^{\frac{1}{2}} \right\rfloor^{\frac{1}{2}} \right \rfloor. 
+\end{align}
+
+Both $L$ and $J$ are \grz{2}-computable.
+
 (see \cite{Cannonito_1973} for more details).
 
 Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
@@ -783,6 +794,11 @@ $S$ to $T$, as above, to be \grz{n}-computable. (It should be something
 to do with a partially defined function, with domain $S$ and range $T$,
 as well as suitable conditions on $\chi_S$ and $\chi_T$.) This will then make
 the definition of a \grz{n}-computable homomorphism what it should be.}
+
+\cp{I still disagree. I think the fact that a function $f$ has $f(S) \subseteq T$ is a property which you should prove outside the Grzegorczyk framework. All we care about is that a function does do what we say, not that we can verify its correctness using functions from some Grzegorczyk class. 
+
+I think an important point is that, by definition, there's no way of constructing a function which is \grz{n}-computable on a set $S \subseteq \NN$ but only \grz{n+m}-computable on $\NN$ as a whole - the level depends on the construction of the function, not on what it produces.}
+
 	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
@@ -909,6 +925,8 @@ necessary it should probably be part of the description of the standard free
 group index in section 5. There was a similar comment below, which
 you've incorporated, about $L$ and $R$, and if this stays in then $L$
 and $R$ need to be defined.} 
+
+\cp{I've added the definitions of $L$ and $R$ underneath the definition of $J$. I'm happy with leaving it with that, because an extremely explicit and detailed description of how to classify these letters would be incredibly boring.}
 
 As $\approx$ has finitely many equivalence classes, and they are all \grz{3}-decidable, $\approx$ is \grz{3}-decidable.
 
