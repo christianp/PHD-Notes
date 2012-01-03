@@ -701,6 +701,10 @@ A finite ordered tree is \grz{3}-computable.
 
 \section{Computable Groups \label{groups}}
 
+\ajd{To make the relationship between the word problem and the level
+of computability clear some notion like Cannonito and Gatterdam's standard
+index is required. This section needs to incorporate such an idea. It would
+help to make the definition of standard index clearer than in C\&G.}  
 Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
 
 \begin{itemize}
@@ -800,14 +804,15 @@ the definition of a \grz{n}-computable homomorphism what it should be.}
 I think an important point is that, by definition, there's no way of constructing a function which is \grz{n}-computable on a set $S \subseteq \NN$ but only \grz{n+m}-computable on $\NN$ as a whole - the level depends on the construction of the function, not on what it produces.}
 \ajd{As there is no definition of what it means for a function on a 
 proper subset $S\subseteq \NN$ to be computable (let alone in \grz{n}) 
-it's difficult to make any
-sense of the statement above. If you were to make such a definition then it
+it's difficult to understand the statement above. 
+If you were to make such a definition then it
 would be possible to discuss whether or not what you say about it is true. 
 However, if the definition involves indentifying the domain $S$ with a copy
 of $\NN$ (or a initial segment of $\NN$), and similarly for the codomain,
  then  every injective function will be  \grz{0}-computable: such an 
 $f$ is the 
-identity function from $S$ to $f(S)$. 
+identity function from $S$ to $f(S)$. This would make the definition
+practically useless. 
 In the theory of recursive functions it's common to consider partially 
 defined functions as well as total functions. However, in the papers
 we have looked at on the Grzegorczyk hierarchy all functions have been
@@ -918,38 +923,26 @@ Each vertex group $G_i$ has a generating set $X_i$. For each $x_{i,j} \in X_i$, 
 
 Now that every generator has been given an integer label, $i(F(X))$ works the same way as the ``standard'' free group index described in \cite[Lemma 3.1]{Cannonito_1973} -- elements of $F(X)$ are freely-reduced words, encoded as G\"odel lists.
 
-Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$.
+Given a word $w$, we wish to decide whether $w =_G 1$. First, compute $w' = \pi(w)$. We now need to split $w'$ into an admissible sequence $(a_0,e_1,\dots,e_n,a_n)$. 
 
-To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{3}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. 
+\ajd{The argument needs tidying. You refer to $w^\prime$
+here, but later you replace every letter  $w_i$ of $w$ with $\pi(w_i)$ --
+in fact if  the previous sentence is deleted it's easier to follow
+what's going on.}
+
+To do this, we must decide for each letter in $w'$ either which vertex group it is from or if it is an edge letter. 
+\ajd{You may as well describe the equivalence class on $X$. Then you don't
+have to bother with $w^\prime$ at this point, and the reintroduction of $w$ 
+below will cause no problem.} 
+Assign to each letter $w_i$ of $w'$ a code as follows: If $w_i$ belongs to $G_i$, then its code is $i$. If it is an edge letter, then its code is $\operatorname{biggest}(\tvec)+1$. We can then define an \grz{3}-decidable equivalence relation $\approx$ on the indices of the elements of $G$, whose equivalence classes correspond to the vertex groups plus one more for each edge letter. 
 \ajd{One for the set of edges?}
 
-\ajd{To see you 
-have an edge you can 
-use the fact that, for all elements $a\in X$, $a$ is an edge if and 
-only if $i_X(a)\le \nu^2-1$. For other letters the left inverse function
-$L$ of  $J$ is needed isn't it?}
-
-\cp{No, we still want to split up different edges into different syllables.}
-\ajd{What I was worrying about  here was the need to mention the
-functions $R$ and $L$.  
-I think you are starting with $w$ a sequence of encoded letters, using
-the index $i$.
-  If so, 
-you have  an encoded list and  the elements of this
-list which come from vertex groups are of the form $J(a,b)$, where $a$ is a vertex 
-and $b$ is a generator of $G_a$. To find $a$ and $b$ you need the 
-functions $L$ and $R$. I'm not sure if you need say this, and in any
-case this is not the best place to make such a remark. If it's atall
-necessary it should probably be part of the description of the standard free 
-group index in section 5. There was a similar comment below, which
-you've incorporated, about $L$ and $R$, and if this stays in then $L$
-and $R$ need to be defined.} 
-
-\cp{I've added the definitions of $L$ and $R$ underneath the definition of $J$. I'm happy with leaving it with that, because an extremely explicit and detailed description of how to classify these letters would be incredibly boring.}
 
 As $\approx$ has finitely many equivalence classes, and they are all \grz{3}-decidable, $\approx$ is \grz{3}-decidable.
 
-Each letter $w_i$ in $w$ can then be replaced by $\pi(w_i)$. When working on the encoded version of $w$, this process is \grz{3}-computable, since $\phi_{\tvec}$ is \grz{3}-computable, and we only want to go as far as producing a list of generators, not a single element of $i(G)$. By concatenating all of the $\pi(w_i)$, we will create an admissible word equivalent to $w$.
+Each letter $w_i$ in $w$ can then be replaced by $\pi(w_i)$. When working on the encoded version of $w$, this process is \grz{3}-computable, since $\phi_{\tvec}$ is \grz{3}-computable, and we only want to go as far as producing a list of generators, not a single element of $i(G)$. By concatenating all of the $\pi(w_i)$, we will create an admissible word equivalent to $w$. \ajd{It looks 
+from what follows as though you mean to freely reduce the product at this
+point.}
 
 The next task is to split $w'$ into `syllables', or contiguous subwords. A syllable is either a single edge letter or a word from one of the vertex groups.
 
@@ -986,7 +979,7 @@ We can then use the conditions of Lemma \ref{trivialnormalform} to determine if 
 If $n=0$, then $w'=1 \Leftrightarrow a_0=1$, which is an \grz{n}-decidable question.
 
 If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1}$. The first of these is given by
-\begin{equation}
+\begin{equation}\label{eq:edgegroup}
 \begin{split}
 	\min_{i < \operatorname{numsyllables}(\wvec')-2} \; (
 		&  (\operatorname{syllable}(\wvec',i) = e \in E) \wedge \\ 
@@ -997,9 +990,17 @@ If $n>0$, then we need to find a sequence of the form $e^{-1}A_ee$ or $eB_ee^{-1
 \end{equation}
 (and the same the other way round for $A_e$.) Note that since the first syllable must be an edge letter, we can say the last syllable is the inverse of the first by checking its length is 1, then computing its inverse,which is a matter of applying the inverses $L$ and $R$ of the pairing function $J$. We don't need to know how to compute the whole multiplication table to do this.
 
-To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement.
+To decide if the middle syllable, which is a word on the encoded generators of some vertex group $G_v$, belongs to the appropriate edge group, it must be rewritten using the original index and multiplication function of $G_v$ provided in the setup, which is an \grz{n} operation. Once the word is in this form, membership of the edge group can be decided via an \grz{n} operation, by the assumptions of the theorem statement. \ajd{The middle syllable is a sequence 
+of generators  of $G_v$. It is given that $B_e$ is \grz{n}-decidable, so
+each generator can be tested for membership of $B_e$. However, to
+test whether or not the product of the generators is in $B_e$ needs
+a recursion using the multiplication function $m_v$ for $G_v$. This
+recursion may not be bounded by a \grz{n} function.}
 
-If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion means the process is only computable on the next level of the Grzegorczyk hierarchy.
+If the result of that calculation is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial. \ajd{Do you mean that if the result of applying 
+(\ref{eq:edgegroup}) 
+above is $\operatorname{numsyllables}(\wvec')-2$ then $w$ is not trivial?} 
+Otherwise, we can replace the found sequence $eB_ee^{-1}$ with $\phi_e(\operatorname{syllable}(\wvec',i+1)$, and try again. The new word is still admissible and has fewer syllables than the original one, so repeated applications of this process will eventually lead to a word of one syllable or a negative answer. Because $\phi_e$ might increase the index of the word, this recursion means the process is only computable on the next level of the Grzegorczyk hierarchy.
 
 So the word problem $WP(G)$ is \grz{n+1}-decidable, and hence $G$ is \grz{n+1}-computable by Corollary \ref{wp-iff-group}.
 \end{proof}
@@ -1023,7 +1024,9 @@ In addition to the  assumptions of Theorem \ref{thm:fgoagogcomp}, also assume th
 Then $G = \pi_1(\mathbf{G}, \Gamma, T, v_0)$ is \grz{n}-computable.
 
 \end{corollary}
-
+\ajd{To make this work the computation of the product of the elements of
+syllables above needs to be shown to be in \grz{n}. Probably the use
+of standard indices for the vertex groups would do the trick.}
 \begin{proof}
 
 In the algorithm from Theorem \ref{thm:fgoagogcomp}, the potential for unbounded recursion comes from applying the edge homomorphisms repeatedly. We will show that in this case the result of applying the edge homomorphisms repeatedly is bounded by an \grz{3}-computable function.
@@ -1252,86 +1255,9 @@ be constructed such that $\UP = G$;  and conversely that
 of groups with fundamental group $\UP$ may be constructed.
 \end{itemize}
 Not all pregroups have finite height, so there exist universal groups of pregroups which
-are not  the fundamental groups of any  graph of groups. We give a proof of
-the first of the above statements, as we shall use this result later.
-%\cite{Kapovich_2005} and 
-%\cite{Rimlinger_1987a} 
-%\cite{Rimlinger_1987b}. 
-\begin{theorem}[cf. {\cite[Theorem B]{Rimlinger_1987b}}] \label{thm:ggpre}
-Let $(\mathbf{G},\Gamma)$ be a graph of groups and let $T$ be 
-a spanning tree for $\Gamma$ with root $v_0$. Then there exists a pregroup
-$P$ such that  $\UP=G = \fgoagog$. 
-\end{theorem}
-\begin{proof}
-Let $\Gamma=(V,E)$, write $0$ for $v_0$, and for  each $a\in V$ let 
-$\psi(0,a)$ and $\psi(a,0)$ be the paths from $0$ to $a$ and vice-versa,
-as in Section \ref{bass-serre}. For $g\in G_a$ and $e_{u,v}\in 
-E$ let $\pi(g)=\psi(0,a)
-\cdot g\cdot \psi(a,0)$ and $\pi(e_{u,v})=\psi(0,u)\cdot e_{u,v}\cdot
-\psi(u,0)$, as before. 
-
-For $a\in V$ let $e_{b,a}$  be the final edge of $\psi(0,a)$: so  
-$\psi(0,a)=\psi(0,b)\cdot e_{b,a}$. If $g\in B_{e_{b,a}}$
-then 
-\begin{equation}\label{eq:pred}
-\pi(g)=\psi(0,b)\cdot e_{b,a}\cdot g\cdot e_{a,b}\cdot \psi(b,0)=
-\psi(0,b)\cdot\phi_{e_{a,b}}(g) \cdot \psi(b,0)=
-\pi(\phi_{e_{a,b}}(g)). 
-\end{equation}
-With this in mind define $e(a)=e_{b,a}$ the final edge of $\psi(0,a)$ and 
-$T_a=B_{e(a)}$, for all $a\in V$. (We set $T_{0}=\emptyset$.)
-We can now define the \emph{residue} $\pi^*(g)$ of $\pi(g)$, recursively, for
-all $g\in \cup_{v\in V}G_v$. For $g\in G_0$, $\pi^*(g):=\pi(g)=g$. 
-For $g\in G_a$, with $a\neq 0$,
-\[
-\pi^*(g):=
-\begin{cases}
-\pi(g)& \textrm{ if } g\notin T_a\\
-\pi^*(\phi_{e(a)^{-1}}(g))& \textrm{ if } g\in T_a
-\end{cases}
-.
-\]
-For all $g\in G_a$ we have $\pi^*(g)=_G\pi(g)$ and $\pi^*(g)=\pi(h)$,
-where $h\in G_v\backslash T_v$, for 
- some vertex $v$.  
-Therefore
-\[
-\cup_{v\in V}\{\pi(g):g\in G_v\}=_G 
-\cup_{v\in V}\{\pi(g): g\in G_v\backslash T_v\}.
-\] 
-Combined  with \cite[Proposition 2.4 (3)]{Kapovich_2005} this implies that 
-$G$ is generated by
-\[P=\{\pi(e): e\in E\backslash E(T)\}\bigcup 
-\cup_{v\in V}\{\pi(g): g\in G_v\backslash T_v\}.
-\]
-Moreover $x\in P$ implies $x^{-1}\in P$. 
- 
-Let $P_E=\{\pi(e): e\in E\backslash E(T)\}$ and $P_v=
-\{\pi(g): g\in G_v\backslash T_v\}$, for all $v\in V$. Define
-\[D=\{(x,x^{-1}): x\in P_E\}
-\bigcup \cup_{v\in V}\{(x,y):x,y\in P_v\}.\] 
-If $(x,x^{-1})\in D$ with $x\in E\backslash E(T)$ then $x\cdot x^{-1}=1$, 
-the identity of $G$ (and of $G_0$). 
-Suppose  $(\pi(g),\pi(h))\in D$, for some $g,h\in G_v\backslash T_v$. If 
- $gh\notin T_v$ then $\pi(g)\cdot \pi(h)=\pi(gh)$. On the other hand 
-if $gh\in T_v$ then $\pi(g)\cdot \pi(h)=\pi^*(gh)$. Therefore, 
-in all cases $(x,y)\in D$ implies $x\cdot y\in P$. 
-
-By a $P$-word is meant a sequence $(p_1,\ldots ,p_r)$ with $p_k\in P$,
-such that $(p_k,p_{k+1})\notin D$, for $k=1,\ldots r-1$. If 
-$p:=(p_1,\ldots ,p_r)$ is a $P$-word then we say $p$ \emph{represents}
-the element $p_1\cdots p_r$ of $G$. If two $P$-words represent the
-same element of $G$ then we say that they are \emph{equivalent}. 
-The free reduction of a reduced word (as an element of the free group
-on generated by the positive edges and the elements of $\cup_{v\in V}G_v$)
-is then an admissible word, in the sense
-of Section \ref{bass-serre}, for the element of $G$ which it represents. 
-It follows from Lemma \ref{trivialnormalform} (\cite[Proposition 2.4 (1) \& (2)]{Kapovich_2005}) that if two $P$-words represent the same element of 
-$G$ then they have the same length.
-\end{proof}
+are not  the fundamental groups of any  graph of groups. 
 
 \subsection{Pregroups and the Grzegorczyk hierarchy}
-
 
 Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \ZZ_{\geq 0}$.
  %(In this case $P$ must be countable.)  
@@ -1531,6 +1457,17 @@ $i_G(\uvec\cdot \vvec)=i_2(\Preduction(m_1(\avec,\bvec)))=m_G(\avec,\bvec)=m_G((
 
 A similar argument shows that $j_G(i_G(\uvec))=i_G(\uvec^{-1})$.
 \end{proof}
+\subsection{Pregroups and Bass-Serre groups}
+We shall use the results of this section to give an alternative
+proof  that under certain conditions on the vertex and 
+edge groups, a graph of \grz{n}-computable groups is \grz{n+1}-computable. 
+
+\begin{theorem} \label{thm:fgoagogcomp1}
+Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose 
+all the $G_v$ are \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable. If the indices
+for the vertex groups are standard then $G$ is \grz{n+1}-standard. 
+\end{theorem}
+
 \subsection{Questions}
 \be
 \item Under which conditions is $\UP$ \grz{n}-computable?
