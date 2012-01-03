@@ -5,9 +5,10 @@
 \usepackage{amsthm}
 \usepackage{verbatim}
 \usepackage{enumerate}
+\usepackage{xr}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{setspace}
-\usepackage{xr}
+\usepackage{hyperref}
 \singlespacing
 %\onehalfspacing
 %\doublespacing
@@ -115,6 +116,7 @@
 %%
 \externaldocument[B-]{bass_serre_computability}
 \begin{document}
+
 \title{Notes on Cannonito and Gatterdam, Computability of group const.}
 \author{Christian Perfect \and Andrew Duncan}
 \maketitle
@@ -351,7 +353,9 @@ B-S paper}
  
 \begin{theorem} \label{thm:fgoagogcomp1}
 Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose 
-all the $G_i$ are \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
+all the $G_v$ are \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ has \grz{n+2}-decidable word problem. If the indices
+for the vertex groups are standard then $G$ has \grz{n+1}-decidable 
+word problem. 
 \end{theorem}
 
 \begin{proof}
