@@ -770,60 +770,8 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 
 	
 \begin{definition}
- \ajd{Let $G_1$ and $G_2$ be \grz{n}-computable groups. }\cp{This isn't strictly necessary. For example, the identity homomorphism is always \grz{0}-computable, no matter what the $i_{G_1}$ and $i_{G_2}$ are.} \ajd{This returns
-to the necessity to correctly define computable functions from $S$ to $T$, 
-where $S\subseteq \ZZ_{\geq 0}^m$ and $T\subseteq \ZZ_{\geq 0}$. If 
-$S$ and $T$ are not decidable then it makes no sense to talk of computable
-functions from $S$ to $T$; and once  the grz-hierarchy comes in to play then
-a function from $S$ to $T$ should only be \grz{n}-computable if $S$ and 
-$T$ are \grz{n}-decidable. Otherwise there are \grz{n}-computable 
-functions from undecidable sets $S$ to undecidable sets $T$. Even to
-define the  constant function $f$ sending everything to $1$ between such 
-sets may be impossible. You
-can  define $f$ from $\NN$ to $\NN$, and then say that $f|_{S}$ (the
-restriction of $f$ to $S$) is computable:   
-but since you cannot say where it's defined that 
-would be an unworkable definition of computable. To define the function
-the characteristic function $\chi_S$ needs to be computable (at level n,
-in case we're interested in the hierarchy). Likewise, if $T$ is undecidable
-then you have no way in general of knowing whether 
-$1$ lies in $T$ or not. You could say that if it does then the 
-constant function is computable: and again you would be forced into
-an unworkable definition of computable. $\chi_T$ must be (\grz{n}) computable 
-to make such functions computable in any meaningful way. 
-Therefore,
- something needs to be
-added to Definition 2.1. to clear up what it means for a function from
-$S$ to $T$, as above, to be \grz{n}-computable. (It should be something
-to do with a partially defined function, with domain $S$ and range $T$,
-as well as suitable conditions on $\chi_S$ and $\chi_T$.) This will then make
-the definition of a \grz{n}-computable homomorphism what it should be.}
-
-\cp{I still disagree. I think the fact that a function $f$ has $f(S) \subseteq T$ is a property which you should prove outside the Grzegorczyk framework. All we care about is that a function does do what we say, not that we can verify its correctness using functions from some Grzegorczyk class. 
-
-I think an important point is that, by definition, there's no way of constructing a function which is \grz{n}-computable on a set $S \subseteq \NN$ but only \grz{n+m}-computable on $\NN$ as a whole - the level depends on the construction of the function, not on what it produces.}
-\ajd{As there is no definition of what it means for a function on a 
-proper subset $S\subseteq \NN$ to be computable (let alone in \grz{n}) 
-it's difficult to understand the statement above. 
-If you were to make such a definition then it
-would be possible to discuss whether or not what you say about it is true. 
-However, if the definition involves indentifying the domain $S$ with a copy
-of $\NN$ (or a initial segment of $\NN$), and similarly for the codomain,
- then  every injective function will be  \grz{0}-computable: such an 
-$f$ is the 
-identity function from $S$ to $f(S)$. This would make the definition
-practically useless. 
-In the theory of recursive functions it's common to consider partially 
-defined functions as well as total functions. However, in the papers
-we have looked at on the Grzegorczyk hierarchy all functions have been
-total. This applies to Cannonito and Gatterdam's paper, because they 
-only define maps from subsets like $i(G)$ or $i(G)\times i(G)$ when these
-are already \grz{n} decidable: so effectively they are making definitions
-by cases - of total functions. If you want to start discussing functions
-which are \grz{n}-partially-computable then you are going to have to
-start at the beginning. } 
-
-	A group homomorphism $\phi: G_1 \rightarrow G_2$ is \grz{n}-computable if there exists an \grz{n}-computable function $\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)$ such that
+	Let $G_1$ and $G_2$ be \grz{n}-computable groups with \grz{n}-computable index functions $i_1$ and $i_2$, respectively. A group homomorphism $\phi: G_1 \rightarrow G_2$ is {\it \grz{n}-computable with respect to $i_1,i_2$} if there exists an \grz{n}-computable function \[\hat{\phi}: i_1(G_1) \rightarrow i_2(G_2)\]
+	such that
 \[	\hat{\phi}(i_1(g)) = i_2(\phi(g)), \forall g \in G_1. \]
 \end{definition}
 
