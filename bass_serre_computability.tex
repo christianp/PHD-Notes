@@ -808,27 +808,31 @@ All of $i$, $m$ and $j$ are \grz{3}-computable, so every free group $F(X)$ is \g
 \end{definition}
 
 \begin{definition}
-	\cp{ Sketching the standard index definition because it's dinner time. }
+	For a countably-generated presentation $P=\present{X}{R}$ of a group $G$ with \grz{n}-decidable word problem, $n \geq 3$, there is an associated \grz{n}-computable {\it standard index} $(i_P,m_P,j_P)$, defined as follows.
 
-	If $P = \present{X}{R}$ is a countable presentation of a group $G$, then there is a surjection $F(x) \overset{\pi}{\twoheadrightarrow} G$.
+	There is a surjection $F(X) \overset{\pi}{\twoheadrightarrow} G$.
 	
-	Let $K = \operatorname{ker}(\pi).$
+	Let $K = \operatorname{ker}(\pi)$, the set of words on $X^{\ast}$ trivial in $G$.
 
-	Let $(i,m,j)$ be the standard index on $F = F(X)$. Let $i(K)$ be \grz{n}-decidable, $n \geq 3$.
+	Let $(i,m,j)$ be the standard index on $F = F(X)$. As stated before, let $i(K)$ be \grz{n}-decidable, $n \geq 3$.
 
-	Define $i_p: G \rightarrow \Zpos$ by first defining
+	First we define the predicate $E(x,y)$ which decides whether two words $x,y \in X^{\ast}$ are equivalent in $G$.
 	\[ E(x,y) := x \in i(F) \wedge y \in i(F) \wedge m(j(x),y) \in i(K). \]
 
-	Let \begin{equation} r(x) := \min_{y \leq x} \left( E(x,y) \right). \end{equation}
+	$E$-equivalence classes of words in $X^{\ast}$ correspond to the cosets of $K$ in $F(X)$, and hence to elements of $G$.
+	Given any word $x \in X^{\ast}$, we can find the least word $y$ in its $E$-equivalence class by an \grz{n}-computable bounded minimisation operation $r$. 
+	\begin{equation} r(x) := \min_{y \leq x} \left( E(x,y) \right). \end{equation}
 
-	Then,
+	We will use this number as the index of the corresponding element of $G$.
+
+	Now the multiplication and inversion operations can be done on the free group index $i(F(X))$, and the minimisation $r$ finds the corresponding element of $i_P(G)$.
 	\begin{align}
-		i_P(x) &:= r i(x), \\
+		i_P(x) &:= r \circ i(x), \\
 		m_P(x,y) &:= r(m(x,y)), \\
-		j_P(x) &:= r j(x).
+		j_P(x) &:= r \circ j(x).
 	\end{align}
 
-	Then $(i_P,m_P,j_P)$ is the {\it standard index} of $G$ with respect to $\present{X}{R}$, and is \grz{n}-computable.
+	$(i_P,m_P,j_P)$ is the {\it standard index} of $G$ with respect to $\present{X}{R}$, and is \grz{n}-computable.
 
 \end{definition}
 
@@ -952,8 +956,10 @@ The new word is equivalent to $w$ because the only letters we are adding are edg
 \end{proof}
 
 \begin{theorem} \label{thm:fgoagogcomp}
-Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose 
-all the $G_i$ are finitely generated \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
+Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices.
+Suppose $n \geq 3$.
+Suppose all the $G_i$ are finitely groups with \grz{n}-computable standard indices with respect to presentations $\present{X_i}{R_i}$. 
+Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
 \end{theorem}
 
 \begin{proof}
