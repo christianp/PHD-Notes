@@ -20,6 +20,7 @@
 
 \newcommand{\NN}{\mathbb{N}}	%blackboard bold
 \newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\Zpos}{\mathbb{Z}_{\geq 0}}
 \newcommand\ov[1]{\overline{#1}} %overline
 \newcommand{\maps}{\longrightarrow}
 
@@ -128,8 +129,8 @@ Expressions consist of operators, function names, variables and punctuation.
 When defining expressions or new notation, $E \equiv E' := D$ means we will write $E$ or $E'$ to mean $D$.
 
 \subsection{Constructing functions}
-Let $\ZZ_{\geq 0}$ denote the non-negative integers. A function $f$, taking $n$ arguments and resulting in a single value, is a map,
-\[f: \ZZ_{\geq 0}^n \rightarrow \ZZ_{\geq 0}.\]
+Let $\Zpos$ denote the non-negative integers. A function $f$, taking $n$ arguments and resulting in a single value, is a map,
+\[f: \Zpos^n \rightarrow \Zpos.\]
 
 Usually we will write the expression $f(x_1, \dots, x_n)$ to mean ``the application of $f$ to the arguments $x_1,\dots,x_n$.''
 
@@ -208,7 +209,7 @@ For a binary function $f_{\ast}$, representing the operation $\ast$, we will use
 \[x \ast y := f_{\ast}(x,y). \]
 
 \subsubsection{Sets}
-A set $S \subseteq \ZZ_{\geq 0}^d$ is defined by its characteristic function $\chi_S$.
+A set $S \subseteq \Zpos^d$ is defined by its characteristic function $\chi_S$.
 \[\chi_S(\xvec) := \begin{cases}
  1 & \xvec \in S, \\
  0 & \xvec \notin S.
@@ -219,8 +220,8 @@ An {\it indexing} of a set $X$ is an injective function
 \[ i : X \rightarrow Z_{\geq 0}. \]
 
 \subsubsection{Relations}
-A {\it $d$-ary relation on $\ZZ_{\geq 0}$} is
-a subset $R$ of $\ZZ_{\geq 0}^d$, so is defined by its characteristic
+A {\it $d$-ary relation on $\Zpos$} is
+a subset $R$ of $\Zpos^d$, so is defined by its characteristic
 function $\chi_R$. In addition, for binary relations we will write
 \[ x R y := \chi_R(x,y). \]
 
@@ -407,7 +408,7 @@ Any constant multiple $n \cdot x$ is produced by $n$ iterations of addition:
 
 	So we can also construct any positive- and constant-coefficient linear polynomial $a_0 + a_1x_1 + a_2x_2 + \dots a_nx_n$ by finite compositions of \grz{1} functions. 
 
-Remember that the functions we are considering have domain $\ZZ_{\geq 0}^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative with addition. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
+Remember that the functions we are considering have domain $\Zpos^d$, so computations involving subtraction can go wrong. The key point is that proper subtraction is not associative with addition. For example, $(4+3) \psub 5 \neq 4+(3 \psub 5)$. For polynomials with negative coefficients, computing all the positive terms and then subtracting the negative terms using proper subtraction will give the closest match to the actual value.
 
 The quotient:
 \recur{
@@ -436,7 +437,7 @@ Bounded maximisation:
 If $P$ is an \grz{1} function then so are bounded minimisations and maximisations over $P$, because they are defined by a recursion over \grz{1} functions, bounded by $y$.
 
 \begin{lemma}
-	Let $A = \{a_0, a_1, \dots\} \subseteq \ZZ_{\geq 0}$ be a strictly monotonically increasing integer sequence. Define a function $\sigma_A : \ZZ_{\geq 0} \to A$ such that $\sigma_A(n) = a_n$.
+	Let $A = \{a_0, a_1, \dots\} \subseteq \Zpos$ be a strictly monotonically increasing integer sequence. Define a function $\sigma_A : \Zpos \to A$ such that $\sigma_A(n) = a_n$.
 	
 	If $\sigma_A$ is \grz{n}-computable, $n \geq 1$, then its inverse $\sigma_A^{-1} : a_n \mapsto n$ is also \grz{n}-computable. 
 \end{lemma}
@@ -448,7 +449,7 @@ If $P$ is an \grz{1} function then so are bounded minimisations and maximisation
 	Constructed this way, $\sigma_A^{-1}$ is \grz{n}-computable since the function performing the bounded minimisation is \grz{1}-computable and the equality predicate is \grz{0}-computable. 
 \end{proof}
 
-Note that $\sigma_A^{-1}$ has as its domain all of $\ZZ_{\geq 0}$ but, since it is not being used to decide membership of $A$, we don't care what value it takes on inputs not in $A$.
+Note that $\sigma_A^{-1}$ has as its domain all of $\Zpos$ but, since it is not being used to decide membership of $A$, we don't care what value it takes on inputs not in $A$.
 
 \subsection{\grz{2} functions}
 Multiplication is an unbounded recursion on the addition operation:
@@ -485,6 +486,43 @@ where $k$ is a parameter. If all the $P_i$ and $g_i$ are in \grz{n}, $n \geq 2$,
 The integer square root function $\lfloor x^{\frac{1}{2}} \rfloor$ computes the greatest integer $n$ such that $n^2 < x$.
 
 \[ \lfloor x^{\frac{1}{2}} \rfloor := \max_{n < x}{\left ( n \cdot n < x \right )} \]
+
+$J(x,y)$ is an \grz{2}-computable integer-pairing function $J:\ZZ \times \ZZ \rightarrow \Zpos$ defined by 
+\[J(x,y) := \left( (x+y)^2+x \right)^2+y. \]
+
+The functions $L$ and $R$ compute the inverses of $J$, that is, they have the properties $LJ(x,y) := x$ and $RJ(x,y) := y$:
+
+\begin{align}
+	R(z) &:= z - \left\lfloor z^{\frac{1}{2}} \right\rfloor, \\
+	L(z) &:= R \left( \left\lfloor z^{\frac{1}{2}} \right\rfloor \right) = \left\lfloor z^{\frac{1}{2}} \right\rfloor - \left \lfloor \left \lfloor z^{\frac{1}{2}} \right\rfloor^{\frac{1}{2}} \right \rfloor. 
+\end{align}
+
+Both $L$ and $R$ are \grz{2}-computable.
+
+Although functions in the Grzegorczyk hierarchy only operate on $\Zpos$, we will need the ability to work with negative integers and to add them together.
+The function $\rho$ is an injection of $\ZZ$ into $\Zpos$. We can then define operations on $\rho(\ZZ)$ to simulate operations on $\ZZ$.
+
+\[ \rho(x) := \begin{cases}
+		2n & \textrm{if } n \geq 0, \\
+		-2n-1 & \textrm{if } n < 0.
+	\end{cases}
+\]
+
+The operation $+_{\ZZ}$ simulates addition on $\ZZ$, so that if $x,y \in \ZZ$, then $\rho(x+y) = \rho(x) +_{\ZZ} \rho(y)$:
+
+\[ x +_{\ZZ} y = \begin{cases}
+		x + y + (x \bmod{2}) & \textrm{if } x \equiv y \bmod{2}, \\
+		\max(x,y) \psub \min(x,y) \psub (\min(x,y) \bmod{2}) & \textrm{if } x \not \equiv y \bmod{2}.
+	\end{cases}
+\]
+
+The operation $-_{\ZZ}$ simulates negation on $\ZZ$, so that $\rho(-x) = -_{\ZZ} \rho(x)$:
+
+\[ -_{\ZZ} x = \begin{cases}
+		x-1 & \textrm{if } x \equiv 0 \bmod{2}, \\
+		x+1 & \textrm{if } x \equiv 1 \bmod{2}.
+	\end{cases}
+\]
 
 \subsection{\grz{3} functions}
 \grz{3} is where just about all the really useful operations are.
@@ -616,7 +654,7 @@ edges $e$, both $e$ and $\bar e$  have the same label.
 
 \begin{definition}
 	Suppose we have a tree $T=(V,E)$ with root vertex $v_0$. $T$ is {\it \grz{n}-computable} if there is an \grz{n}-decidable labelling 
-	\[i: V \rightarrow \ZZ_{\geq 0},\]
+	\[i: V \rightarrow \Zpos,\]
 (we can insist that $i(v_0) = 0$) and an \grz{n}-computable `parent function',
 \[\phi_T:i(V) \rightarrow i(V),\]
 which gives the label of the parent of a vertex. For completeness, we also require that $\phi_T(v_0) = i(v_0) = 0$ and allow $\phi_T(v_0)$ to take any value on the complement of $i(V)$.
@@ -696,7 +734,7 @@ A finite ordered tree is \grz{3}-computable.
 \end{lemma}
 
 \begin{proof}
-	As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\ZZ_{\geq 0}$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
+	As the tree is finite, of course its labelling is an \grz{3}-decidable subset of $\Zpos$, and $\phi_{\tvec}$ as defined above is \grz{3}-computable.
 \end{proof}
 
 \section{Computable Groups \label{groups}}
@@ -708,37 +746,100 @@ help to make the definition of standard index clearer than in C\&G.}
 Following \cite{Cannonito_1966}, we say a group $G$ is \grz{n}-computable if it has a triple of \grz{n}-computable functions $(i,m,j)$, such that
 
 \begin{itemize}
-	\item $i: G \rightarrow \ZZ_{\geq 0}$ is an injection of $G$ onto an \grz{n}-decidable subset of $\ZZ_{\geq 0}$;
-	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ $m \left(i(g_1),i(g_2)\right) = i(g_1g_2)$, $\forall g_1,g_2 \in G$;
+	\item $i: G \rightarrow \Zpos$ is an injection of $G$ onto an \grz{n}-decidable subset of $\Zpos$;
+	\item $m: i(G) \times i(G) \rightarrow i(G)$ computes the product of two group elements, i.e.\ 
+		\[m \left(i(g_1),i(g_2)\right) = i(g_1g_2), \forall g_1,g_2 \in G;\]
 	\item $j: i(G) \rightarrow i(G)$ computes the inverse of any element of $G$.
 \end{itemize}
 
-Note that $i$ itself is not computable but its image has computable characteristic function.
+Note that $i$ itself is not \grz{n}-computable but its image has \grz{n}-computable characteristic function.
 
-\begin{lemma}\cite[Lemma 3.1]{Cannonito_1973} \label{freegroupindex}
-	A free group $F = \langle a_1, \dots \rangle$ on finitely or countably many generators is \grz{3}-computable.
-\end{lemma}
+The concept of a {\it standard index} for a group presentation is useful as a tool for restricting one's attention to group indices which ``behave well''. We found the definitions of \cite{Cannonito_1966} unclear so we reproduce the relevant portions of that paper below, rephrased to reduce ambiguity.
 
-The proof of the above lemma is not important for the purposes of this paper, but the index defined on the free group will be used later in this paper. The index $i(w)$ of a word $w = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ is
-\[ i(w) = \prod_{k=0}^r p_k^{J(i_k,\alpha_k)}. \]
-$J(x,y)$ is an \grz{2}-computable integer pairing function $J:\ZZ_{\geq 0} \times \ZZ \rightarrow \ZZ_{\geq 0}$ defined by 
-\[J(x,y)=((x+y)^2+x)^2+y.\]
+A standard index for a group $G$, with respect to a presentation $\present{X}{R}$, is defined using the standard index for the free group on $X$,
 
-The functions $L(J(x,y)) = x$ and $R(J(x,y)) = y$ compute the inverses of $J$:
+\begin{comment}
+	\begin{lemma}\cite[Lemma 3.1]{Cannonito_1973} \label{freegroupindex}
+		A free group $F = \langle a_0, \dots \rangle$, on finitely or countably many generators, is \grz{3}-computable.
+\end{comment}
+
+\begin{definition} \label{freegroupindex}
+	Here we will define the {\it standard index} of the free group $F(X)$, where $X = \{ a_0, a_1, \dots \}$ is a countable set of generators.
+
+The elements of $F(X)$ are freely-reduced words of the form $a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$, with all the $\alpha_i$ positive or negative (but non-zero) integers. 
+
+A word can be represented as a list of pairs of generators and exponents, i.e. as $\wvec = [(i_0,\alpha_0), \dots, (i_r, \alpha_r)]$. By using the injection $\rho$ of $\ZZ$ into $\Zpos$ and the pairing function $J$, this yields an \grz{3}-computable index of $F(X)$:
+
+\[ i(w) := [J(i_0,\rho(\alpha_0)), \dots, J(i_r,\rho(\alpha_r))]. \]
+
+Naturally, the empty word $\epsilon$ is equivalent to the empty list, so $i(\epsilon) := 1$.
+From now on, we will identify the list $\wvec$ with $i(w)$.
+
+One of the conditions of computability is that the image of $i$ should be decidable. Assuming that $X$ is infinite, the only case in which a number does not represent a group element is when one of the exponents in the number's prime decomposition is not in the image of the pairing function $J$.
+This condition can be written down fairly straightforwardly:
+
+\[x \in i(F(X)) \Leftrightarrow \forall_{i \leq |x|} \left( J(L((x)_i),R((x)_i)) = (x)_i \right) \]
+
+If $X$ is finite, another condition can easily be added to check that the left-hand sides of the generator-exponent pairs are all valid.
+
+\cp{ Hopefully it's clear how the above condition works. }
+
+The multiplication function is defined using list operations. 
+For words $w_1 = a_{i_0}^{\alpha_0} \dots a_{i_r}^{\alpha_r}$ and $\wvec_2 = a_{j_0}^{\beta_0} \dots a_{j_s}^{\beta_s}$,
+
+\[ m(\wvec_1, \wvec_2) = \begin{cases}
+		\wvec_1 \concat \wvec_2 & \textrm{if } i_r \neq j_0, \\
+		\wvec_1[0 \dots r-1] \concat [J(i_0, \alpha_r + \beta_0)] \concat \wvec_1[1 \dots s] & \textrm{if } i_r = j_0 \wedge \alpha_r +_{\Zpos} \beta_0 \neq 0, \\
+		m( \wvec_1[0 \dots r-1], \wvec_2[1 \dots s]) & \textrm{if } i_r = j_0 \wedge \alpha_r +_{\Zpos} \beta_0 = 0.
+	\end{cases}
+\]
+
+Finally, we must define the inverse function, $j$.
 
 \begin{align}
-	R(z) &= z - \left\lfloor z^{\frac{1}{2}} \right\rfloor, \\
-	L(z) &= R \left( \left\lfloor z^{\frac{1}{2}} \right\rfloor \right) = \left\lfloor z^{\frac{1}{2}} \right\rfloor - \left \lfloor \left \lfloor z^{\frac{1}{2}} \right\rfloor^{\frac{1}{2}} \right \rfloor. 
+	j(\wvec) &:= \operatorname{reverse}(\wvec),  \\
+	\nonumber \\
+	\operatorname{reverse}(1) &:= 1, \\
+	\operatorname{reverse}(\wvec) &:= \operatorname{reverse}(\wvec[1 \dots |\wvec|]) \concat [J(L((\wvec)_0),-_{\Zpos}R((\wvec)_0))].
 \end{align}
 
-Both $L$ and $J$ are \grz{2}-computable.
+All of $i$, $m$ and $j$ are \grz{3}-computable, so every free group $F(X)$ is \grz{3}-computable.
 
-(see \cite{Cannonito_1973} for more details).
+\end{definition}
+
+\begin{definition}
+	For a countably-generated presentation $P=\present{X}{R}$ of a group $G$ with \grz{n}-decidable word problem, $n \geq 3$, there is an associated \grz{n}-computable {\it standard index} $(i_P,m_P,j_P)$, defined as follows.
+
+	There is a surjection $F(X) \overset{\pi}{\twoheadrightarrow} G$.
+	
+	Let $K = \operatorname{ker}(\pi)$, the set of words on $X^{\ast}$ trivial in $G$.
+
+	Let $(i,m,j)$ be the standard index on $F = F(X)$. As stated before, let $i(K)$ be \grz{n}-decidable, $n \geq 3$.
+
+	First we define the predicate $E(x,y)$ which decides whether two words $x,y \in X^{\ast}$ are equivalent in $G$.
+	\[ E(x,y) := x \in i(F) \wedge y \in i(F) \wedge m(j(x),y) \in i(K). \]
+
+	$E$-equivalence classes of words in $X^{\ast}$ correspond to the cosets of $K$ in $F(X)$, and hence to elements of $G$.
+	Given any word $x \in X^{\ast}$, we can find the least word $y$ in its $E$-equivalence class by an \grz{n}-computable bounded minimisation operation $r$. 
+	\begin{equation} r(x) := \min_{y \leq x} \left( E(x,y) \right). \end{equation}
+
+	We will use this number as the index of the corresponding element of $G$.
+
+	Now the multiplication and inversion operations can be done on the free group index $i(F(X))$, and the minimisation $r$ finds the corresponding element of $i_P(G)$.
+	\begin{align}
+		i_P(x) &:= r \circ i(x), \\
+		m_P(x,y) &:= r(m(x,y)), \\
+		j_P(x) &:= r \circ j(x).
+	\end{align}
+
+	$(i_P,m_P,j_P)$ is the {\it standard index} of $G$ with respect to $\present{X}{R}$, and is \grz{n}-computable.
+
+\end{definition}
 
 Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Grzegorczyk hierarchy} relative to a set $A$, which includes the characteristic function of $A$ as a primitive function.
 
 \begin{definition} \cite[Definition 2.3]{Cannonito_1973}
-	Let $A \subset \ZZ_{\geq 0}$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\ZZ_{\geq 0}^k$ for arbitrary $k$ and range $\ZZ_{\geq 0}$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
+	Let $A \subset \Zpos$. Then the class of functions \grz{n}$(A)$ for $n \geq 2$ (with domain $\Zpos^k$ for arbitrary $k$ and range $\Zpos$) is the smallest class of functions, closed under composition and bounded recursion, containing all of \grz{n} in addition to 
 	\begin{align}
 		\chi_A(x) &:= \begin{cases}
 									1 & \textrm{if}\; x \in A, \\
@@ -747,7 +848,7 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 	\end{align}
 \end{definition}
 \begin{lemma} \label{relativetonormalcomputable}
-	Let $A \subset \ZZ_{\geq 0}$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
+	Let $A \subset \Zpos$. If $c_A$ is \grz{m}-computable, then any \grz{n}$(A)$-computable function, $n \leq m$, is \grz{m}-computable.
 \end{lemma}
 
 \begin{definition}
@@ -755,7 +856,7 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 \end{definition}
 
 \begin{theorem} \cite[Theorem 3.2]{Cannonito_1973} \label{wp-computable-implies-group}
-	For every countable group $G$ there exists $A \subset \ZZ_{\geq 0}$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
+	For every countable group $G$ there exists $A \subset \Zpos$ such that $G$ is \grz{3}$(A)$-computable. In particular, the word problem of $G$ is one such $A$.
 \end{theorem}
 
 \begin{corollary} \label{wp-iff-group}
@@ -777,7 +878,7 @@ Cannonito and Gatterdam \cite{Cannonito_1973} introduced the {\it relativised Gr
 
 \begin{comment}
 		\begin{definition} \cite[Definition 3.3]{Cannonito_1973}
-			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalisation from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \ZZ_{\geq 0}$.
+			A group $G$ is ``standard'' relative to an index $(i,m,j)$ if $i$ is defined by minimalisation from a presentation $1 \rightarrow K \rightarrow F \rightarrow G \rightarrow 1$ for $F$ free on at most countably many generators, $n \geq 3$, and $A \subset \Zpos$.
 		\end{definition}
 
 		\begin{theorem} \cite[Theorem 3.4]{Cannonito_1973}
@@ -855,8 +956,10 @@ The new word is equivalent to $w$ because the only letters we are adding are edg
 \end{proof}
 
 \begin{theorem} \label{thm:fgoagogcomp}
-Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices. Suppose 
-all the $G_i$ are finitely generated \grz{n}-computable groups for $n \geq 3$. Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
+Suppose we have $G = \fgoagog$, where $\Gamma$ has $\nu$ vertices.
+Suppose $n \geq 3$.
+Suppose all the $G_i$ are finitely groups with \grz{n}-computable standard indices with respect to presentations $\present{X_i}{R_i}$. 
+Assume all the edge groups are \grz{n}-decidable, and all the isomorphisms $\phi_e$ are \grz{n}-computable. Then $G$ is \grz{n+1}-computable.
 \end{theorem}
 
 \begin{proof}
@@ -1014,7 +1117,7 @@ by defining the images of the generators.
 We begin by defining the homomorphism $\phi_e$ for the generators of $G_0$ with even powers of $x$:
 \[	\phi_{e}(x^{-2n}yx^{2n}) := a^{-(n!)}ba^{n!}, \forall n \in \NN. \]
 
-Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \ZZ_{\geq 0}\}$. \recur{
+Next we define a function to decide membership of the set of factorial numbers, $\{d!, d \in \Zpos\}$. \recur{
 \operatorname{fi}(n) &:= \operatorname{fi}'(n,n).\\
 \operatorname{fi}'(n,0) &:= 0, \\
 \operatorname{fi}'(n,d+1) &:= 
@@ -1207,15 +1310,15 @@ are not  the fundamental groups of any  graph of groups.
 
 \subsection{Pregroups and the Grzegorczyk hierarchy}
 
-Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \ZZ_{\geq 0}$.
+Let $P=(P,D,m,\eps,~^{-1})$ be a pregroup and let $i$ be an injective function $i:P\maps \Zpos$.
  %(In this case $P$ must be countable.)  
 Define 
 \begin{itemize}
 \item $D^\prime=
-\{(x,y)\in \ZZ_{\geq 0}\times \ZZ_{\geq 0}\,:\, x=i(p), y=i(q), (p,q)\in D\}$,
+\{(x,y)\in \Zpos\times \Zpos\,:\, x=i(p), y=i(q), (p,q)\in D\}$,
 \item 
 the function 
-$m^\prime:D^\prime \maps \ZZ_{\geq 0}$, such that $m^\prime(i(p),i(q))=i(m(p,q))$, 
+$m^\prime:D^\prime \maps \Zpos$, such that $m^\prime(i(p),i(q))=i(m(p,q))$, 
 for 
 all $(p,q)\in D$,  
 and 
@@ -1251,11 +1354,11 @@ Section \ref{sec:lists}. As we shall mostly be working with encoded lists we use
 $\avec$ to represent both an encoded list $\avec$ or an arbitrary non-negative integer $\avec$, 
 as appropriate to
 the context. 
-Let $i:P\maps \ZZ_{\geq 0}$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
+Let $i:P\maps \Zpos$ be an injective function and assume that $i(P)$ is \grz{n}-decidable.
 We shall assume that $i(\eps)=1$.   
 Elements of $P^*$ are regarded as finite sequences of elements of $P$, and 
 usually referred to as \emph{words}.  Define an indexing function
-$i_1:P^*\maps \ZZ_{\geq 0}$ by 
+$i_1:P^*\maps \Zpos$ by 
 \begin{equation}\label{eq:imonoid}
 i_1(a_0,\ldots,a_m):=[i(a_0),\ldots ,i(a_m)].
 \end{equation} 
@@ -1269,7 +1372,7 @@ $\chi$ such that
 \[\chi(\avec):=\displaystyle{\bigwedge_{s=0}^{|\avec|-1}}(\avec)_s \in i(P).\]  
 
 We also define functions corresponding to multiplication in $P^*$  and to the extension of the inversion
-operation on $P$ to $P^*$. That is we define $m_1:\ZZ_{\geq 0}\times\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ and $j_1:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
+operation on $P$ to $P^*$. That is we define $m_1:\Zpos\times\Zpos\maps \Zpos$ and $j_1:\Zpos\maps \Zpos$ by
 \begin{equation}\label{eq:mmonoid}
 m_1(i_1(\uvec),i_1(\vvec)):=i_1(\uvec)\concat i_1(\vvec)) 
 \end{equation}
@@ -1281,14 +1384,14 @@ Then $m_1$ and $j_1$ are \grz{n}-computable functions, $m_1((i_1(\uvec),i_1(\vve
 and $j_1(i_1(u_0,\ldots, u_m))=i_1(u_m^{-1},\ldots , u_0^{-1})$, as required.
 
 Next we define functions to work with $P$-reduction of encoded words.
-Define $\Dfind:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by 
+Define $\Dfind:\Zpos\maps \Zpos$ by 
 \begin{equation}\label{eq:Dfind}
 \Dfind(\avec):=\min_y(y<|\avec|\wedge ((\avec)_y,(\avec)_{y+1})\in D^\prime).
 \end{equation}
 As $D^\prime$ is \grz{n}-decidable and the minimisation is bounded this is
 an \grz{n}-computable function. 
 
-Next define the predicate $\Preduced$ on $\ZZ_{\geq 0}$ by
+Next define the predicate $\Preduced$ on $\Zpos$ by
 \begin{equation}\label{eq:Preduced}
 \Preduced(\avec):=\left(\find(\avec,i(\eps))=|\avec|\right)\wedge
 \left( \Dfind(\avec)=|\avec|\right).
@@ -1303,7 +1406,7 @@ order in which $P$-reductions are performed does not affect the equivalence
 class of the $P$-reduced word that is produced, so there will be no need to
 consider any other possible  sequences of $P$-reduction. 
 
-Define a function $\leftm:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
+Define a function $\leftm:\Zpos\maps \Zpos$ by
 \begin{equation}\label{eq:leftm}
 \leftm(\avec):=
 \left\{
@@ -1319,7 +1422,7 @@ m^\prime((\avec)_{\Dfind(\avec)},(\avec)_{\Dfind(\avec)+1})\concat&\\
 
 This is an \grz{n}-computable function. 
 
-Now define $\Predn:\ZZ_{\geq 0}\times \ZZ_{\geq 0} \maps \ZZ_{\geq 0}$ by
+Now define $\Predn:\Zpos\times \Zpos \maps \Zpos$ by
 \begin{align}
 \Predn(\avec,0) & := \avec,\notag\\
 \Predn(\avec, n+1) & := \leftm(\Predn(\avec,n))\label{eq:Pr}.
@@ -1331,7 +1434,7 @@ do not have
 a \grz{n}-computable bounding function for the recursion; so cannot say
 whether or not $\Predn(\avec,n)$ is in \grz{n}.
 
-Finally define $\Preduction:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ by
+Finally define $\Preduction:\Zpos\maps \Zpos$ by
 \begin{equation}\label{eq:Preduction}
 \Preduction(\avec):=\Predn(\avec,|\avec|).
 \end{equation}
@@ -1340,7 +1443,7 @@ obtained from $\uvec$ by $P$-reduction, where reduction is always made
 at the leftmost possible position, then $\Preduction(i_1(\uvec))=i_1(\vvec)$. 
 
 In order to recognise when two encoded words represent elements of the same
-$\approx$ equivalence class we define the relation $\Interleaven\subseteq \ZZ_{\geq 0}\times \ZZ_{\geq 0}$ 
+$\approx$ equivalence class we define the relation $\Interleaven\subseteq \Zpos\times \Zpos$ 
 defined as 
 \begin{equation}\label{eq:interleaven}
 \begin{split}
@@ -1356,14 +1459,14 @@ empty word,  if and only if $\Interleaven(i_1(\uvec),i_1(\vvec))$.
 We shall write $m\approx n$, for integers $m,n$ such that $\Interleaven(m,n)$. 
 \subsection{Proof of Theorem \ref{thm:UPgrz}}
 
-We define a function $i_2:\ZZ_{\geq 0}\maps \ZZ_{\geq 0}$ which will be used to construct an
+We define a function $i_2:\Zpos\maps \Zpos$ which will be used to construct an
 index for $\UP$. 
 \begin{equation}\label{eq:i2}
 i_2(\avec):=\min_y(y<\avec \wedge (y\in i_1(P)) \wedge \Preduced(y) \wedge (y\approx \avec)).
 \end{equation}
-Now define functions $i_G:P^*\maps \ZZ_{\geq 0}$, 
-$m_G:i_G(P^*)\times i_G(P^*) \maps \ZZ_{\geq 0}$
-and $j_G:i_G(P^*)\maps \ZZ_{\geq 0}$ by 
+Now define functions $i_G:P^*\maps \Zpos$, 
+$m_G:i_G(P^*)\times i_G(P^*) \maps \Zpos$
+and $j_G:i_G(P^*)\maps \Zpos$ by 
 \begin{align}
 i_G(\uvec) &:=i_2i_1(\uvec),\\
 m_G(\avec, \bvec)& :=i_2(\Preduction(m_1(\avec,\bvec))) \textrm{ and }\\
@@ -1382,7 +1485,7 @@ $i_G(\uvec)=i_2i_1(\uvec)=i_2i_1(\vvec)=i_G(\vvec)$, by construction. Therefore 
 a well defined function on $G$.  Moreover if  $\uvec$ and $\vvec$ are $P$-reduced words
 such that $i_G(\uvec)=i_G(\vvec)$ then both $\uvec$ and 
 $\vvec$ are equivalent to $i_2i_1(\uvec)$, so $i_G$ is injective. Let $R$ be the set of 
-$P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \ZZ_{\geq 0}$, 
+$P$-reduced words and let $S$ be the image $i_G(R)$ of $R$ under $i_G$. Then, for $\xvec\in \Zpos$, 
 \[\chi_S(\xvec)=(\xvec\in i_1(P_1)) \wedge \Preduced(\xvec) \wedge (i_2(\xvec)=\xvec),\]
 so $\chi_S$ is \grz{n+1}-computable. Hence $i_G(R)=i_G(G)$ is \grz{n+1}-decidable. 
 
