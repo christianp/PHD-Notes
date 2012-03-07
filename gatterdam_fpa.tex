@@ -1,0 +1,235 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{amsthm}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{algpseudocode}
+\singlespacing
+\parskip 2ex
+\parindent 0pt
+
+\newcommand{\grz}[1]{$\mathcal{E}^{#1}$}	%grzegorczyk level
+
+\newcommand{\NN}{\mathbb{N}}	%blackboard bold
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand\ov[1]{\overline{#1}} %overline
+\newcommand{\maps}{\longrightarrow}
+
+\newcommand\eps{\varepsilon}
+
+\newcommand{\nth}{$n^{\textrm{th}}$~}	% nth and ith typeset nicely
+\newcommand{\ith}{$i^{\textrm{th}}$~}
+
+\newcommand{\shortlex}{{\sf ShortLex}\;}	% shortlex ordering has a sans-serif brand identity
+
+\newcommand{\avec}{\mathbf{a}}	% vector
+\newcommand{\bvec}{\mathbf{b}}	% vector 
+\newcommand{\dvec}{\mathbf{d}}	% vector 
+\newcommand{\uvec}{\mathbf{u}}	% vector 
+\newcommand{\vvec}{\mathbf{v}}	% vector 
+\newcommand{\wvec}{\mathbf{w}}	% vector w
+\newcommand{\xvec}{\mathbf{x}}	% vector x
+\newcommand{\yvec}{\mathbf{y}}	% vector y
+\newcommand{\zvec}{\mathbf{z}}	% vector 
+\newcommand{\tvec}{\mathbf{t}}	% vector t
+\newcommand{\Uvec}{\mathbf{U}}	% vector U
+\newcommand{\psub}{\dot -}	% proper subtraction
+\newcommand{\rsg}{\overline{sg}} % reverse signature
+\newcommand{\recur}[1]{\begin{equation} \begin{split} #1 \end{split} \end{equation}}	%definition of recursive function
+\newcommand{\recurN}[1]{\begin{equation*} \begin{split} #1 \end{split} \end{equation*}}	%ditto, no equation number
+
+\newcommand{\classC}{$\mathcal{C}$}
+
+\newcommand{\concat}{\ensuremath{+\!\!\!\!+\,}}	% list concatenation
+
+\newcommand{\present}[2]{\left \langle #1 \: | \: #2 \right \rangle}	%group presentation
+\newcommand{\fgoagog}{\pi_1(\mathbf{G},\Gamma,T,v_0)}	%fundamental group of a graph of groups
+%universal group of a pregroup P
+\newcommand{\UP}{\Uvec(P)}
+
+%%% sets { ... | ... }
+\newcommand{\set}[2]{\left\{\, \mathinner{#1}\vphantom{#2}\; \left|\; \vphantom{#1}\mathinner{#2} \right.\,\right\}}
+\newcommand{\oneset}[1]{\left\{\, \mathinner{#1} \,\right\}}
+\newcommand{\smallset}[1]{\left\{\mathinner{#1}\right\}}
+%%%%%%%%%%%% brackets etc
+\newcommand{\abs}[1]{\left|\mathinner{#1}\right|}
+\newcommand{\floor}[1]{\left\lfloor\mathinner{#1} \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil\mathinner{#1} \right\rceil}
+\newcommand{\bracket}[1]{\left[\mathinner{#1} \right]}
+\newcommand{\parenth}[1]{\left(\mathinner{#1} \right)}
+\newcommand{\gen}[1]{\left< \mathinner{#1} \right>}
+
+\newcommand{\rdeg}[1]{\mbox{red-deg}\left(\mathinner{#1}\right)}
+%%%%%%%%%%%%%functions
+\newcommand{\find}{\operatorname{find}}
+\newcommand{\Dfind}{\operatorname{Dfind}}
+\newcommand{\Preduced}{\operatorname{Preduced}}
+\newcommand{\leftm}{\operatorname{leftm}}
+\newcommand{\Predn}{\operatorname{Predn}}
+\newcommand{\Preduction}{\operatorname{Preduction}}
+\newcommand{\Interleaven}{\operatorname{Interleaven}}
+
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{myproof}{\normalsize {\sc Proof}:}{{\hfill $\Box$}}
+
+\newenvironment{cpe}{\noindent\color{OliveGreen} CP }{}
+\newcommand{\cp}[1]{
+\begin{cpe} #1 \end{cpe}}
+%%
+\newenvironment{ad}{\noindent\color{blue} AJD }{}
+\newcommand{\ajd}[1]{
+\begin{ad} #1 \end{ad}}
+%%
+\begin{document}
+\title{Gatterdam's proof that amalgamated free products are \grz{n+1}-computable}
+\author{Christian Perfect}
+\maketitle
+
+\begin{theorem}
+Let $G_1, G_2$ be \grz{n}-computable groups. Let $H_1, H_2$ be \grz{n}-decidable subgroups of the latter. Let $\phi': H_1 \to H_2$ be an isomorphism, with $\phi', \phi'^{-1}$ both \grz{n}-computable.
+
+Then the free product of $G_1$ and $G_2$ with $H_1$ and $H_2$ amalgamated, $G = G_1 \underset{\phi'}{\ast} G_2$, is \grz{n+1}-computable.
+\end{theorem}
+
+\begin{proof}
+Let $(i'_1,m'_1,j'_1)$ be the index of $G_1$ and $(i'_2,m'_2,j'_2)$ be the index of $G_2$. The dashes will be explained later.
+
+We can assume, without loss of generality, that $0 \notin i'_a(G_a)$ and $i'_a(1) = 1$ for $a=1,2$. \cp{(Might not even need this.)}
+
+By Magnus, Karrass, Solitar, etc., all elements $g \in G$ have normal form
+\[ g = h g_1 \dots g_r \]
+
+where $h \in H_1$, and the $g_i$ are coset representatives of $G_a / H_a$, $a=1,2$, such that $g_{i+1} \in G_1 \Leftrightarrow g_i \in G_2$.
+
+The following proof becomes a lot easier if we redefine the factor group indices as follows:
+
+\begin{align*}
+	i_1(x) &:= 2i'_1(x), \\
+	m_1(x,y) &:= 2m'_1 \left( \frac{x}{2},\frac{y}{2} \right) \\
+	j_1(x) &:= 2j'_1 \left( \frac{x}{2} \right). 
+\end{align*}
+
+\begin{align*}
+	i_2(x) &:= 2i'_2(x) - 1, \\
+	m_2(x,y) &:= 2m'_2 \left( \frac{x+1}{2},\frac{y+1}{2} \right) \\
+	j_2(x) &:= 2j'_2 \left( \frac{x+1}{2} \right).
+\end{align*}
+
+Now,
+\begin{align*}
+	x \in i_1(G_1) &\Leftrightarrow 2 \mid x \wedge \frac{x}{2} \in i'_1(G_1), \\
+	x \in i_1(H_1) &\Leftrightarrow x \in i_1(G_1) \wedge \frac{x}{2} \in i'_1(H_1), \\
+	x \in i_2(G_2) &\Leftrightarrow 2\nmid x  \wedge \frac{x+1}{2} \in i'_2(G_2), \\
+	x \in i_2(H_2) &\Leftrightarrow x \in i_2(G_2) \wedge \frac{x+1}{2} \in i'_2(H_2). 
+\end{align*}
+
+The subgroup isomorphism also needs to be redefined:
+\begin{align*}
+	\phi(x) &:= 2\phi' \left( \frac{x}{2} \right)-1, \\
+	\phi^{-1}(x) &:= 2 \phi'^{-1} \left( \frac{x+1}{2} \right). 
+\end{align*}
+
+In order to do multiplication, we need to be able to split every $g_a \in G_a$, $a=1,2$, into a word of the form $h_ak_a$, where $h_a \in H_a$ and $k_a$ is a coset representative of $g_a$ in $G_a / H_a$.
+
+Define:
+\begin{align*}
+	k_a(x) &:= \min_{y \leq x} \left( m_a(x,j_a(y)) \in i_a(H_a) \right), \\
+	h_a(x) &:= m_a(x,j_a(k_a(x))). 
+\end{align*}
+
+Now we can define $i(G)$ by
+\[ i(hg_1 \dots g_r) := [h,g_1,\dots,g_r]. \]
+
+(encode it as a G\"odel number)
+
+$i(G)$ is \grz{n}-decidable because $x \in i(G)$ if and only if:
+\begin{itemize}
+	\item $x$ is a G\"odel number
+	\item $(x)_0 \in i_1(H_1)$
+	\item $\forall 1 < i < |x|$, $(x)_i \in i_1(G_1) \Leftrightarrow (x)_{i-1} \in i_2(G_2)$
+				\cp{(check this is true -- different from Gatterdam's)} 
+				and $(x)_i \in i_a(G_a) \rightarrow k_a((x)_i) = (x)_0$.
+				\cp{Gatterdam uses $h_a$ but I think it should be $k_a$}
+\end{itemize}
+
+Now define a function $r: (i_1(G_1) \cup i_2(G_2)) \times i(G) \to i(G)$ which does multiplication of elements of $G$ on the left by elements of $G_1$ and $G_2$.
+
+$r$ is defined by cases in a decision tree, so here's some programming-ish syntax:
+
+$r(x,y):=$
+\begin{algorithmic}
+\If{$x \in i_1(G_1)$}
+	\If{$x \in i_1(H_1)$}
+		\State $[m_1(x,(y)_0)] +\!\!\!\!+ y[1 \dots]$
+	\Else
+		\If{$(y)_1 \in i_1(G_1)$}
+			\If{ $m_1(m_1(x,(y)_0),(y)_1) \in i_1(H_1)$ }
+				\State $[m_1(m_1(x,(y)_0),(y)_1)] +\!\!\!\!+ y[2 \dots]$
+			\Else
+				\State $[h_1m_1(m_1(x,(y)_0),(y)_1), k_1m_1(m_1(x,(y)_0),(y)_1)] +\!\!\!\!+ y[2 \dots]$
+			\EndIf
+		\Else
+			\State $[h_1m_1(x,(y)_0),k_1m_2(x,(y)_0)] +\!\!\!\!+ y[1 \dots]$
+		\EndIf
+	\EndIf
+\Else
+	\If{ $x \in i_2(H_2)$ }
+		\State $[m_1(\phi^{-1}(x),(y)_0)] +\!\!\!\!+ y[1 \dots]$
+	\Else
+		\If{ $(y)_1 \in i_2(G_2)$ }
+			\If{ $m_2(m_2(x,\phi((y)_0)),(y)_1) \in i_2(H_2)$ }
+				\State $[\phi^{-1}m_2(m_2(x,\phi((y)_0)),(y)_1)] +\!\!\!\!+ y[2 \dots]$
+			\Else
+				\State $[\phi^{-1}h_2m_2(m_2(x,\phi((y)_0)),(y)_1), k_2m_2(m_2(x,\phi((y)_0)),(y)_1)] +\!\!\!\!+ y[2 \dots]$
+			\EndIf
+		\Else
+			\State $[\phi^{-1}h_2m_2(x,\phi((y)_0)),k_2m_2(x,\phi((y)_0))] +\!\!\!\!+ y[1 \dots]$
+		\EndIf
+	\EndIf
+\EndIf
+\end{algorithmic}
+
+Hopefully it's clear that this can be rewritten unambiguously as a definition-by-cases in the usual format.
+
+Now we can do multiplication on $G$ in general:
+\begin{align*}
+	m([],y) &:= y, \\
+	m( x:xs, y) &:= r(x,m(xs,y)).  
+\end{align*}
+
+And inversion:
+\begin{align*}
+	j([1]) &:= [1], \\
+	j(x:xs) &:= r(\hat{j}(x), j(xs)).
+\end{align*}
+
+\[  
+	\hat{j}(x) := \begin{cases} 
+									j_1(x), & x \in i_1(G_1), \\
+									j_2(x), & x \in i_2(G_2). 
+								\end{cases} 
+\]
+
+\end{proof}
+
+($x:xs$ means a list of the form $[x,x_1,x_2, \dots]$. I borrowed this syntax from Haskell. I need to show that you can define recursive functions on lists like this, but I hope you agree it works)
+
+Gatterdam then also shows that the embeddings $G_a \to G$ are natural, but I lost the will.
+
+\end{document}
+
